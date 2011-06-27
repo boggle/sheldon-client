@@ -73,6 +73,12 @@ describe SheldonClient::UrlHelper do
       uri.should be_a( Addressable::URI )
       uri.request_uri.should == "/search?mode=fulltext&title=query"
     end
+
+    it "should generate search url even if the value of a key is a Fixnum" do
+      uri = search_url( { id: 1 }, mode: :fulltext )
+      uri.should be_a( Addressable::URI )
+      uri.request_uri.should == "/search?id=1&mode=fulltext"
+    end
   end
 
   context "status_url" do
