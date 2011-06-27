@@ -6,56 +6,15 @@ require 'sheldon-client/http'
 require 'sheldon-client/node'
 require 'sheldon-client/search'
 require 'sheldon-client/edge'
+require 'sheldon-client/status'
+require 'sheldon-client/deprecated'
 
 class SheldonClient
   extend SheldonClient::Configuration
   extend SheldonClient::HTTP
   extend SheldonClient::Search
-
-
-  # Search for Sheldon Nodes. This will return an array of SheldonClient::Node Objects
-  # or an empty array.
-  #
-  # ==== Parameters
-  #
-  # * <tt>type</tt> - plural of any known sheldon node type like :movies or :genres
-  # * <tt>options</tt> - the search option that will be forwarded to lucene. This depends
-  #   on the type, see below.
-  #
-  # ==== Search Options
-  #
-  # Depending on the type of nodes you're searching for, different search options should
-  # be provided. Please refer to the sheldon documentation for the most up-to-date version
-  # of this. As of today, the following search options are supported.
-  #
-  # * <tt>movies</tt> - title, production_year
-  # * <tt>genres</tt> - name
-  # * <tt>person</tt> - name
-  #
-  # Sheldon will pass the search options to lucene, so if an option is supported and
-  # interpreted as exptected need to be verified by the Sheldon team. See http://bit.ly/hBpr4a
-  # for more information.
-  #
-  # ==== Examples
-  #
-  # Search for a specific movie
-  #
-  #   SheldonClient.search :movies, { title: 'The Matrix' }
-  #   SheldonClient.search :movies, { title: 'Fear and Loathing in Las Vegas', production_year: 1998 }
-  #
-  # Search for a specific genre
-  #
-  #    SheldonClient.search :genres, { name: 'Action' }
-  #
-  # And now with wildcards
-  #
-  #    SheldonClient.search :movies, { title: 'Fist*' }
-  #
-  def self.search( type, options, index=:exact )
-    uri = build_search_url( type, options, index )
-    response = send_request( :get, uri )
-    response.code == '200' ? parse_search_result(response.body) : []
-  end
+  extend SheldonClient::Status
+  extend SheldonClient::Deprecated
 
   # Fetch all the edges of a certain type connected to a given node.
   #
@@ -99,11 +58,9 @@ class SheldonClient
   #
 
   def self.fetch_neighbours( node, type )
-    node_id = node.is_a?(SheldonClient::Node) ? node.id : node
-
-    fetch_edges( node_id, type ).map do |edge|
-      fetch_node edge.to
-    end
+    uri = build_neighbour_url( node.to_i, type)
+    response = send_request( :get, uri )
+    response.code == '200' ? parse_search_result(response.body) : []
   end
 
   # Fetch a collection of edges given an url
@@ -154,47 +111,28 @@ class SheldonClient
     response.code == '200' ? parse_node(response.body) : nil
   end
 
-  # Create an edge between two sheldon nodes.
+  # Create a Node or Edge at sheldon.
   #
-  # ==== Parameters
-  #
-  # * <tt>options</tt> - the options to create an edge. This must
-  #   include <tt>from</tt>, <tt>to</tt>, <tt>type</tt> and
-  #   <tt>payload</tt>. The <tt>to</tt> and <tt>from</tt> option
-  #   accepts a SheldonClient::Node Object or an integer.
-  #
-  # ==== Examples
-  #
-  # Create an edge between a movie and a genre.
-  #
-  #    matrix = SheldonClient.search( :movies, title: 'The Matrix' ).first
-  #    action = SheldonClient.search( :genres, name: 'Action').first
-  #    SheldonClient.create_edge {from: matrix, to: action, type: 'genretagging', payload: { weight: 1.0 }
-  #    => true
-  #
-
-  def self.create_edge( options )
-    response = send_request( :put, create_edge_url( options ), options[:payload] )
-    response.code == '200' ? true : false
-  end
-
-  # Create a new node at sheldon.
-  #
-  # ==== Parameters
-  # * <tt>options</tt> - the options to create a node. This must
-  #   include the <tt>payload</tt>.
-  #
-  # ==== Examples
-  #
+  # ===  Examples
   # Create a new node
+  # SheldonClient.create :node, { type: :movie, payload: { title: "Pulp Fiction" }}
   #
-  #    SheldonClient.create_node(type: :movie, payload: { title: "Full Metal Jacket" })
-  #    => SheldonClient::Node object
-  #
+  # Create a new edge
+  # SheldonClient.create :edge, { type: :like,
+  #                               from: 123,
+  #                               to: 321,
+  #                               payload: { weight: 0.5 } }
 
-  def self.create_node( options )
-    response = send_request( :post, create_node_url( options ), options[:payload] )
-    response.code == '201' ? parse_node( response.body ) : nil
+  def self.create(type, options)
+    validate_type_and_options(type, options)
+    case type
+    when :node
+      dispatch_node_creation(options)
+    when :connection
+      dispatch_edge_creation(options)
+    when :edge
+      dispatch_edge_creation(options)
+    end
   end
 
   # Updates the payload in a node
@@ -354,10 +292,10 @@ class SheldonClient
   #
   # Fetches a single edge from sheldon
   #
-  # === Parameters 
+  # === Parameters
   #
   # * <tt>id</tt> - The edge id
-  # 
+  #
   # === Examples
   #
   # SheldonClient.edge 5
@@ -393,72 +331,7 @@ class SheldonClient
   end
 
   #
-  # Fetches an node regardless the node type.
-  #
-  # === Parameters
-  #
-  # <tt>fbid</tt> - The facebook id
-  #
-  # === Examples
-  #
-  # SheldonClient.facebook_item( '1234567' )
-  #   => #<Sheldon::Node 17007 (Movie/Tonari no Totoro)>
-  #
-
-  def self.facebook_item( fbid )
-    uri = build_facebook_id_search_url( fbid )
-    response = send_request( :get, uri )
-    response.code == '200' ? parse_search_result(response.body) : []
-
-#    ['users', 'movies', 'persons'].each do |type|
-#      result = search( type, :facebook_ids => fbid ).first
-#      return result if result
-#    end
-#    nil
-  end
-
-  #
-  # Fetches the supported node types in Sheldon
-  #
-  # === Example
-  #
-  # SheldonClient.get_node_types
-  #  => [ 'Movie', 'Genre', 'Person', ... ]
-  #
-  def self.get_node_types
-    warn 'SheldonClient#get_node_types is deprecated and will be removed from sheldon-client 0.3 - please use SheldonClient#node_types'
-    response = SheldonClient.send_request( :get, build_status_url )
-    response.code == '200' ? status = JSON.parse( response.body) :  nil
-    status['schema'].find_all{|type| not type[1].include? 'source_class' and 
-                                     not type[1].include? 'target_class'}.
-                    map{|type| type[0] }
-  end
-  
-
-  #
-  # Fetches the supported edge types in Sheldon
-  #
-  #  === Example
-  #
-  #  SheldonClient.get_edge_types
-  #   => ['Like', 'Acting' .... ]
-  #
-  def self.get_edge_types
-    warn 'SheldonClient#get_node_types is deprecated and will be removed from sheldon-client 0.3 - please use SheldonClient#node_types'
-    response = SheldonClient.send_request( :get, build_status_url )
-    response.code == '200' ? status = JSON.parse( response.body) : nil
-    status['schema'].find_all{|type| type[1].include? 'source_class' and 
-                                       type[1].include? 'target_class'}.
-                    map{|type| type[0] }
-  end
-
-  class << self
-    alias_method :node_types, :get_node_types
-    alias_method :edge_types, :get_edge_types
-  end
-  
-  #
-  # Fetches all the high score edges for a user 
+  # Fetches all the high score edges for a user
   #
   # === Parameters
   #
@@ -487,7 +360,7 @@ class SheldonClient
   # SheldonClient.get_highscores_tracked 13
   # => [ {'id' => 5, 'from' => 6, 'to' => 1, 'payload' => { 'weight' => 5}} ]
   #
-  
+
   def self.get_highscores_tracked( id )
     self.get_highscores id, 'tracked'
   end
@@ -495,7 +368,7 @@ class SheldonClient
   #
   # Fetches all the untracked high scores edges for a user
   #
-  # === Paremeters 
+  # === Paremeters
   #
   # <tt>id</tt> - The id of the sheldon user node
   #
@@ -504,7 +377,7 @@ class SheldonClient
   # SheldonClient.get_highscores_untracked 13
   # => [ {'id' => 5, 'from' => 6, 'to' => 1, 'payload' => { 'weight' => 5}} ]
   #
-  
+
   def self.get_highscores_untracked id
     self.get_highscores id, 'untracked'
   end
@@ -521,14 +394,14 @@ class SheldonClient
   # SheldonClient.get_recommendations 4
   # => [{ id: "50292929", type: "Movie", payload: { title: "Matrix", production_year: 1999, has_container: "true" }}]
   #
-  
+
   def self.get_recommendations( id )
     response = SheldonClient.send_request( :get, build_recommendation_url(id) )
     response.code == '200' ? JSON.parse( response.body ) : nil
   end
 
   #
-  # temporarily set a different host to connect to. This 
+  # temporarily set a different host to connect to. This
   # takes a block where the given sheldon node should be
   # the one we're talking to
   #
@@ -540,7 +413,7 @@ class SheldonClient
   # == Examples
   #
   # SheldonClient.with_host( "http://www.sheldon.com" ) do
-  #   SheldonClient.node( 1234 ) 
+  #   SheldonClient.node( 1234 )
   # end
   def self.with_host( host, &block )
     begin
@@ -551,4 +424,22 @@ class SheldonClient
     end
   end
 
+  private
+
+  def self.dispatch_node_creation(options)
+    response = send_request( :post, create_node_url( options ), options[:payload] )
+    response.code == '201' ? parse_node( response.body ) : false
+  end
+
+  def self.dispatch_edge_creation(options)
+    response = send_request( :put, create_edge_url( options ), options[:payload] )
+    response.code == '200' ? true : false
+  end
+
+  # PENDING: Given the type validate the options
+  def self.validate_type_and_options(type, options)
+    unless SheldonClient::Status::TYPES.include?(type)
+      raise ArgumentError, 'Unknown type'
+    end
+  end
 end

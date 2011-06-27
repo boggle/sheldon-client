@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.2.1"
+  s.version = "0.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-06-15}
+  s.date = %q{2011-06-24}
   s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
   s.email = %q{core@moviepilot.com}
   s.extra_rdoc_files = [
@@ -19,10 +19,12 @@ Gem::Specification.new do |s|
   s.files = [
     "lib/sheldon-client.rb",
     "lib/sheldon-client/configuration.rb",
+    "lib/sheldon-client/deprecated.rb",
     "lib/sheldon-client/edge.rb",
     "lib/sheldon-client/http.rb",
     "lib/sheldon-client/node.rb",
-    "lib/sheldon-client/search.rb"
+    "lib/sheldon-client/search.rb",
+    "lib/sheldon-client/status.rb"
   ]
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
   s.licenses = ["MIT"]
@@ -30,8 +32,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{Talks to Sheldon}
   s.test_files = [
+    "spec/requests/sheldon_client_requests_spec.rb",
     "spec/sheldon-client_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/support/http_support.rb",
+    "spec/support/web_mock_support.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -44,6 +49,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<webmock>, ["~> 1.6"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<mp-deployment>, [">= 0"])
     else
       s.add_dependency(%q<addressable>, ["~> 2.2.0"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
@@ -51,6 +57,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<webmock>, ["~> 1.6"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<mp-deployment>, [">= 0"])
     end
   else
     s.add_dependency(%q<addressable>, ["~> 2.2.0"])
@@ -59,6 +66,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<webmock>, ["~> 1.6"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<mp-deployment>, [">= 0"])
   end
 end
 
