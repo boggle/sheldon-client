@@ -35,7 +35,8 @@ module HttpSupport
 
   def request_data( body = nil, additional_headers = {} )
     default_headers =  { 'Accept'       => 'application/json',
-                         'Content-Type' =>'application/json' }
+                         'Content-Type' =>'application/json',
+                         'User-Agent'   => 'Ruby' }
 
     with = { headers: default_headers.update(additional_headers) }
     with[:body] = body.to_json if body
@@ -45,15 +46,16 @@ module HttpSupport
 
   def response( type, opts = {} )
     case type
-      when :success             then { status: 200 }
-      when :bad_request         then { status: 400 }
-      when :not_found           then { status: 404 }
-      when :node                then { status: 200, body: node_body(opts).to_json }
-      when :node_collection     then { status: 200, body: [node_body(opts)].to_json }
-      when :node_created        then { status: 201, body: node_body(opts).to_json }
-      when :connection          then { status: 200, body: connection_body.to_json }
-      when :connection_created  then { status: 200, body: connection_body.to_json }
+      when :bad_request           then { status: 400 }
+      when :connection            then { status: 200, body: connection_body.to_json   }
       when :connection_collection then { status: 200, body: [connection_body].to_json }
+      when :connection_created    then { status: 200, body: connection_body.to_json   }
+      when :empty_collection      then { status: 200, body: [].to_json                }
+      when :node                  then { status: 200, body: node_body(opts).to_json   }
+      when :node_collection       then { status: 200, body: [node_body(opts)].to_json }
+      when :node_created          then { status: 201, body: node_body(opts).to_json   }
+      when :not_found             then { status: 404 }
+      when :success               then { status: 200 }
       when :neighbour_collection then
        { status: 200,
          body: [{ type: neighbour_type.to_s.camelcase,
