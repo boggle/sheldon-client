@@ -12,6 +12,14 @@ class SheldonClient
       "#<Sheldon::Node #{id} (#{type}/#{name})>"
     end
 
+    def to_hash
+      {
+        'id' => self.id,
+        'type' => self.type,
+        'payload' => self.payload
+      }
+    end
+
     def to_i
       self.id
     end
