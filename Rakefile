@@ -48,3 +48,8 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+desc 'Loads a console with lib/sheldon-client.rb'
+task :irb do
+  exec("irb -Ilib -rsheldon-client")
+end
