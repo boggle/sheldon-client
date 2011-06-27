@@ -197,45 +197,59 @@ describe SheldonClient do
 #   end
 #
 #
-#   context "searching for nodes" do
-#     it "should search for movies" do
-#       stub_request(:get, "http://sheldon.host/search/nodes/movies?production_year=1999&title=Matrix").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => [{ "type" => "Movie", "id" => "123" }].to_json )
-#
-#       result = SheldonClient.search( :movies, {title: 'Matrix', production_year: '1999'}, :fulltext )
-#       result.first.should be_a SheldonClient::Node
-#       result.first.id.should == "123"
-#       result.first.type.should == 'Movie'
-#     end
-#
-#     it "should convert given query parameters to strings" do
-#       stub_request(:get, "http://sheldon.host/search/nodes/genres?mode=exact&id=1").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => [{ "type" => "Genre", "id" => "321" }].to_json )
-#
-#       result = SheldonClient.search( :genres, {id: 1} )
-#     end
-#
-#     it "should search for genres" do
-#       stub_request(:get, "http://sheldon.host/search/nodes/genres?mode=exact&name=Action").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => [{ "type" => "Genre", "id" => "321" }].to_json )
-#
-#       result = SheldonClient.search( :genres, {name: 'Action'} )
-#       result.first.should be_a SheldonClient::Node
-#       result.first.id.should == "321"
-#       result.first.type.should == 'Genre'
-#     end
-#
-#     it "should return an empty array on no-content responses" do
-#       stub_request(:get, "http://sheldon.host/search/nodes/genres?mode=exact&name=Action").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 204, :body => '' )
-#
-#       SheldonClient.search( :genres, {name: 'Action'} ).should == []
-#     end
-#   end
+  context "searching for nodes" do
+    before(:all){ SheldonClient.host = "http://sheldon.host" }
+
+    let(:payload)   { {}  }
+
+    it "should search for movies" do
+      url = "http://sheldon.host/search/nodes/movies?mode=fulltext&production_year=1999&title=Matrix"
+
+      node_type = :movie
+      node_id   = 123
+      agent = { 'User-Agent' => 'Ruby' }
+      response = response(:node_collection, node_id: node_id, node_type: node_type)
+
+      stub_and_expect_request(:get, url, request_data(nil, agent), response ) do
+        result = SheldonClient.search( {title: 'Matrix', production_year: '1999'}, type: :movies, mode: :fulltext)
+        result.first.should be_a SheldonClient::Node
+        result.first.id.should eq(123)
+        result.first.type.should eq(:movie)
+      end
+    end
+
+    it "should convert given query parameters to strings" do
+      node_id = 1
+      node_type = :genre
+
+      url = "http://sheldon.host/search/nodes/genres?id=#{node_id}&mode=exact"
+
+      response = response(:node_collection, node_id: node_id, node_type: node_type)
+
+      stub_and_expect_request(:get, url, request_data, response ) do
+        result = SheldonClient.search({id: 1}, type: node_type)
+      end
+    end
+
+    it "should search for genres" do
+      url = "http://sheldon.host/search/nodes/genres?mode=exact&name=Action"
+
+      stub_and_expect_request(:get, url, request_data, response(:node_collection, node_type: :genre, node_id: 321 )) do
+        result = SheldonClient.search({name: 'Action'}, type: :genre)
+        result.first.should be_a SheldonClient::Node
+        result.first.id.should eq(321)
+        result.first.type.should eq(:genre)
+      end
+    end
+
+    it "should return an empty array on no-content responses" do
+      url = "http://sheldon.host/search/nodes/genres?mode=exact&name=Action"
+
+      stub_and_expect_request(:get, url, request_data, response(:empty_collection)) do
+        SheldonClient.search({name: 'Action'}, type: :genre ).should eq([])
+      end
+    end
+  end
 #
 #   context "node payloads" do
 #     it "should return the payload of a given node" do

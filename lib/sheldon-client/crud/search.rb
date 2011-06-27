@@ -46,7 +46,7 @@ class SheldonClient
     #
     #    SheldonClient.search 'Fist*', type: fulltext
     #
-    
+
     def self.search( query, options = {} )
       options[:mode] ||= :exact
       uri = search_url( query, options )
@@ -76,8 +76,6 @@ class SheldonClient
 
 
     private
-
-
 
     def self.parse_search_result( json_string )
       JSON.parse( json_string ).map do |data|
