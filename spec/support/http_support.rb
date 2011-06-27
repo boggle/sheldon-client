@@ -42,22 +42,38 @@ module HttpSupport
     with
   end
 
-  
-  def response( type )
+
+  def response( type, opts = {} )
     case type
-      when :success               then { status: 200 }
-      when :bad_request           then { status: 400 }
-      when :not_found             then { status: 404 }
-                                  
-      when :node                  then { status: 200, body: { type: node_type.to_s.camelcase, id: node_id, payload: payload }.to_json }
-      when :node_created          then { status: 201, body: { type: node_type.to_s.camelcase, id: node_id, payload: payload }.to_json }
-                                  
-      when :connection            then { status: 200, body: { type: connection_type.to_s.camelcase, from: from_id.to_s, to: to_id.to_s, payload: connection_payload }.to_json }
-      when :connection_created    then { status: 200, body: { type: connection_type.to_s.camelcase, from: from_id.to_s, to: to_id.to_s, payload: connection_payload }.to_json }
-        
-      when :connection_collection then { status: 200, body: [{type: connection_type.to_s.camelcase, from: from_id.to_s, to: to_id.to_s, payload: connection_payload }].to_json }
-      when :neighbour_collection  then { status: 200, body: [{type: neighbour_type.to_s.camelcase, id: neighbour_id.to_s, payload: neighbour_payload }].to_json }
+      when :success      then { status: 200 }
+      when :bad_request  then { status: 400 }
+      when :not_found    then { status: 404 }
+      when :node         then { status: 200, body: node_body(opts).to_json }
+      when :node_created then { status: 201, body: node_body(opts).to_json }
+      when :connection   then { status: 200, body: connection_body.to_json }
+      when :connection_created then { status: 200, body: connection_body.to_json }
+
+      when :connection_collection then { status: 200, body: [connection_body].to_json }
+      when :neighbour_collection then
+       { status: 200,
+         body: [{ type: neighbour_type.to_s.camelcase,
+                  id: neighbour_id.to_s,
+                  payload: neighbour_payload }].to_json }
     end
   end
-  
+
+  private
+
+  def node_body(opts = {})
+    { type: (opts[:node_type] || node_type).to_s.camelcase,
+      id: opts[:node_id] || node_id,
+      payload: opts[:payload] || payload }
+  end
+
+  def connection_body
+    { type: connection_type.to_s.camelcase,
+      from: from_id.to_s,
+      to: to_id.to_s,
+      payload: connection_payload }
+  end
 end
