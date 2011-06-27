@@ -45,14 +45,14 @@ module HttpSupport
 
   def response( type, opts = {} )
     case type
-      when :success      then { status: 200 }
-      when :bad_request  then { status: 400 }
-      when :not_found    then { status: 404 }
-      when :node         then { status: 200, body: node_body(opts).to_json }
-      when :node_created then { status: 201, body: node_body(opts).to_json }
-      when :connection   then { status: 200, body: connection_body.to_json }
-      when :connection_created then { status: 200, body: connection_body.to_json }
-
+      when :success             then { status: 200 }
+      when :bad_request         then { status: 400 }
+      when :not_found           then { status: 404 }
+      when :node                then { status: 200, body: node_body(opts).to_json }
+      when :node_collection     then { status: 200, body: [node_body(opts)].to_json }
+      when :node_created        then { status: 201, body: node_body(opts).to_json }
+      when :connection          then { status: 200, body: connection_body.to_json }
+      when :connection_created  then { status: 200, body: connection_body.to_json }
       when :connection_collection then { status: 200, body: [connection_body].to_json }
       when :neighbour_collection then
        { status: 200,
