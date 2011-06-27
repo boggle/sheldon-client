@@ -99,6 +99,14 @@ class SheldonClient
       "#<Sheldon::Node #{id} (#{type.to_s.camelcase}/#{name})>"
     end
 
+    def to_hash
+      HashWithIndifferentAccess.new({
+        id:      self.id,
+        type:    self.type,
+        payload: self.payload
+      })
+    end
+
     def connections( type )
       if valid_connection_type?( type, :outgoing )
         Read.fetch_edges( self.id, type )
