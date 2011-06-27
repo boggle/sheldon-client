@@ -148,6 +148,17 @@ describe SheldonClient::Node do
           end
         end
       end
+
+      it "should export itself as hash" do
+        stub_and_expect_request(:get, url, request_data, response(:node)) do
+          node = SheldonClient.node(node_id)
+          node.to_hash.symbolize_keys.should == {
+            id: 4,
+            type: :movie,
+            payload: {'title' => 'Tonari no Totoro', 'production_year' => 1992}
+          }
+        end
+      end
     end
     
     context "connections" do
