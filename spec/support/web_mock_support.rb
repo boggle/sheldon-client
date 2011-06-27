@@ -4,8 +4,8 @@ module WebMockSupport
     yield
     a_request(method, url).with(with_options).should have_been_made
   end
-  
-  
+
+
   def sheldon_status
     { "schema" => { "nodes"       => { "movies"  => { "properties" => [ "name" => [ 'exact' ] ],
                                                       "count"      => 4  },
@@ -25,5 +25,5 @@ module WebMockSupport
                                                      "count"      => 2 }}}
     }
   end
-  
+
 end
