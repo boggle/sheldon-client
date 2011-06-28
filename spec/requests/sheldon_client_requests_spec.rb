@@ -24,12 +24,12 @@ describe SheldonClient do
       SheldonClient.search({title: "The Matrix"}, type: :movie).first.should_not be_nil
     end
 
-    xit "should find an user on sheldon given his facebook's username" do
+    it "should find an user on sheldon given his facebook's username" do
       SheldonClient.search( username: 'gonzo gonzales' ).first.should_not be_nil
     end
 
-    xit "should find an user on sheldon given his facebook id" do
-      SheldonClient.search( { facebook_ids: "100002398994863" }, type: :user ).first.should_not be_nil
+    it "should find an user on sheldon given his facebook id" do
+      SheldonClient.search( { facebook_ids: "100002398994863" }, type: :persons ).first.should_not be_nil
     end
   end
 
@@ -38,26 +38,35 @@ describe SheldonClient do
       "1234-This is a dummy movie"
     end
 
-    before(:all) do
-      results  = SheldonClient.search(:movies, title: movie_title)
-      results.each{ |node| SheldonClient.delete_node(node.id) }
+    let(:sandbox_id){ 269086 }
 
-      @node = SheldonClient.create(:node, { type: :movie, payload: { title: movie_title }})
+    before(:all) do
+      results  = SheldonClient.search(sandbox_id: sandbox_id)
+      results.each{ |node| SheldonClient.delete(node) }
+
+      @node = SheldonClient.create(:node,
+                                   { type: :movie,
+                                     payload: { title: movie_title,
+                                                sandbox_id: sandbox_id }})
     end
 
     after(:all) do
-      SheldonClient.delete_node(@node.id)
+      SheldonClient.delete(@node)
     end
 
     it "should have created a node in sheldon" do
-      @node.should_not be_false
+      @node.should be_a SheldonClient::Node
+      @node.type.should eq(:movie)
+      @node.payload[:title].should  eq(movie_title)
+      @node.payload[:sandbox_id].should eq(sandbox_id)
     end
 
     it "should get the node from sheldon" do
-      results = SheldonClient.search(:movies, title: movie_title)
+      results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
+      results.first.should be_a SheldonClient::Node
 
-      results.first.should eq(@node)
+      results.first.should == @node
     end
   end
 end
