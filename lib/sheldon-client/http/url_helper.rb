@@ -4,7 +4,11 @@ class SheldonClient
   module UrlHelper
     include ActiveSupport::Inflector
 
-    def connections_url( from, type, to = nil )
+    def connnections_url(id)
+      Addressable::URI.parse( SheldonClient.host + "/connections/#{id}" )
+    end
+
+    def node_connections_url( from, type, to = nil )
       if to.nil?
         path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}"
       else
@@ -15,7 +19,7 @@ class SheldonClient
     end
 
     def node_url( *args )
-      if     args[0].is_a?(Numeric) and args[1].nil?
+      if args[0].is_a?(Numeric) and args[1].nil?
         # e.g. node_url( 1 )
         path = "/nodes/#{args[0]}"
       elsif !args[1].nil? and args[1].is_a?(Symbol)
@@ -63,13 +67,3 @@ class SheldonClient
     end
   end
 end
-
-
-__END__
-
-def self.build_search_url( type, query_parameters )
-  uri = Addressable::URI.parse( self.host + "/search" + (type.nil? ? "" : "/nodes/#{type}") )
-  uri.query_values = Hash[*query_parameters.clone.map{|k,v| [k,v.to_s]}.flatten] # convert values to strings
-  uri
-end
-

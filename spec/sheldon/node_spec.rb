@@ -171,7 +171,7 @@ describe SheldonClient::Node do
       let(:connection_payload)  { { weight: 0.8 } }
 
       context "fetch" do
-        let(:url) { connections_url( node, connection_type ) }
+        let(:url) { node_connections_url( node, connection_type ) }
         it "should fetch all connections of certain type" do
           stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
             connections = node.connections( :likes )
@@ -184,7 +184,7 @@ describe SheldonClient::Node do
       end
 
       context "create" do
-        let(:url) { connections_url( from_id, connection_type, to_id ) }
+        let(:url) { node_connections_url( from_id, connection_type, to_id ) }
 
         it "should create an connection (via node object)" do
           stub_and_expect_request(:put, url, request_data(payload), response(:connection_created)) do

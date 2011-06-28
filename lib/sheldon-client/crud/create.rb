@@ -54,7 +54,7 @@ class SheldonClient
 
     def self.create_connection( options )
       validate_connection_options( options )
-      response = send_request( :put,  connections_url( options[:from], options[:type], options[:to] ),
+      response = send_request( :put,  node_connections_url( options[:from], options[:type], options[:to] ),
                                       (options[:payload] || {}) )
       response.code == '200' ?
         parse_sheldon_response(response.body) : false
