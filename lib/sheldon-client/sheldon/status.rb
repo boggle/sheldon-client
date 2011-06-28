@@ -1,8 +1,5 @@
 class SheldonClient
   class Status < Crud
-    
-    TYPES = [:edge, :connection, :node]
-
     #
     # Get the sheldon status json hash including some basic
     # information with current edge and node statistics.
@@ -11,7 +8,7 @@ class SheldonClient
     #
     # SheldonClient.status
     # => { ... }
-    
+
     def self.status
       @status ||= get_sheldon_status
     end
@@ -29,7 +26,7 @@ class SheldonClient
     #
     # SheldonClient.status['nodes']['movie']['properties']
     # => { "name" => [ "case_insensitive_exact" ] }
-    
+
     def self.node_types
       status['schema']['nodes'].keys.map(&:to_sym)
     end
@@ -51,13 +48,13 @@ class SheldonClient
     #
     # SheldonClient.status['connections']['likes']['targets']
     # => [ 'movie', 'person' ]
-    
+
     def self.connection_types
       status['schema']['connections'].keys.map(&:to_sym)
     end
 
     #
-    # List all valid +outgoing+ connections from a specific node-type. 
+    # List all valid +outgoing+ connections from a specific node-type.
     # This will return an array of connection-type symbols.
     #
     # === Parameter
@@ -68,7 +65,7 @@ class SheldonClient
     #
     #   SheldonClient.valid_connections_from( :user )
     #   => [ :likes ]
-    
+
     def self.valid_connections_from( type )
       status['schema']['connections'].inject([]) do |memo, (c_type, params)|
         memo << c_type if params['sources'].include?( type.to_s.pluralize )
@@ -78,7 +75,7 @@ class SheldonClient
 
 
     #
-    # List all valid +incoming+ connections from a specific node-type. 
+    # List all valid +incoming+ connections from a specific node-type.
     # This will return an array of connection-type symbols.
     #
     # === Parameter
@@ -89,7 +86,7 @@ class SheldonClient
     #
     #   SheldonClient.valid_connections_to( :user )
     #   => [ ]
-    
+
     def self.valid_connections_to( type )
       status['schema']['connections'].inject([]) do |memo, (c_type, params)|
         memo << c_type if params['targets'].include?( type.to_s.pluralize )
@@ -97,7 +94,7 @@ class SheldonClient
       end.sort.map(&:to_sym)
     end
 
-    
+
     private
 
     def self.get_sheldon_status
