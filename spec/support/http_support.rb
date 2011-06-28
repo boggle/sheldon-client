@@ -55,7 +55,8 @@ module HttpSupport
       when :node_collection       then { status: 200, body: [node_body(opts)].to_json }
       when :node_created          then { status: 201, body: node_body(opts).to_json   }
       when :not_found             then { status: 404 }
-      when :success               then { status: 200 }
+      when :success               then { status: 200, body: {}.to_json}
+      when :status                then { status: 200, body: sheldon_status.to_json }
       when :neighbour_collection then
        { status: 200,
          body: [{ type: neighbour_type.to_s.camelcase,
