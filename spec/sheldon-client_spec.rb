@@ -3,25 +3,25 @@ require 'spec_helper'
 describe SheldonClient do
   include WebMockSupport
   include HttpSupport
-#
-#   context "configuration" do
-#     it "should have a predefined host" do
-#       SheldonClient.host.should == 'http://46.4.114.22:2311'
-#     end
-#
-#     it "should return to the configured host" do
-#       SheldonClient.host = 'http://i.am.the.real.sheldon/'
-#       SheldonClient.host.should == 'http://i.am.the.real.sheldon'
-#     end
-#
-#     it "should return the default log level (false)" do
-#       SheldonClient.log?.should == false
-#       SheldonClient.log = true
-#       SheldonClient.log?.should == true
-#       SheldonClient.log = false
-#     end
-#   end
-#
+
+  context "configuration" do
+    it "should have a predefined host" do
+      SheldonClient.host.should == 'http://46.4.114.22:2311'
+    end
+
+    it "should return to the configured host" do
+      SheldonClient.host = 'http://i.am.the.real.sheldon/'
+      SheldonClient.host.should == 'http://i.am.the.real.sheldon'
+    end
+
+    it "should return the default log level (false)" do
+      SheldonClient.log?.should == false
+      SheldonClient.log = true
+      SheldonClient.log?.should == true
+      SheldonClient.log = false
+    end
+  end
+
 #   describe "SheldonClient.create" do
 #     before(:each) do
 #       @host_url = "http://sheldon.host"
