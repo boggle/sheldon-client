@@ -46,10 +46,13 @@ module HttpSupport
 
   def response( type, opts = {} )
     case type
-      when :bad_request           then { status: 400 }
-      when :connection            then { status: 200, body: connection_body.to_json   }
-      when :connection_collection then { status: 200, body: [connection_body].to_json }
-      when :connection_created    then { status: 200, body: connection_body.to_json   }
+      when :bad_request           then { status: 400, body: [].to_json }
+      when :connection            then { status: 200,
+                                         body: connection_body(opts).to_json   }
+      when :connection_collection then { status: 200,
+                                         body: [connection_body(opts)].to_json }
+      when :connection_created    then { status: 200,
+                                         body: connection_body(opts).to_json   }
       when :empty_collection      then { status: 200, body: [].to_json                }
       when :node                  then { status: 200, body: node_body(opts).to_json   }
       when :node_collection       then { status: 200, body: [node_body(opts)].to_json }
@@ -73,10 +76,10 @@ module HttpSupport
       payload: opts[:payload] || payload }
   end
 
-  def connection_body
-    { type: connection_type.to_s.camelcase,
-      from: from_id.to_s,
-      to: to_id.to_s,
-      payload: connection_payload }
+  def connection_body(opts = {})
+    { type: (opts[:connection_type] || connection_type).to_s.camelcase,
+      from: (opts[:from_id] || from_id).to_s,
+      to: (opts[:to_id] || to_id).to_s,
+      payload: opts[:payload] || connection_payload }
   end
 end

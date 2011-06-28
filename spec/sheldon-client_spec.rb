@@ -24,6 +24,7 @@ describe SheldonClient do
 
   describe "SheldonClient.create" do
     let(:host_url){ "http://sheldon.host" }
+    let(:node_id){ 123 }
 
     before(:each) do
       SheldonClient.host = host_url
@@ -39,50 +40,82 @@ describe SheldonClient do
 
     it "should make the correct http call  when creating a node" do
       url     = "#{host_url}/nodes/movies"
-      req_data = request_data({:weight => 1.0 })
+      payload = {"title" => 'The Matrix' }
 
-      stub_and_expect_request(:post, url, req_data, response(:success)) do
-        SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
+      rsp      = response(:node_created, node_type: :movie, payload: payload)
+      req_data = request_data(payload)
+
+
+      stub_and_expect_request(:post, url, req_data, rsp) do
+        result = SheldonClient.create :node, { type: :movie, payload: payload }
+
+        result.should be_a SheldonClient::Node
+        result.id.should eq(123)
+        result.type.should eq(:movie)
+        result.payload.should eq(payload)
       end
     end
 
-    it "should make the correct http call when creating a collection" do
+    it "should make the correct http call when creating a connection" do
       url     = "#{host_url}/nodes/13/connections/likes/14"
-      req_data = request_data({:weight => 1.0 })
-      SheldonClient.stub(:connection_types){ [ :likes] }
+      payload = {"weight" => 1.0 }
 
-      stub_and_expect_request(:put, url, req_data, response(:success)) do
-        SheldonClient.create :connection,
+      req_data = request_data(payload)
+      rsp = response(:connection_created,
+                     connection_type: :likes,
+                     from_id: 13,
+                     to_id: 14,
+                     payload: payload)
+
+      stub_and_expect_request(:put, url, req_data, rsp ) do
+        result = SheldonClient.create :connection,
                              { from: 13,
                                to: 14,
                                type: :likes,
-                               payload: { weight: 1.0 }}
+                               payload: payload}
+
+        result.should be_a SheldonClient::Connection
+        result.payload.should eq(payload)
+      end
+    end
+
+    it "should return false if the response code is different of 200" do
+      url     = "#{host_url}/nodes/movies"
+      payload = {"title" => 'The Matrix' }
+
+      rsp      = response(:bad_request)
+      req_data = request_data(payload)
+
+      stub_and_expect_request(:post, url, req_data, rsp) do
+        result = SheldonClient.create :node, { type: :movie, payload: payload }
+        result.should be(false)
       end
     end
   end
 
-#   context "temporary configuration" do
-#     before(:each) do
-#       SheldonClient.host = 'http://i.am.the.real.sheldon/'
-#     end
-#
-#     it "should switch configuration temporarily" do
-#       SheldonClient.host.should == 'http://i.am.the.real.sheldon'
-#
-#       options = with_options( { :weight => 1.0 }.to_json )
-#       result = { :status => 200 }
-#       url  = "http://localhost:3000/nodes/movie"
-#
-#       stub_and_expect_request(:post, url, options, result) do
-#         SheldonClient.with_host( 'http://localhost:3000' ) do
-#           SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
-#         end
-#       end
-#
-#       SheldonClient.host.should == 'http://i.am.the.real.sheldon'
-#     end
-#   end
-#
+  # context "temporary configuration" do
+  #   before(:each) do
+  #     SheldonClient.host = 'http://i.am.the.real.sheldon/'
+  #     SheldonClient.stub(:node_types){ [ :movies, :persons ] }
+  #     SheldonClient.stub(:connection_types){ [ :likes, :actors, :g_tags ] }
+  #   end
+
+  #   it "should switch configuration temporarily" do
+  #     SheldonClient.host.should == 'http://i.am.the.real.sheldon'
+  #     req_data = request_data({:weight => 1.0 })
+
+  #     url  = "http://localhost:3000/nodes/movie"
+
+  #     stub_and_expect_request(:post, url, req_data, response(:success)) do
+  #       SheldonClient.with_host( 'http://localhost:3000' ) do
+  #         SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
+  #       end
+  #     end
+
+  #     SheldonClient.host.should == 'http://i.am.the.real.sheldon'
+  #   end
+  # end
+
 #   context "building request urls" do
 #     it "should create correct url from given options" do
 #       SheldonClient.host = 'http://i.am.the.real.sheldon/'
