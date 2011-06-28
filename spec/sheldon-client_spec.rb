@@ -129,7 +129,7 @@ describe SheldonClient do
       SheldonClient.host = host_url
     end
 
-    it "should delete genereta the correct http call to delete node" do
+    it "should delete and generate the correct http call to delete node" do
       url = "#{host_url}/nodes/12"
       stub_and_expect_request(:delete, url, request_data, response(:success)) do
         SheldonClient.delete(node: 12).should == true
@@ -141,66 +141,31 @@ describe SheldonClient do
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
         SheldonClient.delete(node: 122).should eq(false)
       end
-
-
     end
   end
 
-#
-#   context "delete connections in sheldon" do
-#     before(:each) do
-#       SheldonClient.host = 'http://sheldon.host'
-#     end
-#
-#     it "should create a node" do
-#       stub_request(:delete, "http://other.sheldon.host/connections/12").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200)
-#
-#       SheldonClient.host = 'http://other.sheldon.host'
-#       SheldonClient.delete_edge(12).should == true
-#     end
-#
-#     it "should return false when deleting non existance nodes" do
-#       stub_request(:delete, "http://other.sheldon.host/connections/122").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 404)
-#
-#       SheldonClient.host = 'http://other.sheldon.host'
-#       SheldonClient.delete_edge(122).should == false
-#     end
-#   end
-#
-#   context "creating" do
-#     context "edges" do
-#       it "should create an request to create an edge" do
-#         options = with_options( { :weight => 1.0 }.to_json )
-#         result  = {:status => 200}
-#         url     = "http://sheldon.host/nodes/13/connections/movies_genres/14"
-#
-#         stub_and_expect_request(:put, url, options, result) do
-#           SheldonClient.create :edge, { from: 13, to: 14, type: :movies_genres, payload: { weight: 1.0 }}
-#         end
-#       end
-#
-#       it "should create edges from node objects" do
-#         options = with_options( { :weight => 0.4 }.to_json )
-#         result  = {:status => 200}
-#         url     = "http://sheldon.host/nodes/123/connections/movies_genres/321"
-#
-#         stub_and_expect_request(:put, url, options, result) do
-#           node1 = SheldonClient::Node.new({'id' => 123, 'type' => 'Movie'})
-#           node2 = SheldonClient::Node.new({'id' => 321, 'type' => 'Genre'})
-#           SheldonClient.create :edge, { from: node1,
-#                                         to: node2,
-#                                         type: :movies_genres,
-#                                         payload: { weight: 0.4 }}
-#         end
-#       end
-#     end
-#   end
-#
-#
+  context "delete connections in sheldon" do
+    before(:each) do
+      SheldonClient.host = host_url
+    end
+
+    it "should delete a connection" do
+      url = "#{host_url}/connections/12"
+
+      stub_and_expect_request(:delete, url, request_data, response(:success)) do
+        SheldonClient.delete(connection: 12).should == true
+      end
+    end
+
+    it "should return false when deleting non existance nodes" do
+      url = "#{host_url}/connections/122"
+
+      stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
+        SheldonClient.delete(connection: 122).should eq(false)
+      end
+    end
+  end
+
   context "searching for nodes" do
     before(:all){ SheldonClient.host = "http://sheldon.host" }
 
@@ -253,32 +218,7 @@ describe SheldonClient do
       end
     end
   end
-#
-#   context "node payloads" do
-#     it "should return the payload of a given node" do
-#       stub_request(:get, "http://sheldon.host/nodes/2001").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => { "type" => "Movie", "id" => "123", "payload" => { "title" => "MyTitle" } }.to_json )
-#
-#       result = SheldonClient.node( 2001 )
-#       result.should be_a SheldonClient::Node
-#       result.id.should == "123"
-#       result.payload.should == { "title" => "MyTitle" }
-#     end
-#   end
-#
-#   context "updating nodes" do
-#     it "should update the the year of a given node" do
-#       stub_request(:get, "http://sheldon.host/nodes/500").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => { :id => 500, :type => "Movie", :payload => { :year => 2000 } }.to_json )
-#       stub_request(:put, "http://sheldon.host/nodes/500").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'},
-#              :body    => { :year => 2000 }.to_json).to_return(:status => 200)
-#       SheldonClient.update_node( 500, { year: 2000 } ).should == true
-#     end
-#   end
-#
+
 #   context "getting all the ids of a node type" do
 #     it "should fetch all the movie ids" do
 #       stub_request(:get, "http://sheldon.host/nodes/movies/ids" ).
