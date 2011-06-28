@@ -35,26 +35,26 @@ describe SheldonClient do
     end
 
     it "should make the correct http call  when creating a node" do
-      options = with_options({:weight => 1.0 }.to_json)
-      result  = {:status => 200}
-      url     = "#{@host_url}/nodes/movie"
+      pending
+      req_data = request_data({:weight => 1.0 })
+      url     = "#{@host_url}/nodes/movies"
 
-      stub_and_expect_request(:post, url, options, result) do
+      stub_and_expect_request(:post, url, req_data, response(:success)) do
         SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
       end
     end
 
-    it "should make the correct http call when creating an edge" do
-      options = with_options({:weight => 1.0 }.to_json)
-      result  = {:status => 200}
-      url     = "#{@host_url}/nodes/13/connections/movies_genres/14"
+    it "should make the correct http call when creating a collection" do
+      url     = "#{@host_url}/nodes/13/connections/likes/14"
+      req_data = request_data({:weight => 1.0 })
+      SheldonClient.stub(:connection_types){ [ :likes] }
 
-      stub_and_expect_request(:put, url, options, result) do
-        SheldonClient.create :edge,
+      stub_and_expect_request(:put, url, req_data, response(:success)) do
+        SheldonClient.create :connection,
                              { from: 13,
                                to: 14,
-                               type: :movies_genres,
-                               payload: { weight: 1.0 } }
+                               type: :likes,
+                               payload: { weight: 1.0 }}
       end
     end
   end
