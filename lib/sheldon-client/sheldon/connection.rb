@@ -32,5 +32,9 @@ class SheldonClient
     def to_s
       "#<Sheldon::Connection #{id} (#{type}/#{from_id}->#{to_id})>"
     end
+
+    def ==(other)
+      super && to_id == other.to_id && from_id == other.from_id
+    end
   end
 end

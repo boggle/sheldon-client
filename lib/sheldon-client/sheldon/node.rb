@@ -163,6 +163,5 @@ class SheldonClient
       end
       super
     end
-
   end
 end
