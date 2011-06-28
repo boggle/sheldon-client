@@ -93,28 +93,35 @@ describe SheldonClient do
     end
   end
 
-  # context "temporary configuration" do
-  #   before(:each) do
-  #     SheldonClient.host = 'http://i.am.the.real.sheldon/'
-  #     SheldonClient.stub(:node_types){ [ :movies, :persons ] }
-  #     SheldonClient.stub(:connection_types){ [ :likes, :actors, :g_tags ] }
-  #   end
+  context "temporary configuration" do
+    let(:node_id)   { 1                }
+    let(:node_type) { :movie           }
+    let(:payload)   { {:weight => 1.0} }
 
-  #   it "should switch configuration temporarily" do
-  #     SheldonClient.host.should == 'http://i.am.the.real.sheldon'
-  #     req_data = request_data({:weight => 1.0 })
+    before(:each) do
+      SheldonClient.host = 'http://i.am.the.real.sheldon/'
+      SheldonClient.stub(:node_types){ [ :movies, :persons ] }
+      SheldonClient.stub(:connection_types){ [ :likes, :actors, :g_tags ] }
+    end
 
-  #     url  = "http://localhost:3000/nodes/movie"
 
-  #     stub_and_expect_request(:post, url, req_data, response(:success)) do
-  #       SheldonClient.with_host( 'http://localhost:3000' ) do
-  #         SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
-  #       end
-  #     end
+    it "should switch configuration temporarily" do
+      SheldonClient.host.should == 'http://i.am.the.real.sheldon'
+      req_data = request_data(payload)
+      rsp      = response(:node_created)
 
-  #     SheldonClient.host.should == 'http://i.am.the.real.sheldon'
-  #   end
-  # end
+      url  = "http://localhost:3000/nodes/movies"
+
+      stub_and_expect_request(:post, url, req_data, response(:node_created)) do
+        SheldonClient.with_host( 'http://localhost:3000' ) do
+          response =SheldonClient.create :node, { type: node_type, payload: payload }
+          response.should be_a(SheldonClient::Node)
+        end
+      end
+
+      SheldonClient.host.should == 'http://i.am.the.real.sheldon'
+    end
+  end
 
 #   context "building request urls" do
 #     it "should create correct url from given options" do
