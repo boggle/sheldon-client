@@ -4,6 +4,8 @@ describe SheldonClient do
   include WebMockSupport
   include HttpSupport
 
+  let(:host_url){ "http://sheldon.host" }
+
   context "configuration" do
     it "should have a predefined host" do
       SheldonClient.host.should == 'http://46.4.114.22:2311'
@@ -23,7 +25,6 @@ describe SheldonClient do
   end
 
   describe "SheldonClient.create" do
-    let(:host_url){ "http://sheldon.host" }
     let(:node_id){ 123 }
 
     before(:each) do
@@ -125,39 +126,26 @@ describe SheldonClient do
 
   context "delete nodes in sheldon" do
     before(:each) do
-      SheldonClient.host = 'http://sheldon.host'
+      SheldonClient.host = host_url
     end
 
-    it "should create a node" do
-      stub_request(:delete, "http://other.sheldon.host/nodes/12").
-        with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-        to_return(:status => 200)
-
-      SheldonClient.host = 'http://other.sheldon.host'
-      SheldonClient.delete(node: 12).should == true
+    it "should delete genereta the correct http call to delete node" do
+      url = "#{host_url}/nodes/12"
+      stub_and_expect_request(:delete, url, request_data, response(:success)) do
+        SheldonClient.delete(node: 12).should == true
+      end
     end
 
     it "should return false when deleting non existance nodes" do
-      stub_request(:delete, "http://other.sheldon.host/nodes/122").
-        with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json'}).
-        to_return(:status => 404)
+      url = "#{host_url}/nodes/122"
+      stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
+        SheldonClient.delete(node: 122).should eq(false)
+      end
 
-      SheldonClient.host = 'http://other.sheldon.host'
-      SheldonClient.delete(node: 122).should == false
+
     end
   end
-#
-#   context "create log file" do
-#     it "should write a slow-log file" do
-#       SheldonClient.log = true
-#       SheldonClient.should_receive(:log_sheldon_request)
-#       stub_request( :get, SheldonClient.host + '/nodes/13/connections/actings/15').
-#         with( :headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'}).
-#         to_return( :status  => 200, :body => { 'id' => 45, 'type' => 'actings', 'from' => '13', 'to' => '15', 'payload' => { 'weight' => '0.5' }}.to_json )
-#       result = SheldonClient.edge?(13, 15, 'actings')
-#       SheldonClient.log = false
-#     end
-#   end
+
 #
 #   context "delete connections in sheldon" do
 #     before(:each) do
