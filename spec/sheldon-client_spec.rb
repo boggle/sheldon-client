@@ -22,43 +22,43 @@ describe SheldonClient do
     end
   end
 
-#   describe "SheldonClient.create" do
-#     before(:each) do
-#       @host_url = "http://sheldon.host"
-#       SheldonClient.host = @host_url
-#     end
-#
-#     it "should raise and exception if the given type is not valid" do
-#       lambda {
-#         SheldonClient.create :invalid_type, {}
-#       }.should raise_error(ArgumentError, 'Unknown type')
-#     end
-#
-#     it "should make the correct http call  when creating a node" do
-#       options = with_options({:weight => 1.0 }.to_json)
-#       result  = {:status => 200}
-#       url     = "#{@host_url}/nodes/movie"
-#
-#       stub_and_expect_request(:post, url, options, result) do
-#         SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
-#       end
-#     end
-#
-#     it "should make the correct http call when creating an edge" do
-#       options = with_options({:weight => 1.0 }.to_json)
-#       result  = {:status => 200}
-#       url     = "#{@host_url}/nodes/13/connections/movies_genres/14"
-#
-#       stub_and_expect_request(:put, url, options, result) do
-#         SheldonClient.create :edge,
-#                              { from: 13,
-#                                to: 14,
-#                                type: :movies_genres,
-#                                payload: { weight: 1.0 } }
-#       end
-#     end
-#   end
-#
+  describe "SheldonClient.create" do
+    before(:each) do
+      @host_url = "http://sheldon.host"
+      SheldonClient.host = @host_url
+    end
+
+    it "should raise and exception if the given type is not valid" do
+      lambda {
+        SheldonClient.create :invalid_type, {}
+      }.should raise_error(ArgumentError, 'Unknown type')
+    end
+
+    it "should make the correct http call  when creating a node" do
+      options = with_options({:weight => 1.0 }.to_json)
+      result  = {:status => 200}
+      url     = "#{@host_url}/nodes/movie"
+
+      stub_and_expect_request(:post, url, options, result) do
+        SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
+      end
+    end
+
+    it "should make the correct http call when creating an edge" do
+      options = with_options({:weight => 1.0 }.to_json)
+      result  = {:status => 200}
+      url     = "#{@host_url}/nodes/13/connections/movies_genres/14"
+
+      stub_and_expect_request(:put, url, options, result) do
+        SheldonClient.create :edge,
+                             { from: 13,
+                               to: 14,
+                               type: :movies_genres,
+                               payload: { weight: 1.0 } }
+      end
+    end
+  end
+
 #   context "temporary configuration" do
 #     before(:each) do
 #       SheldonClient.host = 'http://i.am.the.real.sheldon/'

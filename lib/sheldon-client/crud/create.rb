@@ -61,7 +61,9 @@ class SheldonClient
     end
 
     def self.validate_type( type )
-      raise ArgumentError unless VALID_TYPES.include?( type.to_sym )
+      unless VALID_TYPES.include?( type.to_sym )
+        raise ArgumentError.new('Unknown type')
+      end
     end
 
     def self.validate_connection_options( options )
