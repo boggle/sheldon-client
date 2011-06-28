@@ -123,32 +123,6 @@ describe SheldonClient do
     end
   end
 
-#   context "building request urls" do
-#     it "should create correct url from given options" do
-#       SheldonClient.host = 'http://i.am.the.real.sheldon/'
-#       SheldonClient.create_edge_url( from: 13, to: 14, type: :foo ).path.should == "/nodes/13/connections/foo/14"
-#       SheldonClient.create_edge_url( from: 10, to: 11, type: :bar ).path.should == "/nodes/10/connections/bar/11"
-#       SheldonClient.create_node_url( type: :movie ).path.should == "/nodes/movie"
-#
-#       SheldonClient.build_node_ids_of_type_url( :movies ).path.should == '/nodes/movies/ids'
-#       SheldonClient.build_node_ids_of_type_url( :genres ).path.should == '/nodes/genres/ids'
-#
-#
-#       SheldonClient.build_fetch_edge_url( 13, 37, 'genre_taggings' ).path.should == '/nodes/13/connections/genre_taggings/37'
-#       SheldonClient.build_fetch_edge_url( 37, 13, 'actings' ).path.should == '/nodes/37/connections/actings/13'
-#
-#       SheldonClient.build_status_url.path.should == '/status'
-#
-#       SheldonClient.build_high_score_url( 5 ).path.should             == '/high_scores/users/5'
-#       SheldonClient.build_high_score_url( 5, 'tracked').path.should   == '/high_scores/users/5/tracked'
-#       SheldonClient.build_high_score_url( 5, 'untracked').path.should == '/high_scores/users/5/untracked'
-#
-#       SheldonClient.build_recommendation_url( 3 ).request_uri.should == '/recommendations/user/3/containers'
-#
-#
-#     end
-#   end
-#
   context "delete nodes in sheldon" do
     before(:each) do
       SheldonClient.host = 'http://sheldon.host'
