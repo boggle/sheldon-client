@@ -5,9 +5,7 @@ GEM
     active_support (3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    addressable (2.2.5)
-    archive-tar-minitar (0.5.2)
-    columnize (0.3.2)
+    addressable (2.2.6)
     crack (0.1.8)
     diff-lcs (1.1.2)
     git (1.2.5)
@@ -15,10 +13,8 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
-    mp-deployment (0.0.1)
-    rake (0.8.7)
+    mp-deployment (0.0.3)
+    rake (0.9.2)
     rcov (0.9.9)
     rspec (2.3.0)
       rspec-core (~> 2.3.0)
@@ -28,18 +24,8 @@ GEM
     rspec-expectations (2.3.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.3.0)
-    ruby-debug-base19 (0.11.25)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
-    webmock (1.6.2)
-      addressable (>= 2.2.2)
+    webmock (1.6.4)
+      addressable (~> 2.2, > 2.2.5)
       crack (>= 0.1.7)
 
 PLATFORMS
@@ -53,5 +39,4 @@ DEPENDENCIES
   mp-deployment
   rcov
   rspec (~> 2.3.0)
-  ruby-debug19
   webmock (~> 1.6)

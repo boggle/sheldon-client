@@ -29,7 +29,13 @@ Jeweler::RubygemsDotOrgTasks.new
 require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
+  spec.pattern = FileList['spec/**/*_spec.rb'].exclude('spec/requests/*_spec.rb')
+end
+
+namespace :spec do
+  RSpec::Core::RakeTask.new(:requests) do |spec|
+    spec.pattern = 'spec/requests/*_spec.rb'
+  end
 end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
@@ -47,4 +53,9 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "sheldon-client #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+desc 'Loads a console with lib/sheldon-client.rb'
+task :irb do
+  exec("irb -Ilib -rsheldon-client")
 end

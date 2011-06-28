@@ -5,7 +5,6 @@ gem 'addressable', '~> 2.2.0'
 gem 'active_support'
 
 group :development do
-  gem 'ruby-debug19'
   gem "rspec", "~> 2.3.0"
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.5.2"

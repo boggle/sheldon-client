@@ -1,5 +1,5 @@
 class SheldonClient
-  module Search
+  class Search < Crud
 
     #
     # Search for Sheldon Nodes. This will return an array of SheldonClient::Node Objects
@@ -25,24 +25,33 @@ class SheldonClient
     #
     # ==== Examples
     #
-    # Search for a specific movie
+    # General search
     #
-    #   SheldonClient.search :movies, { title: 'The Matrix' }
-    #   SheldonClient.search :movies, { title: 'Fear and Loathing in Las Vegas', production_year: 1998 }
+    #   SheldonClient.search 'Matrix', mode: :fulltext
+    #   SheldonClient.search { facebook_ids: 876543 }
+    #
+    # Search for a specific type
+    #
+    #   SheldonClient.search 'The Matrix', type: :movie
+    #   SheldonClient.search { facebook_ids: 1234 }, type: :movie
+    #   SheldonClient.search { title: 'Fear and Loathing in Las Vegas', production_year: 1998 }, type: :movie
+    #
     #
     # Search for a specific genre
     #
-    #    SheldonClient.search :genres, { name: 'Action' }
+    #    SheldonClient.search 'Action', type: :genre
+    #
     #
     # And now with wildcards
     #
-    #    SheldonClient.search :movies, { title: 'Fist*', type: fulltext }
+    #    SheldonClient.search 'Fist*', type: fulltext
     #
-    def search( type, options = {}, search_type = :exact )
-      options[:mode] = search_type unless options[:mode] or search_type == :fulltext
-      uri = build_search_url( type, options )
+
+    def self.search( query, options = {} )
+      options[:mode] ||= :exact
+      uri = search_url( query, options )
       response = send_request( :get, uri )
-      response.code == '200' ? parse_search_result(response.body) : []
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
 
 
@@ -61,22 +70,14 @@ class SheldonClient
     #   SheldonClient.facebook_item( '1234567' )
     #     => [#<Sheldon::Node 17007 (Movie/Tonari no Totoro)>]
     #
-    def facebook_item( fbid )
+    def self.facebook_item( fbid )
       search( nil, { :facebook_ids => fbid }, :fulltext )
     end
 
 
     private
 
-    def build_search_url( type, query_parameters )
-      uri = Addressable::URI.parse( self.host + "/search" + (type.nil? ? "" : "/nodes/#{type}") )
-      uri.query_values = Hash[*query_parameters.clone.map{|k,v| [k,v.to_s]}.flatten] # convert values to strings
-      uri
-    end
-
-
-
-    def parse_search_result( json_string )
+    def self.parse_search_result( json_string )
       JSON.parse( json_string ).map do |data|
         if is_edge?( data )
           Edge.new data
@@ -90,19 +91,5 @@ class SheldonClient
       Node.new JSON.parse( json_string )
     end
 
-
-
-
-    def build_edge_search_url( node_id, type )
-      uri = Addressable::URI.parse( self.host + "/nodes/" + node_id.to_s + "/connections/" + type.to_s )
-    end
-
-    def build_node_url( node_id )
-      uri = Addressable::URI.parse( self.host + "/nodes/" + node_id.to_s)
-    end
-
-    def build_url( uri )
-      Addressable::URI.parse( self.host + uri )
-    end
   end
 end

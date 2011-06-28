@@ -4,36 +4,36 @@ describe SheldonClient::Node do
   include HttpSupport
   include WebMockSupport
   include SheldonClient::UrlHelper
-  
+
   before(:each) do
     SheldonClient::Status.stub!(:status).and_return( sheldon_status )
   end
 
   let(:payload)   { { some: 'key' } }
   let(:node_type) { :movie }
-  
+
   context "creation" do
     let(:url)     { node_url(:movie) }
     let(:node_id) { 0 }
-      
+
     it "should create a node" do
       stub_and_expect_request(:post, url, request_data(payload), response(:success)) do
         SheldonClient.create( :node, type: :movie, payload: payload )
       end
     end
-    
+
     it "should return the node upon creation" do
       stub_and_expect_request(:post, url, request_data(payload), response(:node_created)) do
         SheldonClient.create( :node, type: :movie, payload: payload ).should be_a(SheldonClient::Node)
       end
     end
-    
+
     it "should return false if the node could not be created" do
       stub_and_expect_request(:post, url, request_data(payload), response(:bad_request)) do
         SheldonClient.create( :node, type: :movie, payload: payload ).should == false
       end
     end
-    
+
     it "should raise ArgumentError on unsupported node type" do
       lambda do
         SheldonClient.create( :node, type: :unknown )
@@ -44,7 +44,7 @@ describe SheldonClient::Node do
   context "retrieval" do
     let(:node_id) { 1 }
     let(:url)     { node_url(node_id) }
-    
+
     it "should return the node" do
       stub_and_expect_request(:get, url, request_data, response(:node)) do
         node = SheldonClient.node( node_id )
@@ -53,14 +53,14 @@ describe SheldonClient::Node do
         node.id.should   == node_id
       end
     end
-    
+
     it "should return false on error" do
       stub_and_expect_request(:get, url, request_data, response(:not_found)) do
         SheldonClient.node( node_id ).should be_nil
       end
     end
   end
-  
+
   context "updating" do
     let(:node_id) { 2 }
     let(:url)     { node_url(node_id) }
@@ -70,24 +70,24 @@ describe SheldonClient::Node do
         SheldonClient.update( { node: node_id }, payload )
       end
     end
-    
+
     it "should accept node-object as parameter" do
       stub_and_expect_request(:put, url, request_data(payload), response(:node)) do
         SheldonClient.update( SheldonClient::Node.new(id: node_id, type: node_type), payload )
       end
     end
-        
+
     it "should return false when node not found" do
       stub_and_expect_request(:put, url, request_data(payload), response(:not_found)) do
         SheldonClient.update( SheldonClient::Node.new(id: node_id, type: node_type), payload ).should == false
       end
     end
   end
-  
+
   context "deletion" do
     let(:node_id) { 3 }
     let(:url)     { node_url(node_id) }
-    
+
     it "should accept a hash as parameter" do
       stub_and_expect_request(:delete, url, request_data, response(:success)) do
         SheldonClient.delete( node: node_id )
@@ -99,34 +99,34 @@ describe SheldonClient::Node do
         SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) )
       end
     end
-    
+
     it "should return true on succes" do
       stub_and_expect_request(:delete, url, request_data, response(:success)) do
         SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should == true
       end
     end
-    
+
     it "should return false on an error" do
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
         SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should == false
       end
     end
   end
-  
+
   describe "object methods" do
     let(:node_id)         { 4 }
     let(:node)            { SheldonClient::Node.new( id: node_id, type: :user ) }
- 
+
     context "payload" do
       let(:url)     { node_url(node_id) }
       let(:payload) { { title: 'Tonari no Totoro', production_year: 1992 } }
-      
+
       it "should access payload elements via []" do
         stub_and_expect_request(:get, url, request_data, response(:node)) do
           SheldonClient.node( node_id )[:title].should == 'Tonari no Totoro'
         end
       end
-      
+
       it "should set payload elements via []=" do
         stub_and_expect_request(:get, url, request_data, response(:node)) do
           node = SheldonClient.node( node_id )
@@ -160,13 +160,13 @@ describe SheldonClient::Node do
         end
       end
     end
-    
+
     context "connections" do
       let(:from_id)             { node_id }
       let(:to_id)               { node_id + 1 }
       let(:connection_type)     { :like }
       let(:connection_payload)  { { weight: 0.8 } }
-      
+
       context "fetch" do
         let(:url) { connections_url( node, connection_type ) }
         it "should fetch all connections of certain type" do
@@ -203,7 +203,7 @@ describe SheldonClient::Node do
 
         it "should create an connection without a payload" do
           stub_and_expect_request(:put, url, request_data({}), response(:connection_created)) do
-            node.likes to_id
+            node.likes( to_id ).should be_a( SheldonClient::Connection )
           end
         end
 
@@ -215,15 +215,15 @@ describe SheldonClient::Node do
         end
       end
     end
-        
+
     context "fetch neighbours" do
       # see context connections create for create neighbour specs
       let(:neighbour_id)      { node_id + 2 }
       let(:connection_type)   { :like }
       let(:neighbour_type)    { :genre }
       let(:neighbour_payload) { { name: "Anime" } }
-      
-      
+
+
       it "should fetch all neighbours" do
         url = neighbours_url( node_id )
         stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
@@ -232,7 +232,7 @@ describe SheldonClient::Node do
           neighbours.first.id.should == neighbour_id
         end
       end
-      
+
       it "should fetch all neighbours of certain type" do
         url = neighbours_url( node_id, :like )
         stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
@@ -241,15 +241,15 @@ describe SheldonClient::Node do
             neighbours.first.id.should == neighbour_id
           end
       end
-      
+
       it "should raise an error on invalid neighbour type" do
-        lambda{ 
+        lambda{
           node.neighbours( :dummy )
         }.should raise_error( ArgumentError )
       end
     end
-    
-    
+
+
     context "reindexing" do
       let(:url)     { node_url(node_id, :reindex) }
 
@@ -265,6 +265,6 @@ describe SheldonClient::Node do
         end
       end
     end
-    
+
   end
 end

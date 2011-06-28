@@ -7,14 +7,14 @@ class SheldonClient
       self.to_id   = data_hash[:to].to_i
       self.from_id = data_hash[:from].to_i
     end
-    
+
     def from
     end
-    
+
     def to
       SheldonObject.node( to_id )
     end
-    
+
     def from
       SheldonObject.node( from_id )
     end
@@ -30,7 +30,7 @@ class SheldonClient
     end
 
     def to_s
-      "#<Sheldon::Connection #{id} (#{type}/#{from}->#{to})>"
+      "#<Sheldon::Connection #{id} (#{type}/#{from_id}->#{to_id})>"
     end
   end
 end

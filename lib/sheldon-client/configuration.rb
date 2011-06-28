@@ -41,5 +41,7 @@ class SheldonClient
       log_line = "[#{Time.now}] #{log_line}"
       log_file ? get_logger.info(log_line) : puts(log_line)
     end
+    
+    
   end
 end
