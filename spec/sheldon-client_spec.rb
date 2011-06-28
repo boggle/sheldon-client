@@ -242,10 +242,9 @@ describe SheldonClient do
 
       node_type = :movie
       node_id   = 123
-      agent = { 'User-Agent' => 'Ruby' }
       response = response(:node_collection, node_id: node_id, node_type: node_type)
 
-      stub_and_expect_request(:get, url, request_data(nil, agent), response ) do
+      stub_and_expect_request(:get, url, request_data, response ) do
         result = SheldonClient.search( {title: 'Matrix', production_year: '1999'}, type: :movies, mode: :fulltext)
         result.first.should be_a SheldonClient::Node
         result.first.id.should eq(123)
