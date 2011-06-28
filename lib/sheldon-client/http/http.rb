@@ -12,8 +12,11 @@ class SheldonClient
       time = Benchmark.measure do
         result = send_request!( method, uri, body )
       end
-      log_sheldon_request( method, uri, time, body ) if SheldonClient.log?
-      log_sheldon_response( result ) if SheldonClient.log?
+
+      if SheldonClient.log?
+        log_sheldon_request( method, uri, time, body )
+        log_sheldon_response( result )
+      end
       result
     end
 
