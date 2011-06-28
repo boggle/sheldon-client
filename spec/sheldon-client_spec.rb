@@ -219,29 +219,28 @@ describe SheldonClient do
     end
   end
 
-#   context "getting all the ids of a node type" do
-#     it "should fetch all the movie ids" do
-#       stub_request(:get, "http://sheldon.host/nodes/movies/ids" ).
-#         with(:headers => {'Accept' => 'application/json', 'Content-Type'=>'application/json'}).
-#         to_return(:status => 200, :body => [1,2,3,4,5].to_json )
-#       result = SheldonClient.get_node_ids_of_type( :movies )
-#       result.should == [1,2,3,4,5]
-#     end
-#   end
-#
-#   context "reindexing nodes and edges" do
-#
-#     it "should send a reindex request to an edge" do
-#       stub_request( :put, 'http://sheldon.host/connections/43/reindex').
-#         with( :headers => { 'Accept'=>'application/json', 'Content-Type' => 'application/json', 'User-Agent'=>'Ruby'} ).
-#         with( :headers => { 'Accept'=>'application/json', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
-#         to_return( :status => 200, :headers => {},:body => { 'id' => 43, 'type' => 'actings', 'from' => '13', 'to' => '14', 'payload' => { 'weight' => '0.5'}}.to_json )
-#       result = SheldonClient.reindex_edge 43
-#       result.should == true
-#
-#     end
-#   end
-#
+  # context "getting all the ids of a node type" do
+  #   it "should fetch all the movie ids" do
+  #     stub_request(:get, "http://sheldon.host/nodes/movies/ids" ).
+  #       with(:headers => {'Accept' => 'application/json', 'Content-Type'=>'application/json'}).
+  #       to_return(:status => 200, :body => [1,2,3,4,5].to_json )
+  #     result = SheldonClient.get_node_ids_of_type( :movies )
+  #     result.should == [1,2,3,4,5]
+  #   end
+  # end
+
+  # context "reindexing nodes and edges" do
+  #   it "should send a reindex request to an edge" do
+  #     stub_request( :put, 'http://sheldon.host/connections/43/reindex').
+  #       with( :headers => { 'Accept'=>'application/json', 'Content-Type' => 'application/json', 'User-Agent'=>'Ruby'} ).
+  #       with( :headers => { 'Accept'=>'application/json', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
+  #       to_return( :status => 200, :headers => {},:body => { 'id' => 43, 'type' => 'actings', 'from' => '13', 'to' => '14', 'payload' => { 'weight' => '0.5'}}.to_json )
+  #     result = SheldonClient.reindex_edge 43
+  #     result.should == true
+
+  #   end
+  # end
+
 #   context "fetching edges" do
 #     it "should get one edge between two nodes of a certain edge type" do
 #       stub_request( :get, 'http://sheldon.host/nodes/13/connections/actings/15').

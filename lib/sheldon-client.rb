@@ -42,8 +42,8 @@ class SheldonClient
   #
   # Create a new edge
   #
-  #   SheldonClient.create :edge, type: 'like', from:    123,
-  #                               to:   321,    payload: { weight: 0.5 } }
+  #   SheldonClient.create :connection, type: 'like', from:    123, to:   321,
+  #                         payload: { weight: 0.5 }
 
   def self.create(type, options)
     SheldonClient::Create.create_sheldon_object( type, options )
@@ -70,7 +70,7 @@ class SheldonClient
   #   SheldonClient.update( node, year: '1999', title: 'Matrix' )
   #   => true
   #
-  #   SheldonClient.update_node( { node: 123 }, title: 'Air bud' )
+  #   SheldonClient.update( { node: 123 }, title: 'Air bud' )
   #    => true
 
   def self.update( object, payload )

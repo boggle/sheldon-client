@@ -31,7 +31,7 @@ describe SheldonClient::Node do
     let(:node_id) { 0 }
 
     it "should create a node" do
-      stub_and_expect_request(:post, url, request_data(payload), response(:success)) do
+      stub_and_expect_request(:post, url, request_data(payload), response(:node_created)) do
         SheldonClient.create( :node, type: :movie, payload: payload )
       end
     end
@@ -44,7 +44,7 @@ describe SheldonClient::Node do
 
     it "should return false if the node could not be created" do
       stub_and_expect_request(:post, url, request_data(payload), response(:bad_request)) do
-        SheldonClient.create( :node, type: :movie, payload: payload ).should == false
+        SheldonClient.create( :node, type: :movie, payload: payload ).should eq(false)
       end
     end
 
