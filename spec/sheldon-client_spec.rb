@@ -23,9 +23,12 @@ describe SheldonClient do
   end
 
   describe "SheldonClient.create" do
+    let(:host_url){ "http://sheldon.host" }
+
     before(:each) do
-      @host_url = "http://sheldon.host"
-      SheldonClient.host = @host_url
+      SheldonClient.host = host_url
+      SheldonClient.stub(:node_types){ [ :movies, :persons ] }
+      SheldonClient.stub(:connection_types){ [ :likes, :actors, :g_tags ] }
     end
 
     it "should raise and exception if the given type is not valid" do
@@ -35,9 +38,8 @@ describe SheldonClient do
     end
 
     it "should make the correct http call  when creating a node" do
-      pending
+      url     = "#{host_url}/nodes/movies"
       req_data = request_data({:weight => 1.0 })
-      url     = "#{@host_url}/nodes/movies"
 
       stub_and_expect_request(:post, url, req_data, response(:success)) do
         SheldonClient.create :node, { type: :movie, payload: { weight: 1.0 } }
@@ -45,7 +47,7 @@ describe SheldonClient do
     end
 
     it "should make the correct http call when creating a collection" do
-      url     = "#{@host_url}/nodes/13/connections/likes/14"
+      url     = "#{host_url}/nodes/13/connections/likes/14"
       req_data = request_data({:weight => 1.0 })
       SheldonClient.stub(:connection_types){ [ :likes] }
 
