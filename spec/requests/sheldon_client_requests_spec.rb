@@ -95,38 +95,46 @@ describe SheldonClient do
                            { type: :movie,
                              payload: { title: movie_title,
                                         sandbox_id: sandbox_id }})
-    end
 
-    after(:all){ SheldonClient.delete(@movie) }
-
-    before(:each) do
       @movie = SheldonClient.search(sandbox_id: sandbox_id).first
       @gozno = SheldonClient.search( username: 'gonzo gonzales' ).first
-    end
 
-    it "should connect the two given nodes" do
-      @movie.should_not be_nil
-      @gozno.should_not be_nil
-
-      connection = SheldonClient.create :connection,
+      @connection = SheldonClient.create :connection,
                                     { type: :likes,
                                       from: @gozno.id,
                                       to: @movie.id,
                                       payload: { weight: 0.5 }}
+    end
 
-      connection.should be_a SheldonClient::Connection
+    after(:all) do
+      #cleaning up
 
-      connection.from.should eq(@gozno)
-      connection.to.should eq(@movie)
-      connection.payload[:weight].should eq(0.5)
+      SheldonClient.delete(@movie)
+      SheldonClient.delete(connection: @connection.id)
+    end
 
-      @movie.connections(:likes).include?(connection).should eq(true)
-      @gozno.connections(:likes).include?(connection).should eq(true)
+    it "should create a connection between two nodes" do
+      @movie.should_not be_nil
+      @gozno.should_not be_nil
 
-      SheldonClient.delete(connection: connection.id).should eq(true)
+      @connection.should be_a SheldonClient::Connection
 
-      @movie.connections(:likes).include?(connection).should eq(false)
-      @gozno.connections(:likes).include?(connection).should eq(false)
+      @connection.from.should eq(@gozno)
+      @connection.to.should eq(@movie)
+      @connection.payload[:weight].should eq(0.5)
+
+    end
+
+    it "should find the created connection in sheldon" do
+      SheldonClient.connection(@connection.id).should eq(@connection)
+      SheldonClient.connection(from: @gozno, to: @movie, type: :likes ).should eq(@connection)
+    end
+
+    it "should delete a connection" do
+      SheldonClient.delete(connection: @connection.id).should eq(true)
+
+      SheldonClient.connection(@connection.id).should eq(false)
+      SheldonClient.connection(from:@gozno, to: @movie, type: :likes ).should eq(false)
     end
   end
 end
