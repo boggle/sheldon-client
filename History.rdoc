@@ -1,0 +1,10 @@
+=== Version 0.4
+
+* enhancements
+  * Get the neighbours directly from the node with node.neighbours
+
+* deprecations
+  * SheldonClient.fetch_neighbours
+  * SheldonClient.delete_edge ( Use SheldonClient.delete )
+
+
