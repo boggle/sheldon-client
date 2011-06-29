@@ -77,7 +77,8 @@ module HttpSupport
   end
 
   def connection_body(opts = {})
-    { type: (opts[:connection_type] || connection_type).to_s.camelcase,
+    { id: opts[:connection_id] || connection_id,
+      type: (opts[:connection_type] || connection_type).to_s.camelcase,
       from: (opts[:from_id] || from_id).to_s,
       to: (opts[:to_id] || to_id).to_s,
       payload: opts[:payload] || connection_payload }

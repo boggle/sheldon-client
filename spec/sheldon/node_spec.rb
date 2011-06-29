@@ -11,6 +11,7 @@ describe SheldonClient::Node do
 
   let(:payload)   { { some: 'key' } }
   let(:node_type) { :movie }
+  let(:connection_id){ rand(100) }
 
   describe "Node#(==)" do
     let(:url)     { "http://46.4.114.22:2311/search?mode=exact&some=key" }

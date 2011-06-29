@@ -237,44 +237,31 @@ class SheldonClient
   end
 
   #
-  # Fetches an edge between two nodes of a given type
+  # Fetches a connection
   #
   # === Parameters
   #
-  # * <tt>from</tt> - The source node
-  # * <tt>to</tt> - The target node
-  # * <tt>type</tt> - The edge type
+  # * object -  Can be the connection id or a hash specifyin from, to, and the type.
+  #
   #
   # === Examples
   #
-  # from = SheldonClient.search( :movies, {title: 'The Matrix} )
-  # to = SheldonClient.search( :genres, {name: 'Action'} )
-  # edge = SheldonClient.edge( from, to, 'genres' )
+  # from = SheldonClient.search({title: 'The Matrix} )
+  # to = SheldonClient.search({name: 'Action'})
+  # connection = SheldonClient.connection( from:from, to:to, type: :genres )
+  # => #<Sheldon::Connection 5 (GenreTagging/1->2)>
   #
-
-  def self.edge?( from, to, type)
-    uri = build_fetch_edge_url( from, to, type )
-    response = send_request( :get, uri )
-    response.code == '200' ? Edge.new( JSON.parse( response.body )) : nil
-  end
-
+  # Passing the connection id
   #
-  # Fetches a single edge from sheldon
+  # SheldonClient.connection 5
+  # => #<Sheldon::Connection 5 (GenreTagging/1->2)>
   #
-  # === Parameters
+  # SheldonClient.connection (from: 1, type: :genres)
   #
-  # * <tt>id</tt> - The edge id
+  # => [#<Sheldon::Connection 5 (GenreTagging/1->2)>, #<Sheldon::Connection 6 (GenreTagging/1->3)>]
   #
-  # === Examples
-  #
-  # SheldonClient.edge 5
-  # => #<Sheldon::Edge 5 (GenreTagging/1->2)>
-  #
-
-  def self.edge( id )
-    uri = build_edge_url id
-    response =send_request( :get, uri )
-    response.code == '200' ? Edge.new( JSON.parse( response.body )) : nil
+  def self.connection(object)
+    SheldonClient::Read.fetch_sheldon_connection(object)
   end
 
   #

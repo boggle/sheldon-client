@@ -2,9 +2,14 @@
 
 * enhancements
   * Get the neighbours directly from the node with node.neighbours
+  * node.connections(:likes), Fetches all the connections of type like.
+  * SheldonClient.connection, single method to fetch connections, see documentation.
 
 * deprecations
   * SheldonClient.fetch_neighbours
   * SheldonClient.delete_edge ( Use SheldonClient.delete )
+  * SheldonClient.edge? ( Use SheldonClient.connection(from:12, to:14, type: :like )
+  * SheldonClient.edge  ( Use SheldonClient.connection(123) )
+
 
 

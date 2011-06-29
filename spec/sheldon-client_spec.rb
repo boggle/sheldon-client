@@ -3,6 +3,7 @@ require 'spec_helper'
 describe SheldonClient do
   include WebMockSupport
   include HttpSupport
+  include SheldonClient::UrlHelper
 
   let(:host_url){ "http://sheldon.host" }
 
@@ -58,7 +59,7 @@ describe SheldonClient do
     end
 
     it "should make the correct http call when creating a connection" do
-      url     = "#{host_url}/nodes/13/connections/likes/14"
+      url     = node_connections_url(13, :likes, 14)
       payload = {"weight" => 1.0 }
 
       req_data = request_data(payload)
@@ -66,17 +67,19 @@ describe SheldonClient do
                      connection_type: :likes,
                      from_id: 13,
                      to_id: 14,
-                     payload: payload)
+                     payload: payload,
+                     connection_id: 15)
 
       stub_and_expect_request(:put, url, req_data, rsp ) do
-        result = SheldonClient.create :connection,
+        connection = SheldonClient.create :connection,
                              { from: 13,
                                to: 14,
                                type: :likes,
                                payload: payload}
 
-        result.should be_a SheldonClient::Connection
-        result.payload.should eq(payload)
+        connection.should be_a SheldonClient::Connection
+        connection.payload.should eq(payload)
+        connection.id.should eq(15)
       end
     end
 
@@ -144,6 +147,8 @@ describe SheldonClient do
         SheldonClient.delete(connection: 122).should eq(false)
       end
     end
+
+    it "should delete a connection given from, to and type"
   end
 
   context "searching for nodes" do
@@ -199,63 +204,72 @@ describe SheldonClient do
     end
   end
 
-  # context "getting all the ids of a node type" do
-  #   it "should fetch all the movie ids" do
-  #     stub_request(:get, "http://sheldon.host/nodes/movies/ids" ).
-  #       with(:headers => {'Accept' => 'application/json', 'Content-Type'=>'application/json'}).
-  #       to_return(:status => 200, :body => [1,2,3,4,5].to_json )
-  #     result = SheldonClient.get_node_ids_of_type( :movies )
-  #     result.should == [1,2,3,4,5]
-  #   end
-  # end
+  context "getting connections" do
 
-  # context "reindexing nodes and edges" do
-  #   it "should send a reindex request to an edge" do
-  #     stub_request( :put, 'http://sheldon.host/connections/43/reindex').
-  #       with( :headers => { 'Accept'=>'application/json', 'Content-Type' => 'application/json', 'User-Agent'=>'Ruby'} ).
-  #       with( :headers => { 'Accept'=>'application/json', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
-  #       to_return( :status => 200, :headers => {},:body => { 'id' => 43, 'type' => 'actings', 'from' => '13', 'to' => '14', 'payload' => { 'weight' => '0.5'}}.to_json )
-  #     result = SheldonClient.reindex_edge 43
-  #     result.should == true
+    let(:connection_type){ :like }
+    let(:from_id){ 13 }
+    let(:to_id){ 15 }
+    let(:connection_payload){ { 'weight' => '0.5' } }
+    let(:url){ node_connections_url(from_id, :like, to_id) }
+    let(:connection_id){ 45 }
 
-  #   end
-  # end
+    before(:each) do
+      SheldonClient.host = host_url
+    end
 
-#   context "fetching edges" do
-#     it "should get one edge between two nodes of a certain edge type" do
-#       stub_request( :get, 'http://sheldon.host/nodes/13/connections/actings/15').
-#         with( :headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'}).
-#         to_return( :status  => 200, :body => { 'id' => 45, 'type' => 'actings', 'from' => '13', 'to' => '15', 'payload' => { 'weight' => '0.5' }}.to_json )
-#       result = SheldonClient.edge?(13, 15, 'actings')
-#       result.id.should == 45
-#       result.from.should == '13'
-#       result.to.should == '15'
-#       result.type.should == 'actings'
-#       result.payload['weight'].should == '0.5'
-#     end
-#
-#     it "should get a non-existing node between two nodes" do
-#       stub_request( :get, 'http://sheldon.host/nodes/13/connections/genre_taggings/15').
-#         with( :headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'}).
-#         to_return( :status  => 404, :body => '' )
-#       result = SheldonClient.edge?( 13, 15, 'genre_taggings' )
-#       result.should == nil
-#
-#     end
-#
-#     it "should get a edge by its id" do
-#       stub_request( :get, 'http://sheldon.host/connections/3').
-#         with( :headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'}).
-#         to_return( :status => 200, :body => { id:  123, from: "8", to: "58001", type: "Acting", payload: { weight: "0.5"}}.to_json )
-#       result = SheldonClient.edge 3
-#       result.payload.should == { 'weight' => "0.5"}
-#       result.id.to_s.should == '123'
-#       result.from.to_s.should == '8'
-#       result.to.to_s.should == '58001'
-#       result.type.to_s.should == 'Acting'
-#     end
-#   end
-#
+    it "should get a connection given the the ids of from, to and the type " do
+      stub_and_expect_request(:get, url, request_data, response(:connection) ) do
+        connection = SheldonClient.connection(from:13, to:15, type: :like)
+        connection.should be_a SheldonClient::Connection
+        connection.id.should eq(45)
+
+        connection.from_id.should eq(from_id)
+        connection.to_id.should eq(to_id)
+        connection.type.should eq(:like)
+        connection.payload['weight'].should eq(connection_payload['weight'])
+      end
+    end
+
+    it "should get a connection given the nodes from, to and the type" do
+      node_from = SheldonClient::Node.new(id:13)
+      node_to = SheldonClient::Node.new(id:15)
+
+      stub_and_expect_request(:get, url, request_data, response(:connection) ) do
+        connection = SheldonClient.connection(from:node_from, to:node_to, type: :like)
+
+        connection.should be_a SheldonClient::Connection
+        connection.id.should eq(connection_id)
+
+        connection.from_id.should eq(from_id)
+        connection.to_id.should eq(to_id)
+        connection.type.should eq(:like)
+        connection.payload['weight'].should eq(connection_payload['weight'])
+      end
+    end
+
+    it "should get a connection given its id" do
+      url = connnections_url(connection_id)
+      stub_and_expect_request(:get, url, request_data, response(:connection)) do
+        connection = SheldonClient.connection(connection_id)
+
+        connection.should be_a SheldonClient::Connection
+        connection.id.should eq(45)
+
+        connection.from_id.should eq(from_id)
+        connection.to_id.should eq(to_id)
+        connection.type.should eq(:like)
+        connection.payload['weight'].should eq(connection_payload['weight'])
+      end
+    end
+
+    it "should result false if the connection doesn't exist" do
+      stub_and_expect_request(:get, url, request_data, response(:not_found)) do
+        connection = SheldonClient.connection(from:from_id, to:to_id, type: :like)
+        connection.should eq(false)
+      end
+    end
+  end
+
 #   context "fetching nodes based on facebook id regardless node type" do
 #     it "should do one successful search" do
 #       stub_request(:get, "http://sheldon.host/search?facebook_ids=123456").
