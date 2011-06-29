@@ -140,13 +140,13 @@ class SheldonClient
     end
 
     def valid_connection_type?( connection_type, type = :all )
-      type = connection_type.to_s.pluralize.to_sym
-      if    type == :incoming
-        incoming_connection_types.include?( type )
+      ctype =  connection_type.to_s.pluralize.to_sym
+      if  type == :incoming
+        incoming_connection_types.include?( ctype )
       elsif type == :outgoing
-        outgoing_connection_types.include?( type )
+        outgoing_connection_types.include?( ctype )
       else
-        connection_types.include?( type )
+        connection_types.include?( ctype )
       end
     end
 

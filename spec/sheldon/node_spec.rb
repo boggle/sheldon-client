@@ -16,7 +16,7 @@ describe SheldonClient::Node do
     let(:url)     { "http://46.4.114.22:2311/search?mode=exact&some=key" }
     let(:node_id) { 0 }
 
-    it "should return true if the nodes are equal" do
+    it "should return true when comparing to nodes which are equal" do
       rsp  = response(:node_collection)
 
       stub_request(:get, url).with(request_data).to_return(response(:node_collection))
