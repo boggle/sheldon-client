@@ -50,6 +50,12 @@ class SheldonClient
       response.code == '200' ? connection_collection( JSON.parse(response.body) ) : false
     end
 
+    def self.fetch_node_type_ids( type )
+      #TODO:  validate type
+      response = send_request(:get, node_type_ids_url(type))
+      response.code == '200' ? JSON.parse(response.body) : false
+    end
+
     private
 
     def self.validate_user(user)

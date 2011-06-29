@@ -137,5 +137,12 @@ describe SheldonClient do
       SheldonClient.connection(from:@gozno, to: @movie, type: :likes ).should eq(false)
     end
   end
+
+  describe "getting all the ids of the nodes with the given type" do
+    it "should have several entries for users" do
+      users_ids = SheldonClient.all(:users)
+      (users_ids.count > 100).should eq(true)
+    end
+  end
 end
 

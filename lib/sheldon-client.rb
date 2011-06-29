@@ -223,10 +223,8 @@ class SheldonClient
   #   SheldonClient.get_node_ids_of_type( :movies )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   #
-  def self.get_node_ids_of_type( type )
-    uri = build_node_ids_of_type_url(type)
-    response = send_request( :get, uri )
-    response.code == '200' ? JSON.parse( response.body ) : nil
+  def self.all( type )
+    SheldonClient::Read.fetch_node_type_ids(type)
   end
 
 

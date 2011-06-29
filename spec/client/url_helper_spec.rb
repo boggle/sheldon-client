@@ -138,4 +138,13 @@ describe SheldonClient::UrlHelper do
     end
   end
 
+  context "node_type_ids" do
+    let(:type){ :movie }
+    it "should return the correct url to node/:type/ids" do
+      uri = node_type_ids_url(type)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/nodes/movies/ids")
+    end
+  end
 end

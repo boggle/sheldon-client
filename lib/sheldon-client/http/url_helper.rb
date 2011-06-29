@@ -77,6 +77,12 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
+    def node_type_ids_url( type )
+      path  = "/nodes/#{type.to_s.pluralize.to_sym}/ids"
+
+      Addressable::URI.parse( SheldonClient.host + path )
+    end
+
     private
 
     def stringify_fixnums(hsh)
