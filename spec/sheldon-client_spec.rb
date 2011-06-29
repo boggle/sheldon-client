@@ -315,4 +315,54 @@ describe SheldonClient do
       end
     end
   end
+
+  context "fetching high_scores" do
+    let(:connection_id){ 30 }
+    let(:connection_type){ :likes }
+    let(:from_id){ 6 }
+    let(:to_id){ 1 }
+    let(:connection_payload){ { 'weight' => 5} }
+    let(:user_id){ 15 }
+    let(:url){ user_high_scores_url(user_id) }
+
+    it "shoudl get the affinity connections of a user sorted by highscore" do
+      result = response(:connection_collection)
+      stub_and_expect_request(:get, url, request_data, result) do
+        result = SheldonClient.high_scores user_id
+        result.size.should eq(1)
+        connection = result.first
+
+        connection.should be_a SheldonClient::Connection
+
+        connection.from_id.should eq(from_id)
+        connection.to_id.should eq(to_id)
+        connection.payload.should eq(connection_payload)
+        connection.type.should eq(connection_type)
+      end
+    end
+
+    it "shoudl get the high score even if passing a node" do
+      user = SheldonClient::Node.new(id: user_id, type: :user)
+
+      result = response(:connection_collection)
+      stub_and_expect_request(:get, url, request_data, result) do
+        result = SheldonClient.high_scores user
+
+        result.first.should be_a SheldonClient::Connection
+      end
+    end
+
+    it "shoudl raise an exception if the node is not user" do
+      user = SheldonClient::Node.new(id: user_id, type: :movie)
+
+      lambda { SheldonClient.high_scores user }.should raise_error ArgumentError
+
+    end
+
+    it "should return false if not found" do
+      stub_and_expect_request(:get, url, request_data, response(:not_found)) do
+        SheldonClient.high_scores(user_id).should eq(false)
+      end
+    end
+  end
 end

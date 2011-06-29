@@ -300,13 +300,9 @@ class SheldonClient
   # SheldonClient.get_highscores 13
   # => [ {'id' => 5, 'from' => 6, 'to' => 1, 'payload' => { 'weight' => 5}} ]
   #
-
-  def self.get_highscores( id, type=nil )
-    response = SheldonClient.send_request( :get, build_high_score_url( id, type))
-    response.code == '200' ? JSON.parse( response.body ) : nil
+  def self.high_scores( id, type = nil )
+    SheldonClient::Read.fetch_high_scores(id, type)
   end
-
-
 
   #
   # Fetchets all the recommendations for a user

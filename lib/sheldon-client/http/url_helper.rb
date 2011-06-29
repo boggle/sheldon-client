@@ -64,6 +64,19 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
+    def user_high_scores_url(user, type = nil)
+      path = "/high_scores/users/#{user.to_i}"
+
+      if type
+        unless [:tracked, :untracked].include?(type)
+          raise ArgumentError.new("The type can be tracked or untracked")
+        end
+        path = "#{path}/#{type.to_s}"
+      end
+
+      Addressable::URI.parse( SheldonClient.host + path )
+    end
+
     private
 
     def stringify_fixnums(hsh)

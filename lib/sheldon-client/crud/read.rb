@@ -38,12 +38,24 @@ class SheldonClient
     end
 
     def self.fetch_recommendations( user )
-      if user.is_a?(SheldonClient::Node) and !(user.type == :user)
-        raise ArgumentError.new('Recommendations just works for users')
-      end
+      validate_user(user)
 
       response = send_request(:get, user_recommendations_url(user))
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
+    end
+
+    def self.fetch_high_scores(user, type = nil)
+      validate_user(user)
+      response = send_request(:get, user_high_scores_url(user, type))
+      response.code == '200' ? connection_collection( JSON.parse(response.body) ) : false
+    end
+
+    private
+
+    def self.validate_user(user)
+      if user.is_a?(SheldonClient::Node) and !(user.type == :user)
+        raise ArgumentError.new('Recommendations just works for users')
+      end
     end
   end
 end

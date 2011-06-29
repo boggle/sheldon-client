@@ -111,4 +111,31 @@ describe SheldonClient::UrlHelper do
     end
   end
 
+  context "user high_scores" do
+    it "shoudl return the correct url given an user" do
+      uri = user_high_scores_url(123)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13")
+    end
+
+    it "should return attach the type to the url if given" do
+      uri = user_high_scores_url(123, :tracked)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13/tracked")
+
+      uri = user_high_scores_url(123, :untracked)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13/untracked")
+    end
+
+    it "shoudl raise an error if an unknown type is given" do
+      lambda{
+        user_high_scores_url(123, :foo)
+      }.should raise_error( ArgumentError )
+    end
+  end
+
 end
