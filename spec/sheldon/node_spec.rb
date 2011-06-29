@@ -122,7 +122,7 @@ describe SheldonClient::Node do
 
     it "should return false on an error" do
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
-        SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should == false
+        SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should eq(false)
       end
     end
   end

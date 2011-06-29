@@ -124,26 +124,6 @@ describe SheldonClient do
     end
   end
 
-  context "delete nodes in sheldon" do
-    before(:each) do
-      SheldonClient.host = host_url
-    end
-
-    it "should delete and generate the correct http call to delete node" do
-      url = "#{host_url}/nodes/12"
-      stub_and_expect_request(:delete, url, request_data, response(:success)) do
-        SheldonClient.delete(node: 12).should == true
-      end
-    end
-
-    it "should return false when deleting non existance nodes" do
-      url = "#{host_url}/nodes/122"
-      stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
-        SheldonClient.delete(node: 122).should eq(false)
-      end
-    end
-  end
-
   context "delete connections in sheldon" do
     before(:each) do
       SheldonClient.host = host_url

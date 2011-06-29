@@ -131,4 +131,3 @@ describe SheldonClient do
   end
 end
 
-
