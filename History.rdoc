@@ -17,6 +17,8 @@
   * SheldonClient.edge? ( Use SheldonClient.connection(from:12, to:14, type: :like )
   * SheldonClient.edge  ( Use SheldonClient.connection(123) )
   * SheldonClient.facebook_item( '123' ) ( Use SheldonClient.search( { facebook_ids: "123" })
+  * SheldonClient.get_recommendations( '123' ) ( Use SheldonClient.recommendations 123)
+
 
 
 

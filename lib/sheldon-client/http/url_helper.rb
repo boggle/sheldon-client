@@ -58,6 +58,12 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + "/status" )
     end
 
+    def user_recommendations_url(user)
+      path = "/recommendations/user/#{user.to_i}/containers"
+
+      Addressable::URI.parse( SheldonClient.host + path )
+    end
+
     private
 
     def stringify_fixnums(hsh)

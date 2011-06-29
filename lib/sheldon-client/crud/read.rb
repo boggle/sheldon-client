@@ -36,5 +36,14 @@ class SheldonClient
       response = send_request( :get, neighbours_url(from_id, type) )
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
+
+    def self.fetch_recommendations( user )
+      if user.is_a?(SheldonClient::Node) and !(user.type == :user)
+        raise ArgumentError.new('Recommendations just works for users')
+      end
+
+      response = send_request(:get, user_recommendations_url(user))
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
+    end
   end
 end

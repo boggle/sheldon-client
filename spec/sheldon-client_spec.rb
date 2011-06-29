@@ -274,28 +274,45 @@ describe SheldonClient do
     end
   end
 
-#
-#     def sheldon_status_json
-#       { "schema" => { "nodes"       => { "movies"  => { "properties" => [ "name" => [ 'exact' ] ],
-#                                                         "count"      => 4  },
-#                                          "persons" => { "properties" => [],
-#                                                         "count"      => 6  }},
-#                       "connections" => { "likes"  => { "properties" => [],
-#                                                        "sources"    => [ 'users' ],
-#                                                        "targets"    => [ 'movies', 'persons' ],
-#                                                        "count"      => 3  }}}
-#       }.to_json
-#     end
-#   end
-#
-#
-#   context "fetching recommendations" do
-#     it "should fetch all the recommendations for a user from sheldon" do
-#       stub_request( :get, "http://sheldon.host/recommendations/user/3/containers").
-#         with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
-#         to_return( :status=> 200, :body => [ { id: "50292929", type: "Movie", payload: { title: "Matrix", production_year: 1999, has_container: "true" }}].to_json )
-#       recommendations = SheldonClient.get_recommendations 3
-#       recommendations.should == [ { 'id' => "50292929", 'type' => "Movie", 'payload' => { 'title' => "Matrix", 'production_year' => 1999, 'has_container' => "true" }}]
-#     end
-#   end
+  context "fetching recommendations" do
+    let(:node_id){ 50292929 }
+    let(:node_type){ :movie }
+    let(:payload) do
+      HashWithIndifferentAccess.new({ title: "Matrix",
+                                      production_year: 1999,
+                                      has_container: "true" })
+    end
+
+    let(:user_id){ 3 }
+
+
+    it "should fetch all the recommendations for a user from sheldon" do
+      url = user_recommendations_url(user_id)
+      stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+        recommendations = SheldonClient.recommendations user_id
+        recommendations.size.should eq(1)
+        recommendation = recommendations.first
+        recommendation.id.should eq(node_id)
+        recommendation.type.should eq(node_type)
+        recommendation.payload.should eq(payload)
+      end
+    end
+
+    it "should genereate the correct http even if the param is a user node" do
+      user = SheldonClient::Node.new(id: user_id, type: :user)
+      url = user_recommendations_url(user)
+
+      stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+        recommendations = SheldonClient.recommendations user
+      end
+    end
+
+    it "should return false if there are no recommendations" do
+      url = user_recommendations_url(user_id)
+
+      stub_and_expect_request(:get, url, request_data, response(:not_found)) do
+        recommendations = SheldonClient.recommendations(user_id).should eq(false)
+      end
+    end
+  end
 end

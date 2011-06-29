@@ -101,7 +101,14 @@ describe SheldonClient::UrlHelper do
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes"
     end
+  end
 
+  context "user_recommmendations_url" do
+    it "should generate a user's recommendations url" do
+      uri = user_recommendations_url(12)
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/recommendations/user/12/containers")
+    end
   end
 
 end

@@ -321,9 +321,8 @@ class SheldonClient
   # => [{ id: "50292929", type: "Movie", payload: { title: "Matrix", production_year: 1999, has_container: "true" }}]
   #
 
-  def self.get_recommendations( id )
-    response = SheldonClient.send_request( :get, build_recommendation_url(id) )
-    response.code == '200' ? JSON.parse( response.body ) : nil
+  def self.recommendations( user_node )
+    SheldonClient::Read.fetch_recommendations(user_node)
   end
 
   #
