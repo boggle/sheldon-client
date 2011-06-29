@@ -18,7 +18,8 @@
   * SheldonClient.edge  ( Use SheldonClient.connection(123) )
   * SheldonClient.facebook_item( '123' ) ( Use SheldonClient.search( { facebook_ids: "123" })
   * SheldonClient.get_recommendations( '123' ) ( Use SheldonClient.recommendations 123)
-  * SheldonClient.get_highscores('123') (User SheldonClient.high_scores)
+  * SheldonClient.get_highscores('123') (Use SheldonClient.high_scores)
+  * SheldonClient.update_edge (Use SheldonClient.update(connnection: {}, payload )
 
 
 

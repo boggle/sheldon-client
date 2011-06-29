@@ -12,8 +12,8 @@ class SheldonClient
     private
 
     def self.update_sheldon_object( object, payload )
-      type, id = *sheldon_type_and_id_from_object( object )
-      url = (type == :node) ? node_url( id.to_i ) : edge_url( id.to_i )
+      type, params = *sheldon_type_and_id_from_object( object )
+      url = (type == :node) ? node_url( params ) : connection_update_url( params )
       send_request( :put, url, payload ).code == '200' ? true : false
     end
 
@@ -24,6 +24,15 @@ class SheldonClient
     end
 
 
+    private
+
+    def self.connection_update_url( object )
+      if object.is_a?(Hash)
+        node_connections_url(object[:from], object[:type], object[:to])
+      else
+        node_connections_url(object.from_id, object.type, object.to_id)
+      end
+    end
   end
 end
 

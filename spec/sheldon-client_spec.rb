@@ -97,6 +97,34 @@ describe SheldonClient do
     end
   end
 
+  context "updating a connection" do
+    let(:payload){ { weight: '0.5' } }
+    let(:url){ node_connections_url( 2, :likes, 3)}
+
+    it "should accept a hash as parameter" do
+
+      stub_and_expect_request(:put, url, request_data(payload), response(:success)) do
+        SheldonClient.update( { connection: {from: 2, to: 3, type: :likes} }, payload )
+      end
+    end
+
+    it "should accept connection-object as parameter" do
+      connection = SheldonClient::Connection.new(from: 2, to: 3, type: :like)
+      stub_and_expect_request(:put, url, request_data(payload), response(:success)) do
+        SheldonClient.update(connection, payload )
+      end
+    end
+
+    it "should return false when node not found" do
+      connection = SheldonClient::Connection.new(from: 2, to: 3, type: :like)
+
+      stub_and_expect_request(:put, url, request_data(payload), response(:not_found)) do
+        SheldonClient.update( connection, payload ).should eq(false)
+      end
+    end
+  end
+
+
   context "temporary configuration" do
     let(:node_id)   { 1                }
     let(:node_type) { :movie           }

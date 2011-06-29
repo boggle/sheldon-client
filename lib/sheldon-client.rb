@@ -72,8 +72,19 @@ class SheldonClient
   #
   #   SheldonClient.update( { node: 123 }, title: 'Air bud' )
   #    => true
-
+  #
+  #   connection = SheldonClient.connection 123
+  #   SheldonClient.update( connection, weight: 0.4 )
+  #   => true
+  #
+  #   SheldonClient.update( { connection: {from:1, to:2, type: :like}}, weight: 0.4 )
+  #    => true
+  #
   def self.update( object, payload )
+    if object.is_a?(SheldonClient::Connection)
+      object = { connection: object }
+    end
+
     SheldonClient::Update.update_sheldon_object( object, payload )
   end
 
@@ -120,7 +131,6 @@ class SheldonClient
   #   SheldonClient.node 17007
   #   => #<Sheldon::Node 17007 (Movie/Tonari no Totoro)>]
   #
-
   def self.node( node_id )
     SheldonClient::Read.fetch_sheldon_object( :node, node_id )
   end
@@ -264,28 +274,6 @@ class SheldonClient
   #
   def self.connection(object)
     SheldonClient::Read.fetch_sheldon_connection(object)
-  end
-
-  #
-  # Updates an edge between two nodes of a given type
-  #
-  # === Parameters
-  #
-  # * <tt>from</tt> - The source node
-  # * <tt>to</tt> - The target node
-  # * <tt>type</tt> - The edge type
-  # * <tt>options</tt> - The options that is going to be updated in the edge
-  #   include the <tt>payload</tt>
-  #
-  # === Examples
-  #
-  # from = SheldonClient.search( :movies, {title: 'The Matrix} )
-  # to = SheldonClient.search( :genres, {name: 'Action'} )
-  # edge = SheldonClient.f( from, to, 'genres', { payload: { weight: '0.5' }} )
-
-  def self.update_edge(from, to, type, options)
-    response = SheldonClient.send_request( :put, build_fetch_edge_url( from, to, type ), options )
-    response.code == '200' ? true : false
   end
 
   #
