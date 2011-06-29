@@ -99,7 +99,9 @@ class SheldonClient
   #  SheldonClient.delete(connection: 201) // Non existant connection
   #   => false
   #
-
+  # Delete a node's connections of a given type
+  # SheldonClient.delete(connection: {from: 201, type: likes)
+  #
   def self.delete( object )
     SheldonClient::Delete.delete_sheldon_object( object )
   end

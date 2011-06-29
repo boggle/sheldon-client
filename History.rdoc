@@ -4,6 +4,12 @@
   * Get the neighbours directly from the node with node.neighbours
   * node.connections(:likes), Fetches all the connections of type like.
   * SheldonClient.connection, single method to fetch connections, see documentation.
+  * A single method for deletion
+
+             node = SheldonClient.search( username: 'gonzo gonzales' ).first
+             SheldonClient.delete(node: node )
+             SheldonClient.delete(connection: node.connections(:likes).first )
+             SheldonClient.delete(connection: {from: node, type:likes})
 
 * deprecations
   * SheldonClient.fetch_neighbours
