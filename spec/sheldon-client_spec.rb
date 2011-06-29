@@ -274,18 +274,6 @@ describe SheldonClient do
     end
   end
 
-#   context "fetching nodes based on facebook id regardless node type" do
-#     it "should do one successful search" do
-#       stub_request(:get, "http://sheldon.host/search?facebook_ids=123456").
-#         with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
-#         to_return(:status => 200, :body => [{ "type" => "users", "id" => "123", 'payload'=> {'facebook_ids' =>'123456' }}].to_json, :headers => {})
-#
-#       result = SheldonClient.facebook_item( '123456' ).first
-#       result.type.should == 'users'
-#       result.payload['facebook_ids'].should == '123456'
-#     end
-#   end
-#
 #
 #     def sheldon_status_json
 #       { "schema" => { "nodes"       => { "movies"  => { "properties" => [ "name" => [ 'exact' ] ],
