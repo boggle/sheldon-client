@@ -167,31 +167,6 @@ class SheldonClient
     SheldonClient::Search.search( query, options )
   end
 
-
-  # Fetch all the nodes connected to a given node via edges of type <edge_type>
-  #
-  # ==== Parameters
-  #
-  # * <tt> node </tt> The node that we are going to fetch neighbours from
-  # * <tt> type </tt> The egde type we are interesting in
-  #
-  # ==== Examples
-  #
-  #  m = SheldonClient.search(:movies, { title: '99 Euro*'} ).first
-  #  e = SheldonClient.fetch_neighbours(m, 'genre_taggings')
-  #
-  #  g = SheldonClient.search(:genres, name: 'Drama').first
-  #  e = SheldonClient.fetch_neighbours(m, 'genre_taggings')
-  #
-
-  def self.fetch_neighbours( node, type )
-    node_id = node.is_a?(SheldonClient::Node) ? node.id : node
-
-    fetch_edges( node_id, type ).map do |edge|
-      fetch_node edge.to
-    end
-  end
-
   # Fetch a collection of edges given an url
   #
   # ==== Parameters
@@ -223,28 +198,6 @@ class SheldonClient
     response = send_request( :get, build_url(uri) )
     response.code == '200' ? parse_search_result(response.body) : []
   end
-
-
-
-
-  # Deletes a edge from the database
-  #
-  # ==== Parameters
-  # * <tt>id</tt> - The edge id we want to be deleted from the database
-  #
-  # ==== Examples
-  #  SheldonClient.delete_edge(2011)
-  #   => true
-  #
-  #  SheldonClient.delete_edge(201) //Non existant edge
-  #   => false
-  #
-
-  def self.delete_edge(id)
-    response = SheldonClient.send_request( :delete, build_edge_url( id ) )
-    response.code == '200' ? true : false
-  end
-
 
   #
   # Fetches all the node ids of a given node type
