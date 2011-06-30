@@ -291,23 +291,6 @@ class SheldonClient
   end
 
   #
-  # Fetchets all the recommendations for a user
-  #
-  # === Parameters
-  #
-  # <tt>id</tt> - The id of the sheldon user node
-  #
-  # === Examples
-  #
-  # SheldonClient.get_recommendations 4
-  # => [{ id: "50292929", type: "Movie", payload: { title: "Matrix", production_year: 1999, has_container: "true" }}]
-  #
-
-  def self.recommendations( user_node )
-    SheldonClient::Read.fetch_recommendations(user_node)
-  end
-
-  #
   # temporarily set a different host to connect to. This
   # takes a block where the given sheldon node should be
   # the one we're talking to

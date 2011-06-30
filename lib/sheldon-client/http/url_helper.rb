@@ -58,12 +58,6 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + "/status" )
     end
 
-    def user_recommendations_url(user)
-      path = "/recommendations/user/#{user.to_i}/containers"
-
-      Addressable::URI.parse( SheldonClient.host + path )
-    end
-
     def user_high_scores_url(user, type = nil)
       path = "/high_scores/users/#{user.to_i}"
 

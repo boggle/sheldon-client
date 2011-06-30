@@ -37,13 +37,6 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
 
-    def self.fetch_recommendations( user )
-      validate_user(user)
-
-      response = send_request(:get, user_recommendations_url(user))
-      response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
-    end
-
     def self.fetch_high_scores(user, type = nil)
       validate_user(user)
       response = send_request(:get, user_high_scores_url(user, type))
