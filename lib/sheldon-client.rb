@@ -220,7 +220,7 @@ class SheldonClient
   #
   # === Examples
   #
-  #   SheldonClient.get_node_ids_of_type( :movies )
+  #   SheldonClient.all( :movies )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   #
   def self.all( type )
