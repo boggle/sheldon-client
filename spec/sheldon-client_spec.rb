@@ -158,6 +158,14 @@ describe SheldonClient do
       end
     end
 
+    it "should delete a connection when given a connection object" do
+      url = "#{host_url}/connections/12"
+      stub_and_expect_request(:delete, url, request_data, response(:success)) do
+        connection = SheldonClient::Connection.new(id:12)
+        SheldonClient.delete(connection).should eq(true)
+      end
+    end
+
     it "should return false when deleting non existance nodes" do
       url = "#{host_url}/connections/122"
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
