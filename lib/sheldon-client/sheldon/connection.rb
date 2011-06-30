@@ -26,6 +26,11 @@ class SheldonClient
       end
     end
 
+    def save
+      connection = {connection: self}
+      SheldonClient::Update.update_sheldon_object(connection, payload.to_hash )
+    end
+
     def to_s
       "#<Sheldon::Connection #{id} (#{type}/#{from_id}->#{to_id})>"
     end
