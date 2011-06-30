@@ -11,6 +11,8 @@
              SheldonClient.delete(connection: node.connections(:likes).first )
              SheldonClient.delete(connection: {from: node, type:likes})
 
+  * Added more examples to docs/EXAMPLES.md file.
+
 * deprecations
   * SheldonClient.fetch_neighbours
   * SheldonClient.delete_edge ( Use SheldonClient.delete )

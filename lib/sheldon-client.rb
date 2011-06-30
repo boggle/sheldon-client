@@ -283,8 +283,8 @@ class SheldonClient
   #
   # === Examples
   #
-  # SheldonClient.get_highscores 13
-  # => [ {'id' => 5, 'from' => 6, 'to' => 1, 'payload' => { 'weight' => 5}} ]
+  # SheldonClient.high_scores 13
+  # => [ #<Sheldon::Connection 5 (/6->1)>,  ]
   #
   def self.high_scores( id, type = nil )
     SheldonClient::Read.fetch_high_scores(id, type)
