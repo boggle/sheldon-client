@@ -33,7 +33,7 @@ Fetch a node and set/update payload elements.
      => true
 
 Delete  anode
-....
+----
 
     totoro = SheldonClient.node 17007
     => #<Sheldon::Node 17007 (Movie/Tonari no Totoro)>
@@ -56,11 +56,11 @@ Fetch connections from a node
     SheldonClient.node(17007).connections( :actors )
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
-   SheldonClient.connection(17007, :actors)
+    SheldonClient.connection(17007, :actors)
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
 Fetch connections between nodes
-....
+----
 
     movie    = SheldonClient.node(17007)
     person   = SheldonClient.node(96781)
@@ -79,7 +79,7 @@ Working with Connections
 ---
 
 Creating connections
-....
+----
 
     movie = SheldonClient.node 123
     user  = SheldonClient.node 321
@@ -96,7 +96,7 @@ Creating connections
      => #<Sheldon::Connection 545 (likes/321->123)>
 
 Updating a connection
-....
+----
 
     movie = SheldonClient.node 123
     user  = SheldonClient.node 321
@@ -115,7 +115,7 @@ Updating a connection
 
 
 Deleting connections
-.....
+----
 
     movie = SheldonClient.node 123
     user  = SheldonClient.node 321
@@ -134,7 +134,7 @@ Deleting connections
 
 
 Fetching high scores
-....
+----
 
     user = SheldonClient.node 192975
      => #<Sheldon::Node 192975 (User/Janis Dever Whitmer)>
