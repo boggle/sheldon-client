@@ -75,6 +75,20 @@ Fetch connections between nodes
     SheldonClient.connection(from:17007, to:96781, type: :actings)
      => #<Sheldon::Connection 206500 (acting/17007->96781)>
 
+Reindexing a node
+-----
+
+     gozno = SheldonClient.search( username: 'gonzo gonzales' ).first
+
+     SheldonClient.reindex(gozno)
+     => true
+
+     heldonClient.reindex(node: gozno.id).should eq(true)
+     => true
+
+     SheldonClient.reindex(node: gozno).should eq(true)
+     => true
+
 Working with Connections
 ---
 
@@ -132,6 +146,19 @@ Deleting connections
     SheldonClient.delete(connection: 545)
     => true
 
+Reindexing a connection
+------
+
+     connection = SheldonClient.high_scores(192975).first
+
+     SheldonClient.reindex(connection)
+     => true
+
+     SheldonClient.reindex(connection: connection.id)
+     => true
+
+     SheldonClient.reindex(connection: connection)
+     => true
 
 Fetching high scores
 ----
@@ -144,3 +171,5 @@ Fetching high scores
 
      SheldonClient.high_scores 192975
      => [#<Sheldon::Connection 476536 (affinity/192975->191202)>]
+
+

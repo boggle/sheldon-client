@@ -240,10 +240,8 @@ class SheldonClient
   # SheldonClient.reindex_edge( 5464 )
   #
 
-  def self.reindex_edge( edge_id )
-    uri = build_reindex_edge_url( edge_id )
-    response = send_request( :put, uri )
-    response.code == '200' ? true : false
+  def self.reindex( object )
+    SheldonClient::Update.reindex(object)
   end
 
   #

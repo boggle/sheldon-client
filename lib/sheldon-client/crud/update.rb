@@ -9,12 +9,14 @@ class SheldonClient
     # the Node objects like this:
     #
     #
-    private
-
     def self.update_sheldon_object( object, payload )
       type, params = *sheldon_type_and_id_from_object( object )
       url = (type == :node) ? node_url( params ) : connection_update_url( params )
       send_request( :put, url, payload ).code == '200' ? true : false
+    end
+
+    def self.reindex( object )
+      send_request( :put, reindex_url(object) ).code == '200' ? true : false
     end
 
     def self.reindex_sheldon_object( object )

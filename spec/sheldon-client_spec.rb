@@ -344,4 +344,59 @@ describe SheldonClient do
       end
     end
   end
+
+  context "reindexing nodes and connection" do
+    let(:connection){ SheldonClient::Connection.new(id:12)}
+    let(:connection_url){ reindex_url(connection: connection.id) }
+    let(:node){ SheldonClient::Node.new(id:2)}
+    let(:node_url){ reindex_url(node: node.id) }
+
+    it "should make the correct http call when reindexing a connection its id" do
+      stub_and_expect_request(:put, connection_url, request_data, response(:success)) do
+        SheldonClient.reindex(connection: connection.id).should eq(true)
+      end
+    end
+
+    it "should make the correct http call when reindexing a connection passed in a hash" do
+      stub_and_expect_request(:put, connection_url, request_data, response(:success)) do
+        SheldonClient.reindex(connection: connection).should eq(true)
+      end
+    end
+
+    it "should make the correct http call when reindexing a connection " do
+      stub_and_expect_request(:put, connection_url, request_data, response(:success)) do
+        SheldonClient.reindex(connection).should eq(true)
+      end
+    end
+
+    it "shoudld make the correct http call when reindexing a node by its id" do
+      stub_and_expect_request(:put, node_url , request_data, response(:success)) do
+        SheldonClient.reindex(node: node.id).should eq(true)
+      end
+    end
+
+    it "shoudld make the correct http call when reindexing a node passed in a hash" do
+      stub_and_expect_request(:put, node_url , request_data, response(:success)) do
+        SheldonClient.reindex(node: node).should eq(true)
+      end
+    end
+
+    it "shoudld make the correct http call when reindexing a node" do
+      stub_and_expect_request(:put, node_url , request_data, response(:success)) do
+        SheldonClient.reindex(node).should eq(true)
+      end
+    end
+
+    it "shoudld return false if response is not 200" do
+      stub_and_expect_request(:put, node_url , request_data, response(:not_found)) do
+        SheldonClient.reindex(node).should eq(false)
+      end
+    end
+
+    it "shoudld return false if response is not 200" do
+      stub_and_expect_request(:put, connection_url , request_data, response(:not_found)) do
+        SheldonClient.reindex(connection ).should eq(false)
+      end
+    end
+  end
 end

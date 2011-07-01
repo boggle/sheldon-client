@@ -139,4 +139,31 @@ describe SheldonClient::UrlHelper do
       uri.path.should eq("/nodes/movies/ids")
     end
   end
+
+  context "reindex_url" do
+    let(:connection){ SheldonClient::Connection.new(id:23) }
+    let(:node){ SheldonClient::Node.new(id:23) }
+
+    let(:node_reindex_url){ "/nodes/#{node.id}/reindex" }
+    let(:connection_reindex_url){ "/connections/#{connection.id}/reindex"  }
+
+    it "should return the correct url for node reindex" do
+      reindex_url(node: node.id).path.should eq(node_reindex_url)
+      reindex_url(node: node).path.should eq(node_reindex_url)
+    end
+
+    it "should return the correct url for connecton reindex" do
+      reindex_url(connection: connection.id).path.should eq(connection_reindex_url)
+
+      reindex_url(connection: connection).path.should eq(connection_reindex_url)
+    end
+
+    it "should return the correct url if we pass a node object" do
+      reindex_url(node).path.should eq(node_reindex_url)
+    end
+
+    it "should return the correct url if we pass a connection object " do
+      reindex_url(connection).path.should eq(connection_reindex_url)
+    end
+  end
 end

@@ -107,8 +107,6 @@ describe SheldonClient do
     end
 
     after(:all) do
-      #cleaning up
-
       SheldonClient.delete(@movie)
       SheldonClient.delete(connection: @connection.id)
     end
@@ -122,7 +120,6 @@ describe SheldonClient do
       @connection.from.should eq(@gozno)
       @connection.to.should eq(@movie)
       @connection.payload[:weight].should eq(0.5)
-
     end
 
     it "should find the created connection in sheldon" do
@@ -142,6 +139,25 @@ describe SheldonClient do
     it "should have several entries for users" do
       users_ids = SheldonClient.all(:users)
       (users_ids.count > 100).should eq(true)
+    end
+  end
+
+  describe "reindexing nodes" do
+    it "should reindex a node" do
+      gozno = SheldonClient.search( username: 'gonzo gonzales' ).first
+
+      SheldonClient.reindex(gozno).should eq(true)
+      SheldonClient.reindex(node: gozno).should eq(true)
+      SheldonClient.reindex(node: gozno.id).should eq(true)
+    end
+
+    it "should reindex connections" do
+      connection = SheldonClient.high_scores(192975).first
+
+      connection.should be_a SheldonClient::Connection
+      SheldonClient.reindex(connection).should eq(true)
+      SheldonClient.reindex(connection: connection).should eq(true)
+      SheldonClient.reindex(connection: connection.id).should eq(true)
     end
   end
 end

@@ -77,11 +77,28 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
+    def reindex_url( object )
+      type, id = *get_type_and_id(object)
+      path = "/#{type.to_s.pluralize.to_sym}/#{id.to_i}/reindex"
+
+      Addressable::URI.parse( SheldonClient.host + path )
+    end
+
     private
 
     def stringify_fixnums(hsh)
       hsh.each do |key, value|
         hsh[key] = value.to_s if value.is_a?(Fixnum)
+      end
+    end
+
+    def get_type_and_id( object )
+      if object.is_a?(Hash) and node = object[:node]
+        [:node, node.to_i]
+      elsif object.is_a?(Hash) and connection = object[:collection]
+        [:collection, connection.to_i]
+      else
+        SheldonClient::Crud.sheldon_type_and_id_from_object( object )
       end
     end
   end
