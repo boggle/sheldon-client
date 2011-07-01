@@ -28,6 +28,10 @@ class SheldonClient
       SheldonClient.update self, payload.to_hash
     end
 
+    def ==(other)
+      id == other.id && type == other.type && payload == other.payload &&
+        sheldon_class == other.sheldon_class
+    end
   end
 end
 

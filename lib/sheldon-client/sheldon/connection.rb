@@ -8,15 +8,12 @@ class SheldonClient
       self.from_id = data_hash[:from].to_i
     end
 
-    def from
-    end
-
     def to
-      SheldonObject.node( to_id )
+      @to ||= SheldonClient.node( to_id )
     end
 
     def from
-      SheldonObject.node( from_id )
+      @from ||= SheldonClient.node( from_id )
     end
 
     def <=>(edge)
@@ -29,8 +26,17 @@ class SheldonClient
       end
     end
 
+    def save
+      connection = {connection: self}
+      SheldonClient::Update.update_sheldon_object(connection, payload.to_hash )
+    end
+
     def to_s
       "#<Sheldon::Connection #{id} (#{type}/#{from_id}->#{to_id})>"
+    end
+
+    def ==(other)
+      super && to_id == other.to_id && from_id == other.from_id
     end
   end
 end

@@ -32,16 +32,14 @@ class SheldonClient
     def log_file
       @logfile
     end
-    
+
     def get_logger
       @logger ||= Logger.new(log_file)
     end
-    
+
     def write_log_line( log_line )
       log_line = "[#{Time.now}] #{log_line}"
       log_file ? get_logger.info(log_line) : puts(log_line)
     end
-    
-    
   end
 end

@@ -1,0 +1,28 @@
+=== Version 0.4
+
+* enhancements
+  * Get the neighbours directly from the node with node.neighbours
+  * node.connections(:likes), Fetches all the connections of type like.
+  * SheldonClient.connection, single method to fetch connections, see documentation.
+  * A single method for deletion
+
+             node = SheldonClient.search( username: 'gonzo gonzales' ).first
+             SheldonClient.delete(node: node )
+             SheldonClient.delete(connection: node.connections(:likes).first )
+             SheldonClient.delete(connection: {from: node, type:likes})
+
+  * Added more examples to docs/EXAMPLES.md file.
+
+* deprecations
+  * SheldonClient.fetch_neighbours
+  * SheldonClient.delete_edge ( Use SheldonClient.delete )
+  * SheldonClient.edge? ( Use SheldonClient.connection(from:12, to:14, type: :like )
+  * SheldonClient.edge  ( Use SheldonClient.connection(123) )
+  * SheldonClient.facebook_item( '123' ) ( Use SheldonClient.search( { facebook_ids: "123" })
+  * SheldonClient.get_recommendations( '123' )
+  * SheldonClient.get_highscores('123') (Use SheldonClient.high_scores)
+  * SheldonClient.update_edge (Use SheldonClient.update(connnection: {}, payload )
+  * SheldonClient.get_node_ids_of_type ( user SheldonClient.all(:users) )
+
+
+

@@ -8,7 +8,7 @@ class SheldonClient
     extend SheldonClient::UrlHelper
 
     def self.sheldon_type_and_id_from_object( object )
-      if    object.is_a?(Hash) and object.keys.size == 1
+      if object.is_a?(Hash) and object.keys.size == 1
         object.to_a.flatten
       elsif object.is_a?(Node) or object.is_a?(Connection)
         [ object.class.to_s.demodulize.underscore.to_sym, object.id ]

@@ -89,19 +89,81 @@ describe SheldonClient::UrlHelper do
     end
   end
 
-  context "connections_url" do
+  context "node_connections_url" do
     it "should create new connection url" do
-      uri = connections_url( 1, :like, 2 )
+      uri = node_connections_url( 1, :like, 2 )
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes/2"
     end
 
     it "should create fetch connections url" do
-      uri = connections_url( 1, :like )
+      uri = node_connections_url( 1, :like )
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes"
     end
-
   end
 
+  context "user high_scores" do
+    it "shoudl return the correct url given an user" do
+      uri = user_high_scores_url(13)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13")
+    end
+
+    it "should return attach the type to the url if given" do
+      uri = user_high_scores_url(13, :tracked)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13/tracked")
+
+      uri = user_high_scores_url(13, :untracked)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/high_scores/users/13/untracked")
+    end
+
+    it "shoudl raise an error if an unknown type is given" do
+      lambda{
+        user_high_scores_url(123, :foo)
+      }.should raise_error( ArgumentError )
+    end
+  end
+
+  context "node_type_ids" do
+    let(:type){ :movie }
+    it "should return the correct url to node/:type/ids" do
+      uri = node_type_ids_url(type)
+
+      uri.should be_a Addressable::URI
+      uri.path.should eq("/nodes/movies/ids")
+    end
+  end
+
+  context "reindex_url" do
+    let(:connection){ SheldonClient::Connection.new(id:23) }
+    let(:node){ SheldonClient::Node.new(id:23) }
+
+    let(:node_reindex_url){ "/nodes/#{node.id}/reindex" }
+    let(:connection_reindex_url){ "/connections/#{connection.id}/reindex"  }
+
+    it "should return the correct url for node reindex" do
+      reindex_url(node: node.id).path.should eq(node_reindex_url)
+      reindex_url(node: node).path.should eq(node_reindex_url)
+    end
+
+    it "should return the correct url for connecton reindex" do
+      reindex_url(connection: connection.id).path.should eq(connection_reindex_url)
+
+      reindex_url(connection: connection).path.should eq(connection_reindex_url)
+    end
+
+    it "should return the correct url if we pass a node object" do
+      reindex_url(node).path.should eq(node_reindex_url)
+    end
+
+    it "should return the correct url if we pass a connection object " do
+      reindex_url(connection).path.should eq(connection_reindex_url)
+    end
+  end
 end

@@ -42,8 +42,8 @@ class SheldonClient
   #
   # Create a new edge
   #
-  #   SheldonClient.create :edge, type: 'like', from:    123,
-  #                               to:   321,    payload: { weight: 0.5 } }
+  #   SheldonClient.create :connection, type: 'like', from:    123, to:   321,
+  #                         payload: { weight: 0.5 }
 
   def self.create(type, options)
     SheldonClient::Create.create_sheldon_object( type, options )
@@ -70,10 +70,21 @@ class SheldonClient
   #   SheldonClient.update( node, year: '1999', title: 'Matrix' )
   #   => true
   #
-  #   SheldonClient.update_node( { node: 123 }, title: 'Air bud' )
+  #   SheldonClient.update( { node: 123 }, title: 'Air bud' )
   #    => true
-
+  #
+  #   connection = SheldonClient.connection 123
+  #   SheldonClient.update( connection, weight: 0.4 )
+  #   => true
+  #
+  #   SheldonClient.update( { connection: {from:1, to:2, type: :like}}, weight: 0.4 )
+  #    => true
+  #
   def self.update( object, payload )
+    if object.is_a?(SheldonClient::Connection)
+      object = { connection: object }
+    end
+
     SheldonClient::Update.update_sheldon_object( object, payload )
   end
 
@@ -99,7 +110,9 @@ class SheldonClient
   #  SheldonClient.delete(connection: 201) // Non existant connection
   #   => false
   #
-
+  # Delete a node's connections of a given type
+  # SheldonClient.delete(connection: {from: 201, type: likes)
+  #
   def self.delete( object )
     SheldonClient::Delete.delete_sheldon_object( object )
   end
@@ -118,7 +131,6 @@ class SheldonClient
   #   SheldonClient.node 17007
   #   => #<Sheldon::Node 17007 (Movie/Tonari no Totoro)>]
   #
-
   def self.node( node_id )
     SheldonClient::Read.fetch_sheldon_object( :node, node_id )
   end
@@ -167,31 +179,6 @@ class SheldonClient
     SheldonClient::Search.search( query, options )
   end
 
-
-  # Fetch all the nodes connected to a given node via edges of type <edge_type>
-  #
-  # ==== Parameters
-  #
-  # * <tt> node </tt> The node that we are going to fetch neighbours from
-  # * <tt> type </tt> The egde type we are interesting in
-  #
-  # ==== Examples
-  #
-  #  m = SheldonClient.search(:movies, { title: '99 Euro*'} ).first
-  #  e = SheldonClient.fetch_neighbours(m, 'genre_taggings')
-  #
-  #  g = SheldonClient.search(:genres, name: 'Drama').first
-  #  e = SheldonClient.fetch_neighbours(m, 'genre_taggings')
-  #
-
-  def self.fetch_neighbours( node, type )
-    node_id = node.is_a?(SheldonClient::Node) ? node.id : node
-
-    fetch_edges( node_id, type ).map do |edge|
-      fetch_node edge.to
-    end
-  end
-
   # Fetch a collection of edges given an url
   #
   # ==== Parameters
@@ -224,28 +211,6 @@ class SheldonClient
     response.code == '200' ? parse_search_result(response.body) : []
   end
 
-
-
-
-  # Deletes a edge from the database
-  #
-  # ==== Parameters
-  # * <tt>id</tt> - The edge id we want to be deleted from the database
-  #
-  # ==== Examples
-  #  SheldonClient.delete_edge(2011)
-  #   => true
-  #
-  #  SheldonClient.delete_edge(201) //Non existant edge
-  #   => false
-  #
-
-  def self.delete_edge(id)
-    response = SheldonClient.send_request( :delete, build_edge_url( id ) )
-    response.code == '200' ? true : false
-  end
-
-
   #
   # Fetches all the node ids of a given node type
   #
@@ -255,13 +220,11 @@ class SheldonClient
   #
   # === Examples
   #
-  #   SheldonClient.get_node_ids_of_type( :movies )
+  #   SheldonClient.all( :movies )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   #
-  def self.get_node_ids_of_type( type )
-    uri = build_node_ids_of_type_url(type)
-    response = send_request( :get, uri )
-    response.code == '200' ? JSON.parse( response.body ) : nil
+  def self.all( type )
+    SheldonClient::Read.fetch_node_type_ids(type)
   end
 
 
@@ -277,73 +240,36 @@ class SheldonClient
   # SheldonClient.reindex_edge( 5464 )
   #
 
-  def self.reindex_edge( edge_id )
-    uri = build_reindex_edge_url( edge_id )
-    response = send_request( :put, uri )
-    response.code == '200' ? true : false
+  def self.reindex( object )
+    SheldonClient::Update.reindex(object)
   end
 
   #
-  # Fetches an edge between two nodes of a given type
+  # Fetches a connection
   #
   # === Parameters
   #
-  # * <tt>from</tt> - The source node
-  # * <tt>to</tt> - The target node
-  # * <tt>type</tt> - The edge type
+  # * object -  Can be the connection id or a hash specifyin from, to, and the type.
+  #
   #
   # === Examples
   #
-  # from = SheldonClient.search( :movies, {title: 'The Matrix} )
-  # to = SheldonClient.search( :genres, {name: 'Action'} )
-  # edge = SheldonClient.edge( from, to, 'genres' )
+  # from = SheldonClient.search({title: 'The Matrix} )
+  # to = SheldonClient.search({name: 'Action'})
+  # connection = SheldonClient.connection( from:from, to:to, type: :genres )
+  # => #<Sheldon::Connection 5 (GenreTagging/1->2)>
   #
-
-  def self.edge?( from, to, type)
-    uri = build_fetch_edge_url( from, to, type )
-    response = send_request( :get, uri )
-    response.code == '200' ? Edge.new( JSON.parse( response.body )) : nil
-  end
-
+  # Passing the connection id
   #
-  # Fetches a single edge from sheldon
+  # SheldonClient.connection 5
+  # => #<Sheldon::Connection 5 (GenreTagging/1->2)>
   #
-  # === Parameters
+  # SheldonClient.connection (from: 1, type: :genres)
   #
-  # * <tt>id</tt> - The edge id
+  # => [#<Sheldon::Connection 5 (GenreTagging/1->2)>, #<Sheldon::Connection 6 (GenreTagging/1->3)>]
   #
-  # === Examples
-  #
-  # SheldonClient.edge 5
-  # => #<Sheldon::Edge 5 (GenreTagging/1->2)>
-  #
-
-  def self.edge( id )
-    uri = build_edge_url id
-    response =send_request( :get, uri )
-    response.code == '200' ? Edge.new( JSON.parse( response.body )) : nil
-  end
-
-  #
-  # Updates an edge between two nodes of a given type
-  #
-  # === Parameters
-  #
-  # * <tt>from</tt> - The source node
-  # * <tt>to</tt> - The target node
-  # * <tt>type</tt> - The edge type
-  # * <tt>options</tt> - The options that is going to be updated in the edge
-  #   include the <tt>payload</tt>
-  #
-  # === Examples
-  #
-  # from = SheldonClient.search( :movies, {title: 'The Matrix} )
-  # to = SheldonClient.search( :genres, {name: 'Action'} )
-  # edge = SheldonClient.f( from, to, 'genres', { payload: { weight: '0.5' }} )
-
-  def self.update_edge(from, to, type, options)
-    response = SheldonClient.send_request( :put, build_fetch_edge_url( from, to, type ), options )
-    response.code == '200' ? true : false
+  def self.connection(object)
+    SheldonClient::Read.fetch_sheldon_connection(object)
   end
 
   #
@@ -355,33 +281,11 @@ class SheldonClient
   #
   # === Examples
   #
-  # SheldonClient.get_highscores 13
-  # => [ {'id' => 5, 'from' => 6, 'to' => 1, 'payload' => { 'weight' => 5}} ]
+  # SheldonClient.high_scores 13
+  # => [ #<Sheldon::Connection 5 (/6->1)>,  ]
   #
-
-  def self.get_highscores( id, type=nil )
-    response = SheldonClient.send_request( :get, build_high_score_url( id, type))
-    response.code == '200' ? JSON.parse( response.body ) : nil
-  end
-
-
-
-  #
-  # Fetchets all the recommendations for a user
-  #
-  # === Parameters
-  #
-  # <tt>id</tt> - The id of the sheldon user node
-  #
-  # === Examples
-  #
-  # SheldonClient.get_recommendations 4
-  # => [{ id: "50292929", type: "Movie", payload: { title: "Matrix", production_year: 1999, has_container: "true" }}]
-  #
-
-  def self.get_recommendations( id )
-    response = SheldonClient.send_request( :get, build_recommendation_url(id) )
-    response.code == '200' ? JSON.parse( response.body ) : nil
+  def self.high_scores( id, type = nil )
+    SheldonClient::Read.fetch_high_scores(id, type)
   end
 
   #

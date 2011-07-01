@@ -11,13 +11,28 @@ describe SheldonClient::Node do
 
   let(:payload)   { { some: 'key' } }
   let(:node_type) { :movie }
+  let(:connection_id){ rand(100) }
+
+  describe "Node#(==)" do
+    let(:url)     { "http://46.4.114.22:2311/search?mode=exact&some=key" }
+    let(:node_id) { 0 }
+
+    it "should return true when comparing two nodes which are equal" do
+      rsp  = response(:node_collection)
+
+      stub_request(:get, url).with(request_data).to_return(response(:node_collection))
+      node1 = SheldonClient.search some: 'key'
+      node2 = SheldonClient.search some: 'key'
+      node1.should eq(node2)
+    end
+  end
 
   context "creation" do
     let(:url)     { node_url(:movie) }
     let(:node_id) { 0 }
 
     it "should create a node" do
-      stub_and_expect_request(:post, url, request_data(payload), response(:success)) do
+      stub_and_expect_request(:post, url, request_data(payload), response(:node_created)) do
         SheldonClient.create( :node, type: :movie, payload: payload )
       end
     end
@@ -30,7 +45,7 @@ describe SheldonClient::Node do
 
     it "should return false if the node could not be created" do
       stub_and_expect_request(:post, url, request_data(payload), response(:bad_request)) do
-        SheldonClient.create( :node, type: :movie, payload: payload ).should == false
+        SheldonClient.create( :node, type: :movie, payload: payload ).should eq(false)
       end
     end
 
@@ -108,7 +123,7 @@ describe SheldonClient::Node do
 
     it "should return false on an error" do
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
-        SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should == false
+        SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should eq(false)
       end
     end
   end
@@ -168,7 +183,7 @@ describe SheldonClient::Node do
       let(:connection_payload)  { { weight: 0.8 } }
 
       context "fetch" do
-        let(:url) { connections_url( node, connection_type ) }
+        let(:url) { node_connections_url( node, connection_type ) }
         it "should fetch all connections of certain type" do
           stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
             connections = node.connections( :likes )
@@ -181,7 +196,7 @@ describe SheldonClient::Node do
       end
 
       context "create" do
-        let(:url) { connections_url( from_id, connection_type, to_id ) }
+        let(:url) { node_connections_url( from_id, connection_type, to_id ) }
 
         it "should create an connection (via node object)" do
           stub_and_expect_request(:put, url, request_data(payload), response(:connection_created)) do
@@ -265,6 +280,5 @@ describe SheldonClient::Node do
         end
       end
     end
-
   end
 end

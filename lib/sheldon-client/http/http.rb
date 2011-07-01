@@ -12,8 +12,11 @@ class SheldonClient
       time = Benchmark.measure do
         result = send_request!( method, uri, body )
       end
-      log_sheldon_request( method, uri, time, body ) if SheldonClient.log?
-      log_sheldon_response( result ) if SheldonClient.log?
+
+      if SheldonClient.log?
+        log_sheldon_request( method, uri, time, body )
+        log_sheldon_response( result )
+      end
       result
     end
 
@@ -57,7 +60,7 @@ class SheldonClient
 
     def log_sheldon_request( method, url, time, body = '' )
       SheldonClient.write_log_line( "#{time.real} #{method.upcase} #{url}" )
-      SheldonClient.write_log_line( "curl -v -X #{method.upcase} #{url}" + ((!body or body.empty?) ? "" : " -d '#{body.to_json}'") )
+      SheldonClient.write_log_line( "curl -v -X #{method.upcase} '#{url}" + ((!body or body.empty?) ? "'" : "' -d '#{body.to_json}'") )
     end
 
 
