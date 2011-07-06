@@ -10,12 +10,12 @@ describe SheldonClient do
   end
 
   before(:each) do
-    SheldonClient.host = "http://46.4.114.22:2311"
+    SheldonClient.host = "http://staging.moviepilot.com:2311"
   end
 
   describe "configuration" do
     it "should talk to the right sheldon server" do
-      SheldonClient.host.should == "http://46.4.114.22:2311"
+      SheldonClient.host.should == "http://staging.moviepilot.com:2311"
     end
   end
 

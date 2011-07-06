@@ -6,7 +6,7 @@ describe SheldonClient do
 
   context "configuration" do
     it "should have a predefined host" do
-      SheldonClient.host.should == 'http://46.4.114.22:2311'
+      SheldonClient.host.should == 'http://staging.moviepilot.com:2311'
     end
 
     it "should return to the configured host" do
@@ -19,6 +19,26 @@ describe SheldonClient do
       SheldonClient.log = true
       SheldonClient.log?.should == true
       SheldonClient.log = false
+    end
+  end
+
+  context "fetching ids" do
+    before(:each) do
+      SheldonClient.host = 'http://sheldon.host'
+    end
+
+    it "of all nodes" do
+      stub_request(:get, "http://sheldon.host/ids/nodes").
+        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
+        to_return(:status => 200 , :body => "[1,2,3]")
+      SheldonClient.all_node_ids.should == [1,2,3]
+    end
+
+    it "of all nodes" do
+      stub_request(:get, "http://sheldon.host/ids/connections").
+        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
+        to_return(:status => 200 , :body => "[1,2,3]")
+      SheldonClient.all_connection_ids.should == [1,2,3]
     end
   end
 
@@ -83,7 +103,7 @@ describe SheldonClient do
 
   context "building request urls" do
     it "should create correct url from given options" do
-      SheldonClient.host = 'http://i.am.the.real.sheldon/'
+      SheldonClient.host = 'http://.am.the.real.sheldon/'
       SheldonClient.create_edge_url( from: 13, to: 14, type: :foo ).path.should == "/nodes/13/connections/foo/14"
       SheldonClient.create_edge_url( from: 10, to: 11, type: :bar ).path.should == "/nodes/10/connections/bar/11"
       SheldonClient.create_node_url( type: :movie ).path.should == "/nodes/movie"
@@ -442,23 +462,6 @@ describe SheldonClient do
     end
   end
 
-  context "fetching ids" do
-    it "of all nodes" do
-      stub_request(:get, "http://sheldon.host/ids/nodes").
-        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
-        to_return(:status => 200 , :body => "[1,2,3]")
-      SheldonClient.all_node_ids.should == [1,2,3]
-    end
-
-    it "of all nodes" do
-      stub_request(:get, "http://sheldon.host/ids/connections").
-        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
-        to_return(:status => 200 , :body => "[1,2,3]")
-      SheldonClient.all_connection_ids.should == [1,2,3]
-    end
-
-
-  end
 
   context "fetching recommendations" do
     it "should fetch all the recommendations for a user from sheldon" do

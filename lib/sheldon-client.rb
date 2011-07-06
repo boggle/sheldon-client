@@ -72,7 +72,9 @@ class SheldonClient
   end
 
   def self.all_ids(type)
-    response = send_request( :get, build_all_ids_url(type) )
+    uri = build_all_ids_url type
+    response = send_request( :get, uri)
+    JSON.parse(response.body)
   end
 
   # Fetch a collection of edges given an url
