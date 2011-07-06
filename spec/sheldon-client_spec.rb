@@ -447,13 +447,16 @@ describe SheldonClient do
       stub_request(:get, "http://sheldon.host/ids/nodes").
         with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
         to_return(:status => 200 , :body => "[1,2,3]")
+      SheldonClient.all_node_ids.should == [1,2,3]
     end
 
     it "of all nodes" do
-      stub_request(:get, "http://sheldon.host/ids/nodes").
+      stub_request(:get, "http://sheldon.host/ids/connections").
         with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
         to_return(:status => 200 , :body => "[1,2,3]")
+      SheldonClient.all_connection_ids.should == [1,2,3]
     end
+
 
   end
 
