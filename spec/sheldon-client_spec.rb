@@ -442,6 +442,21 @@ describe SheldonClient do
     end
   end
 
+  context "fetching ids" do
+    it "of all nodes" do
+      stub_request(:get, "http://sheldon.host/ids/nodes").
+        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
+        to_return(:status => 200 , :body => "[1,2,3]")
+    end
+
+    it "of all nodes" do
+      stub_request(:get, "http://sheldon.host/ids/nodes").
+        with( :headers => {'Accept' =>'application/json', 'Content-Type'=> 'application/json'}).
+        to_return(:status => 200 , :body => "[1,2,3]")
+    end
+
+  end
+
   context "fetching recommendations" do
     it "should fetch all the recommendations for a user from sheldon" do
       stub_request( :get, "http://sheldon.host/recommendations/user/3/containers").
