@@ -103,7 +103,7 @@ describe SheldonClient do
 
   context "building request urls" do
     it "should create correct url from given options" do
-      SheldonClient.host = 'http://.am.the.real.sheldon/'
+      SheldonClient.host = 'http://i.am.the.real.sheldon/'
       SheldonClient.create_edge_url( from: 13, to: 14, type: :foo ).path.should == "/nodes/13/connections/foo/14"
       SheldonClient.create_edge_url( from: 10, to: 11, type: :bar ).path.should == "/nodes/10/connections/bar/11"
       SheldonClient.create_node_url( type: :movie ).path.should == "/nodes/movie"
