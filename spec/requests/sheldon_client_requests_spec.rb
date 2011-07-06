@@ -21,7 +21,7 @@ describe SheldonClient do
 
   describe "searching" do
     it "should find a node on sheldon" do
-      SheldonClient.search(:movies, title: "The Matrix").first.should_not be_nil
+      SheldonClient.search(:movies, title: "The Matrix Reloaded").first.should_not be_nil
     end
 
     xit "should find an user on sheldon given his facebook's username" do
