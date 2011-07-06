@@ -43,8 +43,8 @@ class SheldonClient
       Addressable::URI.parse( self.host + "/nodes/#{options[:type]}" )
     end
 
-    def build_node_url( id )
-       Addressable::URI.parse( self.host + "/nodes/" + id.to_s )
+    def build_all_ids_url( type )
+      Addressable::URI.parse( self.host + "/ids/#{type}" )
     end
 
     def build_edge_url( id )

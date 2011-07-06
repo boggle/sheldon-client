@@ -63,6 +63,20 @@ class SheldonClient
     response.code == '200' ? parse_search_result(response.body) : []
   end
 
+  def self.all_node_ids
+    all_ids :nodes
+  end
+
+  def self.all_connection_ids
+    all_ids :connections
+  end
+
+  def self.all_ids(type)
+    uri = build_all_ids_url type
+    response = send_request( :get, uri)
+    JSON.parse(response.body)
+  end
+
   # Fetch a collection of edges given an url
   #
   # ==== Parameters

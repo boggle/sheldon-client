@@ -10,18 +10,18 @@ describe SheldonClient do
   end
 
   before(:each) do
-    SheldonClient.host = "http://46.4.114.22:2311"
+    SheldonClient.host = "http://staging.moviepilot.com:2311"
   end
 
   describe "configuration" do
     it "should talk to the right sheldon server" do
-      SheldonClient.host.should == "http://46.4.114.22:2311"
+      SheldonClient.host.should == "http://staging.moviepilot.com:2311"
     end
   end
 
   describe "searching" do
     it "should find a node on sheldon" do
-      SheldonClient.search(:movies, title: "The Matrix").first.should_not be_nil
+      SheldonClient.search(:movies, title: "The Matrix Reloaded").first.should_not be_nil
     end
 
     xit "should find an user on sheldon given his facebook's username" do
