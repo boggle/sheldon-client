@@ -174,4 +174,12 @@ describe SheldonClient::UrlHelper do
       reindex_url(connection).path.should eq(connection_reindex_url)
     end
   end
+
+  context "statistics_url" do
+    it "should create sheldons statistics url" do
+      uri = statistics_url
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/statistics"
+    end
+  end
 end
