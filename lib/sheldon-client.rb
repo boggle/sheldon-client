@@ -218,6 +218,7 @@ class SheldonClient
 
   #
   # Fetches all the node ids of a given node type
+  # Also all node's ids or connections's ids regardless of their type.
   #
   # === Parameters
   #
@@ -228,6 +229,11 @@ class SheldonClient
   #   SheldonClient.all( :movies )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   #
+  #   SheldonClient.all( :nodes )
+  #   => [1,2,3,4,5,6,7,8, ..... ,9999]
+  #
+  #   SheldonClient.all( :connections )
+  #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   def self.all( type )
     SheldonClient::Read.fetch_node_type_ids(type)
   end

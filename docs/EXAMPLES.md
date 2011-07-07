@@ -173,7 +173,7 @@ Fetching high scores
      => [#<Sheldon::Connection 476536 (affinity/192975->191202)>]
 
 
-Sheldon Status/Schema/Statistics
+Sheldon Status/Schema/Statistics/Ids
 -------------------------
 
 Fetching Sheldon Client Status
@@ -192,4 +192,25 @@ Fetching Sheldon Client Statistics
 ----------
 
      SheldonClient.statistics
+
+Fetching ids
+-----------
+You can fetch the ids of nodes with a given type or all the nodes and connections,
+regardless of their type.
+
+Fetch the ids of all existing connections, regardless of their type:
+
+     SheldonClient.all( :connections )
+      => [1,2,3,4,5,6,7,8, ..... ,9999]
+
+
+Fetch the ids of all existing nodes, regardless of their type:
+
+     SheldonClient.all( :nodes )
+      => [1,2,3,4,5,6,7,8, ..... ,9999]
+
+Fetch the ids of all nodes with type movie:
+
+     SheldonClient.all( :movies )
+      => [1,2,3,4,5,6,7,8, ..... ,9999]
 

@@ -45,7 +45,11 @@ class SheldonClient
 
     def self.fetch_node_type_ids( type )
       #TODO:  validate type
-      response = send_request(:get, node_type_ids_url(type))
+      if [:nodes, :connections].include?(type)
+        response = send_request(:get, all_ids_url(type))
+      else
+        response = send_request(:get, node_type_ids_url(type))
+      end
       response.code == '200' ? JSON.parse(response.body) : false
     end
 

@@ -334,13 +334,30 @@ describe SheldonClient do
     end
   end
 
-  context "fetching the all node's id of a given type" do
+  context "fetching all ids of a given type" do
     let(:type){ :users }
     let(:url){ node_type_ids_url(type) }
+    let (:node_url){ all_ids_url(:nodes) }
+    let (:connections_url){ all_ids_url(:connections) }
+
     it "should fetch all the ids of a certain type" do
       result  = {status: 200, body: [12, 34].to_json }
       stub_and_expect_request(:get, url, request_data, result) do
         SheldonClient.all(type).should eq([12, 34])
+      end
+    end
+
+    it "should fetch nodes ids" do
+      result  = {status: 200, body: [1, 2, 3].to_json }
+      stub_and_expect_request(:get, node_url, request_data, result) do
+        SheldonClient.all(:nodes).should eq([1,2,3])
+      end
+    end
+
+    it "should fetch connections ids" do
+      result  = { status: 200, body: [1, 2, 3].to_json }
+      stub_and_expect_request(:get, connections_url, request_data, result) do
+        SheldonClient.all(:connections).should eq([1,2,3])
       end
     end
   end
@@ -399,4 +416,6 @@ describe SheldonClient do
       end
     end
   end
+
+
 end
