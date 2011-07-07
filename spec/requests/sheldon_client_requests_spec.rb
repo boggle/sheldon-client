@@ -150,5 +150,12 @@ describe SheldonClient do
       SheldonClient.reindex(connection: connection.id).should eq(true)
     end
   end
+
+  describe "statistics" do
+    it "should have a thousands of movies" do
+      statistics = SheldonClient.statistics
+      (statistics["nodes"]["movies"]["count"] > 1000 ).should eq(true)
+    end
+  end
 end
 
