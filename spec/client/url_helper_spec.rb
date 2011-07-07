@@ -182,4 +182,18 @@ describe SheldonClient::UrlHelper do
       uri.path.should == "/statistics"
     end
   end
+
+  context "all_ids_url" do
+    it "should create the url for all the nodes" do
+      uri = all_ids_url(:nodes)
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/ids/nodes"
+    end
+
+    it "should create the url for all the connections" do
+      uri = all_ids_url(:connections)
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/ids/connections"
+    end
+  end
 end
