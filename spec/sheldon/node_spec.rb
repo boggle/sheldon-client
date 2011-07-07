@@ -7,6 +7,7 @@ describe SheldonClient::Node do
 
   before(:each) do
     SheldonClient::Status.stub!(:status).and_return( sheldon_status )
+    SheldonClient::Schema.stub!(:schema).and_return( sheldon_schema )
   end
 
   let(:payload)   { { some: 'key' } }
@@ -14,7 +15,7 @@ describe SheldonClient::Node do
   let(:connection_id){ rand(100) }
 
   describe "Node#(==)" do
-    let(:url)     { "http://46.4.114.22:2311/search?mode=exact&some=key" }
+    let(:url)     { "#{SheldonClient.host}/search?mode=exact&some=key" }
     let(:node_id) { 0 }
 
     it "should return true when comparing two nodes which are equal" do

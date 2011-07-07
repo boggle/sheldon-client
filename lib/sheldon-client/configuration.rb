@@ -1,7 +1,7 @@
 class SheldonClient
   module Configuration
     def host
-      temp_host || @host || "http://46.4.114.22:2311"
+      temp_host || @host || "http://sheldon.beta.moviepilot.com:2311"
     end
 
     def host=( value )

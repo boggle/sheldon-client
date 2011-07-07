@@ -4,6 +4,7 @@ require 'forwardable'
 
 require 'sheldon-client/crud/crud'
 require 'sheldon-client/sheldon/status'
+require 'sheldon-client/sheldon/schema'
 
 require 'sheldon-client/configuration'
 require 'sheldon-client/sheldon/sheldon_object'
@@ -12,14 +13,15 @@ class SheldonClient
   extend SheldonClient::Configuration
 
   @status = SheldonClient::Status
+  @schema = SheldonClient::Schema
 
   # Forward few status methods to the Status class. See
   # SheldonClient::Status for more information
   class << self
     extend Forwardable
     def_delegators :@status, :status, :node_types, :connection_types
+    def_delegators :@schema, :schema, :node_types, :connection_types
   end
-
 
   #
   # Create a Node or Connection in Sheldon. Please see SheldonClient::Create

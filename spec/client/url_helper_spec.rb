@@ -89,6 +89,14 @@ describe SheldonClient::UrlHelper do
     end
   end
 
+  context "schema_url" do
+    it "should create sheldons schema url" do
+      uri = schema_url
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/schema"
+    end
+  end
+
   context "node_connections_url" do
     it "should create new connection url" do
       uri = node_connections_url( 1, :like, 2 )

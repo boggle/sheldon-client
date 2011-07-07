@@ -36,7 +36,7 @@ class SheldonClient
     # Fetch all valid connection types from this node. This includes
     # outgoing and incoming connection types. You can also fetch only
     # incoming or outgoing connections. See also
-    # SheldonClient::Status#connection_types for all availabel types.
+    # SheldonClient::Schema#connection_types for all availabel types.
     #
     #   SheldonClient.node(17007).connection_types
     #   => [ :actors, :genre_taggings, :likes ]
@@ -120,11 +120,11 @@ class SheldonClient
     end
 
     def outgoing_connection_types
-      SheldonClient::Status.valid_connections_from( self.type )
+      SheldonClient::Schema.valid_connections_from( self.type )
     end
 
     def incoming_connection_types
-      SheldonClient::Status.valid_connections_to( self.type )
+      SheldonClient::Schema.valid_connections_to( self.type )
     end
 
     def neighbours( type = nil )

@@ -173,3 +173,18 @@ Fetching high scores
      => [#<Sheldon::Connection 476536 (affinity/192975->191202)>]
 
 
+Sheldon Status and Schema
+-------------------------
+
+Fetching Sheldon Client Status
+----------------
+Returns a hash with the information under /status
+
+     ShaledonClient.status
+
+Fetching Sheldon Client Schema
+----------------
+Returns a hash with information about the nodes and connections
+
+     ShaledonClient.schema
+

@@ -7,22 +7,31 @@ module WebMockSupport
 
 
   def sheldon_status
-    { "schema" => { "nodes"       => { "movies"  => { "properties" => [ "name" => [ 'exact' ] ],
-                                                      "count"      => 4  },
-                                       "persons" => { "properties" => [],
-                                                      "count"      => 6  }},
-                    "connections" => { "likes"  => { "properties" => [],
-                                                     "sources"    => [ 'users' ],
-                                                     "targets"    => [ 'movies', 'persons' ],
-                                                     "count"      => 3 },
-                                       "actors" => { "properties" => [],
-                                                     "sources"    => [ 'movies' ],
-                                                     "targets"    => [ 'persons' ],
-                                                     "count"      => 2 },
-                                       "g_tags" => { "properties" => [],
-                                                     "sources"    => [ 'movies' ],
-                                                     "targets"    => [ 'genres' ],
-                                                     "count"      => 2 }}}
+    {"db_system" => { "basic_props" => { "nodes" => 203752,
+                                         "edges" => 2319549,
+                                         "edge_types" => 18,
+                                         "properties" => 13039772},
+                      "kernel_props" => { "uptime" => 4052 }}
+    }
+  end
+
+  def sheldon_schema
+    { "nodes"       => { "movies"  => { "properties" => [ "name" => [ 'exact' ] ],
+                                        "count"      => 4  },
+                         "persons" => { "properties" => [],
+                                        "count"      => 6  }},
+       "connections" => { "likes"  => { "properties" => [],
+                                        "sources"    => [ 'users' ],
+                                        "targets"    => [ 'movies', 'persons' ],
+                                        "count"      => 3 },
+                          "actors" => { "properties" => [],
+                                        "sources"    => [ 'movies' ],
+                                        "targets"    => [ 'persons' ],
+                                        "count"      => 2 },
+                          "g_tags" => { "properties" => [],
+                                        "sources"    => [ 'movies' ],
+                                        "targets"    => [ 'genres' ],
+                                        "count"      => 2 }}
     }
   end
 

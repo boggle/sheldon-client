@@ -9,7 +9,7 @@ describe SheldonClient do
 
   context "configuration" do
     it "should have a predefined host" do
-      SheldonClient.host.should == 'http://46.4.114.22:2311'
+      SheldonClient.host.should == 'http://sheldon.beta.moviepilot.com:2311'
     end
 
     it "should return to the configured host" do
