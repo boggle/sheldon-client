@@ -5,6 +5,7 @@ require 'forwardable'
 require 'sheldon-client/crud/crud'
 require 'sheldon-client/sheldon/status'
 require 'sheldon-client/sheldon/schema'
+require 'sheldon-client/sheldon/statistics'
 
 require 'sheldon-client/configuration'
 require 'sheldon-client/sheldon/sheldon_object'
@@ -14,6 +15,7 @@ class SheldonClient
 
   @status = SheldonClient::Status
   @schema = SheldonClient::Schema
+  @statistics = SheldonClient::Statistics
 
   # Forward few status methods to the Status class. See
   # SheldonClient::Status for more information
@@ -21,6 +23,7 @@ class SheldonClient
     extend Forwardable
     def_delegators :@status, :status, :node_types, :connection_types
     def_delegators :@schema, :schema, :node_types, :connection_types
+    def_delegators :@statistics, :statistics
   end
 
   #
@@ -215,6 +218,7 @@ class SheldonClient
 
   #
   # Fetches all the node ids of a given node type
+  # Also all node's ids or connections's ids regardless of their type.
   #
   # === Parameters
   #
@@ -225,6 +229,11 @@ class SheldonClient
   #   SheldonClient.all( :movies )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   #
+  #   SheldonClient.all( :nodes )
+  #   => [1,2,3,4,5,6,7,8, ..... ,9999]
+  #
+  #   SheldonClient.all( :connections )
+  #   => [1,2,3,4,5,6,7,8, ..... ,9999]
   def self.all( type )
     SheldonClient::Read.fetch_node_type_ids(type)
   end

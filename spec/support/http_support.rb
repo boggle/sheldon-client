@@ -59,6 +59,7 @@ module HttpSupport
       when :node_created          then { status: 201, body: node_body(opts).to_json   }
       when :not_found             then { status: 404 }
       when :success               then { status: 200, body: {}.to_json}
+      when :statistics            then { status: 200, body: statistics_body.to_json }
       when :status                then { status: 200, body: sheldon_status.to_json }
       when :neighbour_collection then
        { status: 200,
@@ -82,5 +83,14 @@ module HttpSupport
       from: (opts[:from_id] || from_id).to_s,
       to: (opts[:to_id] || to_id).to_s,
       payload: opts[:payload] || connection_payload }
+  end
+
+  def statistics_body
+    { "nodes"=> { "movies" => { "count"=>49467 },
+                  "series"=>{"count"=>1516 } },
+      "connections" => { "actings"    => {"count"=> 4667 },
+                         "directings" => { "count" => 455 },
+                         "genre_taggings" => { "count" => 953 }}
+    }
   end
 end

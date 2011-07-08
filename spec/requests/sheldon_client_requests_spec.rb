@@ -130,6 +130,16 @@ describe SheldonClient do
       users_ids = SheldonClient.all(:users)
       (users_ids.count > 100).should eq(true)
     end
+
+    it "should have more than a thousand of nodes" do
+      nodes_ids = SheldonClient.all(:nodes)
+      (nodes_ids.count > 1000).should eq(true)
+    end
+
+    it "should have more than a hundred connections" do
+      nodes_ids = SheldonClient.all(:nodes)
+      (nodes_ids.count > 100).should eq(true)
+    end
   end
 
   describe "reindexing nodes" do
@@ -148,6 +158,13 @@ describe SheldonClient do
       SheldonClient.reindex(connection).should eq(true)
       SheldonClient.reindex(connection: connection).should eq(true)
       SheldonClient.reindex(connection: connection.id).should eq(true)
+    end
+  end
+
+  describe "statistics" do
+    it "should have a thousands of movies" do
+      statistics = SheldonClient.statistics
+      (statistics["nodes"]["movies"]["count"] > 1000 ).should eq(true)
     end
   end
 end

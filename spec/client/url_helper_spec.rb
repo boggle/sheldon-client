@@ -174,4 +174,26 @@ describe SheldonClient::UrlHelper do
       reindex_url(connection).path.should eq(connection_reindex_url)
     end
   end
+
+  context "statistics_url" do
+    it "should create sheldons statistics url" do
+      uri = statistics_url
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/statistics"
+    end
+  end
+
+  context "all_ids_url" do
+    it "should create the url for all the nodes" do
+      uri = all_ids_url(:nodes)
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/ids/nodes"
+    end
+
+    it "should create the url for all the connections" do
+      uri = all_ids_url(:connections)
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/ids/connections"
+    end
+  end
 end
