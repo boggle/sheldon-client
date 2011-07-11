@@ -11,6 +11,14 @@
              SheldonClient.delete(connection: node.connections(:likes).first )
              SheldonClient.delete(connection: {from: node, type:likes})
 
+  * Fetch statistics around data stored inside sheldon with:
+
+             SheldonClient.statistics
+
+  * Fetch current defined sheldon schema, includes all available nodes and connections.
+
+             SheldonClient.schema
+
   * Added more examples to docs/EXAMPLES.md file.
 
 * deprecations
