@@ -3,9 +3,11 @@
 # Instead, edit Jeweler::Tasks in Rakefile, and run 'rake gemspec'
 # -*- encoding: utf-8 -*-
 
+version  = File.read('VERSION').strip
+
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.4"
+  s.version = version
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
