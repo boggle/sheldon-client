@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.3.2"
+  s.version = "0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
@@ -23,14 +23,16 @@ Gem::Specification.new do |s|
     "lib/sheldon-client/crud/crud.rb",
     "lib/sheldon-client/crud/delete.rb",
     "lib/sheldon-client/crud/read.rb",
+    "lib/sheldon-client/crud/search.rb",
     "lib/sheldon-client/crud/update.rb",
     "lib/sheldon-client/edge.rb",
     "lib/sheldon-client/http/http.rb",
     "lib/sheldon-client/http/url_helper.rb",
-    "lib/sheldon-client/search.rb",
     "lib/sheldon-client/sheldon/connection.rb",
     "lib/sheldon-client/sheldon/node.rb",
     "lib/sheldon-client/sheldon/sheldon_object.rb",
+    "lib/sheldon-client/sheldon/schema.rb",
+    "lib/sheldon-client/sheldon/statistics.rb",
     "lib/sheldon-client/sheldon/status.rb"
   ]
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
@@ -43,7 +45,8 @@ Gem::Specification.new do |s|
     "spec/requests/sheldon_client_requests_spec.rb",
     "spec/sheldon-client_spec.rb",
     "spec/sheldon/node_spec.rb",
-    "spec/sheldon/status_spec.rb",
+    "spec/sheldon/schema_spec.rb",
+    "spec/sheldon/statistics_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/http_support.rb",
     "spec/support/web_mock_support.rb"
