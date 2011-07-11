@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 source 'http://gems.backend.moviepilot.com'
 
 gem 'addressable', '~> 2.2.0'
-gem "activesupport", "~> 3.1.0.rc4"
+gem "activesupport", ">= 3.0.0"
 gem 'i18n'
 
 group :development do
