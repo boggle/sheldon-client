@@ -36,6 +36,12 @@ describe SheldonClient::UrlHelper do
       uri.path.should == "/nodes/1"
     end
 
+    it "should create an url with id as string" do
+      uri = node_url('1')
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1"
+    end
+
     it "should create the reindex url" do
       uri = node_url(1, :reindex)
       uri.should be_a( Addressable::URI )
