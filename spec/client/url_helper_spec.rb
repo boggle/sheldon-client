@@ -47,25 +47,25 @@ describe SheldonClient::UrlHelper do
     it "should generate global search url" do
       uri = search_url( 'query' )
       uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?mode=exact&q=query"
+      uri.request_uri.should == "/search?q=query"
     end
 
     it "should generate typed search url" do
       uri = search_url( 'query', type: :movie )
       uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search/nodes/movies?mode=exact&q=query"
+      uri.request_uri.should == "/search/nodes/movies?q=query"
     end
 
     it "should generate untyped attribute search url" do
       uri = search_url( { title: 'query' } )
       uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?mode=exact&title=query"
+      uri.request_uri.should == "/search?title=query"
     end
 
     it "should generate typed attribute search url" do
       uri = search_url( { title: 'query'}, type: :movie )
       uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search/nodes/movies?mode=exact&title=query"
+      uri.request_uri.should == "/search/nodes/movies?title=query"
     end
 
     it "should generate exact untyped search url" do
