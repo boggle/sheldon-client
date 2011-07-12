@@ -146,6 +146,13 @@ Deleting connections
     SheldonClient.delete(connection: 545)
     => true
 
+Delete all the connection of a certain type
+
+    user  = SheldonClient.node 321
+    SheldonClient.delete(connection: {from: user, type:likes})
+    => true
+
+
 Reindexing a connection
 ------
 
