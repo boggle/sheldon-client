@@ -19,7 +19,7 @@ class SheldonClient
     end
 
     def node_url( *args )
-      if args[0].is_a?(Numeric) and args[1].nil?
+      if is_id?(*args) and args[1].nil?
         # e.g. node_url( 1 )
         path = "/nodes/#{args[0]}"
       elsif !args[1].nil? and args[1].is_a?(Symbol)
@@ -112,6 +112,10 @@ class SheldonClient
       else
         SheldonClient::Crud.sheldon_type_and_id_from_object( object )
       end
+    end
+
+    def is_id?( *args )
+      args[0].is_a?(Numeric) or (!args[0].to_i.zero?  unless args[0].is_a?(Symbol))
     end
   end
 end
