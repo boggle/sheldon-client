@@ -56,7 +56,7 @@ Fetch connections from a node
     SheldonClient.node(17007).connections( :actors )
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
-    SheldonClient.connection(17007, :actors)
+    SheldonClient.connection(from:17007, type: :actors)
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
 Fetch connections between nodes
