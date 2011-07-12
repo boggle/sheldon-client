@@ -48,7 +48,6 @@ class SheldonClient
     #
 
     def self.search( query, options = {} )
-      options[:mode] ||= :exact
       uri = search_url( query, options )
       response = send_request( :get, uri )
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false

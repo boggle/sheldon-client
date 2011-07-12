@@ -15,7 +15,7 @@ describe SheldonClient::Node do
   let(:connection_id){ rand(100) }
 
   describe "Node#(==)" do
-    let(:url)     { "#{SheldonClient.host}/search?mode=exact&some=key" }
+    let(:url)     { "#{SheldonClient.host}/search?some=key" }
     let(:node_id) { 0 }
 
     it "should return true when comparing two nodes which are equal" do

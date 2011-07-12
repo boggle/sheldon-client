@@ -47,7 +47,6 @@ class SheldonClient
       else
         path = "/search"
       end
-      options[:mode] ||= :exact
       query = { q: query } if query.is_a?(String)
       uri = Addressable::URI.parse( SheldonClient.host + path )
       uri.query_values = stringify_fixnums( query.update(options) )
