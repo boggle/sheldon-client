@@ -214,3 +214,46 @@ Fetch the ids of all nodes with type movie:
      SheldonClient.all( :movies )
       => [1,2,3,4,5,6,7,8, ..... ,9999]
 
+
+Searching nodes
+-------
+
+General Query
+-----
+
+     SheldonClient.search('matrix')
+
+Will make a query to sheldon that looks like this
+
+     http://sheldon.host:2311/search?q=matrix
+
+Searching by parameter
+----
+
+     SheldonClient.search( facebook_ids: '501730216' )
+
+Searches over all node and connections type that share a same parameter name
+
+
+Searching by parameter with a given mode
+-----
+You can do exact or fulltext search.
+
+     SheldonClient.search(title:'The Matrix', :mode => :exact )
+      => [#<Sheldon::Node 416 (Movie/The Matrix)>]
+
+     SheldonClient.search(title:'matrix', :mode => :fulltext )
+      => [ #<Sheldon::Node 416 (Movie/The Matrix)>,
+           #<Sheldon::Node 1658 (Movie/The Matrix Revolutions)>,
+           #<Sheldon::Node 1252 (Movie/The Matrix Reloaded)>
+
+Searching by type
+-------
+Searches over the sheldon's nodes of the given type like.
+
+      SheldonClient.search(title: 'Jennifer', type: :movie)
+      => [#<Sheldon::Node 4396 (Movie/Jennifer 8)>, #<Sheldon::Node 10534 (Movie/Untitled Jennifer Lopez Comedy)>]
+
+
+
+

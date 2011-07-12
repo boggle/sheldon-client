@@ -148,7 +148,6 @@ class SheldonClient
   # ==== Parameters
   #
   # type    - plural of any known sheldon node type like :movies or :genres.
-  #           Pass nil if you want to search all node-types.
   # options - the search option that will be forwarded to lucene. This depends
   #           on the type, see below. options[:type] is reserved for the type
   #           of search you want to perform. Pass :exact or :fulltext for

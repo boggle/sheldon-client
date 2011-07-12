@@ -42,8 +42,9 @@ class SheldonClient
     end
 
     def search_url( query, options = {} )
-      if options[:type]
-        path = "/search/nodes/" + options.delete(:type).to_s.pluralize
+      if options[:type] || ( query[:type] if query.is_a?(Hash))
+        type = options.delete(:type) || query.delete(:type)
+        path = "/search/nodes/#{type.to_s.pluralize}"
       else
         path = "/search"
       end
