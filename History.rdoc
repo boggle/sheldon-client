@@ -31,7 +31,7 @@
   * SheldonClient.get_highscores('123') (Use SheldonClient.high_scores)
   * SheldonClient.update_edge (Use SheldonClient.update(connnection: {}, payload )
   * SheldonClient.get_node_ids_of_type ( use SheldonClient.all(:users) )
-  * SheldonClient.fetch_edges ( user SheldonClient.
+  * SheldonClient.fetch_edges ( user SheldonClient.connection )
 
 
 
