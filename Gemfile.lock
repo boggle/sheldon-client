@@ -1,6 +1,6 @@
 GEM
   remote: http://rubygems.org/
-  remote: http://gems.backend.moviepilot.com/
+  remote: http://moviepilot:GoodMovies2011!@gems.backend.moviepilot.com/
   specs:
     activesupport (3.0.0)
     addressable (2.2.6)
