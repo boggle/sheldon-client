@@ -56,7 +56,7 @@ Fetch connections from a node
     SheldonClient.node(17007).connections( :actors )
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
-    SheldonClient.connection(17007, :actors)
+    SheldonClient.connection(from:17007, type: :actors)
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
 Fetch connections between nodes
@@ -145,6 +145,13 @@ Deleting connections
     # Using the connection id
     SheldonClient.delete(connection: 545)
     => true
+
+Delete all the connection of a certain type
+
+    user  = SheldonClient.node 321
+    SheldonClient.delete(connection: {from: user, type:likes})
+    => true
+
 
 Reindexing a connection
 ------
