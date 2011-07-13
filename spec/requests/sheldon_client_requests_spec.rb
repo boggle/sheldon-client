@@ -152,8 +152,10 @@ describe SheldonClient do
     end
 
     it "should reindex connections" do
-      connection = SheldonClient.high_scores(192975).first
+      connections = SheldonClient.all(:connections)
+      connections.should_not be_empty
 
+      connection = SheldonClient.connection connections.first
       connection.should be_a SheldonClient::Connection
       SheldonClient.reindex(connection).should eq(true)
       SheldonClient.reindex(connection: connection).should eq(true)
