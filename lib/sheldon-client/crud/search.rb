@@ -48,9 +48,7 @@ class SheldonClient
     #
 
     def self.search( query, options = {} )
-      uri = search_url( query, options )
-      response = send_request( :get, uri )
-      response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
+      return parse_search_result( Elastodon.emulate_sheldon_search(query, options) )
     end
 
 

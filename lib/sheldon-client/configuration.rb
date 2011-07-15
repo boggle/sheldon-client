@@ -8,6 +8,10 @@ class SheldonClient
       @host = value.chomp("/")
     end
 
+    def elastodon_host=( value )
+      Elastodon.config.host = value
+    end
+
     def temp_host=( value )
       value = value.chomp("/") if value.is_a?(String)
       Thread.current['SheldonClient.host'] = value

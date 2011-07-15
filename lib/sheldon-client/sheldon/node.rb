@@ -95,6 +95,8 @@ class SheldonClient
     #
     #
 
+    include Elastodon::Node
+
     def to_s
       "#<Sheldon::Node #{id} (#{type.to_s.camelcase}/#{name})>"
     end

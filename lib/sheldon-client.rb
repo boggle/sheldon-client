@@ -1,6 +1,7 @@
 require 'json'
 require 'active_support/inflector'
 require 'forwardable'
+require 'elastodon'
 
 require 'sheldon-client/crud/crud'
 require 'sheldon-client/sheldon/status'
