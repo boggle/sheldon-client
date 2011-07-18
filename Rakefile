@@ -23,7 +23,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "core@moviepilot.com"
   gem.authors = ["Pontus Lindstrom", "Benjamin Krause"]
   gem.files = Dir['lib/**/*.rb']
-  gem.add_runtime_dependency 'elastodon', '~> 0.0.4'
+  gem.add_runtime_dependency 'elastodon', '~> 0.0.5'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
