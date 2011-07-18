@@ -48,7 +48,8 @@ class SheldonClient
     #
 
     def self.search( query, options = {} )
-      return parse_search_result( Elastodon.emulate_sheldon_search(query, options) )
+      result = Elastodon.emulate_sheldon_search(query, options)
+      options[:extended] ? result : parse_search_result(result)
     end
 
 
