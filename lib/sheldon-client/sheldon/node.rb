@@ -108,7 +108,7 @@ class SheldonClient
     end
 
     def connections( type )
-      if valid_connection_type?( type, :outgoing )
+      if valid_connection_type?( type )
         Read.fetch_edges( self.id, type )
       else
         raise ArgumentError.new("unknown connection type #{type} for #{self.type}")
