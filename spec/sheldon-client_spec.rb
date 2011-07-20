@@ -166,6 +166,23 @@ describe SheldonClient do
       end
     end
 
+    it "should delete a connection given to, from and type" do
+      url = "#{host_url}/connections/12"
+      result = response(:connection,
+                        connection_type: :like,
+                        connection_id: 12,
+                        from_id: 13,
+                        to_id: 15,
+                        payload: {})
+      stub_and_expect_request(:delete, url, request_data, response(:success)) do
+        connection_url = node_connections_url(13, :like, 15)
+
+        stub_and_expect_request(:get, connection_url, request_data, result ) do
+          SheldonClient.delete(connection: {from:13, to:15, type: :like}).should eq(true)
+        end
+      end
+    end
+
     it "should return false when deleting non existance nodes" do
       url = "#{host_url}/connections/122"
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
