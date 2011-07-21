@@ -9,7 +9,7 @@ describe SheldonClient do
 
   context "configuration" do
     it "should have a predefined host" do
-      SheldonClient.host.should == 'http://sheldon.beta.moviepilot.com:2311'
+      SheldonClient.host.should == 'http://sheldon.staging.moviepilot.com:2311'
     end
 
     it "should return to the configured host" do
@@ -434,5 +434,26 @@ describe SheldonClient do
     end
   end
 
+  describe "SheldonClient.special_nodes" do
+    let(:payload)   { { some: 'key', marked: :true } }
+    let(:node_type) { :movie }
 
+    before(:each) do
+      @nodes = [ SheldonClient::Node.new(id: 1,
+                                         type: node_type,
+                                         payload: payload.update( marks: [:pontus])),
+                 SheldonClient::Node.new(id: 2,
+                                         type: node_type,
+                                         payload: payload.update(marks: [:adolfo,
+                                                                         :pontus]))]
+      SheldonClient.stub!(:search).with(marked: :true){ @nodes }
+    end
+
+    it "should return all the categories and the nodes in it" do
+      result = SheldonClient.marked_nodes
+      result.keys.should eq([:pontus, :adolfo])
+      result.should eq({ pontus: @nodes,
+                         adolfo: [@nodes[1]] })
+    end
+  end
 end

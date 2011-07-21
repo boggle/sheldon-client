@@ -322,4 +322,16 @@ class SheldonClient
     end
   end
 
+  def self.marked_nodes
+    nodes = search(marked: :true)
+    marks = Hash.new do |h,k|
+        h[k] = []
+    end
+    nodes.each do |node|
+      node.marks.each do |mark|
+        marks[mark] << node
+      end
+    end
+    marks
+  end
 end
