@@ -53,6 +53,11 @@ class SheldonClient
       response.code == '200' ? JSON.parse(response.body) : false
     end
 
+    def self.fetch_collection( uri )
+      response = send_request( :get, Addressable::URI.parse( SheldonClient.host + uri ) )
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
+    end
+
     private
 
     def self.validate_user(user)
