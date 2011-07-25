@@ -11,7 +11,12 @@ class SheldonClient
 
     def self.delete_connections_url( object )
       if object.is_a?(Hash)
-        node_connections_url(object[:from], object[:type])
+        if object[:to]
+          connection = SheldonClient.connection(object)
+          connnections_url( connection.to_i )
+        else
+          node_connections_url(object[:from], object[:type])
+        end
       else
         connnections_url( object.to_i )
       end

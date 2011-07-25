@@ -120,7 +120,7 @@ Updating a connection
     connection.save
     => true
 
-    SheldonClient.update (connection, { from: user,
+    SheldonClient.update (:connection, { from: user,
                                         to: movie,
                                         type: :likes,
                                         payload: { weight: 0.7 } })
