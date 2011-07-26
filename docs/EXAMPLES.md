@@ -89,6 +89,41 @@ Reindexing a node
      SheldonClient.reindex(node: gozno).should eq(true)
      => true
 
+Add/Remove a mark to a node
+-------
+     gonzo = SheldonClient.search( username: 'gonzo gonzales' ).first
+     gonzo.mark :trending_user
+     => true
+
+     gonzo.marks
+     => [:trending_user]
+
+     gonzo.marked?
+     => true
+
+Deleting mark
+
+     gonzo = SheldonClient.search( username: 'gonzo gonzales' ).first
+     gonzo.unmark :trending_user
+     => true
+
+     gonzo.marks
+     => []
+
+     gonzo.marked?
+     => false
+
+Getting all marked_nodes
+------
+
+     marks = SheldonClient.marked_nodes
+     => { buzz_bucket: [ #<Sheldon::Node 204272 (Movie/My Neighbour Totoro)>,
+                         #<Sheldon::Node 204233 (Movie/Big Tits Zombie)> ],
+          buzz_people: [ #<Sheldon::Node 304272 (Person/Sora Aoi)>,
+                         #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
+
+
+
 Working with Connections
 ---
 

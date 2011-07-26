@@ -322,4 +322,24 @@ class SheldonClient
     end
   end
 
+  # Fetches all the marks in sheldon and the marked nodes.
+  #
+  #  marks = SheldonClient.marked_nodes
+  #  => { buzz_bucket: [ #<Sheldon::Node 204272 (Movie/My Neighbour Totoro)>,
+  #                      #<Sheldon::Node 204233 (Movie/Big Tits Zombie)> ],
+  #       buzz_people: [ #<Sheldon::Node 304272 (Person/Sora Aoi)>,
+  #                      #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
+
+  def self.marked_nodes
+    nodes = search(marked: :true)
+    marks = Hash.new do |h,k|
+        h[k] = []
+    end
+    nodes.each do |node|
+      node.marks.each do |mark|
+        marks[mark] << node
+      end
+    end
+    marks
+  end
 end
