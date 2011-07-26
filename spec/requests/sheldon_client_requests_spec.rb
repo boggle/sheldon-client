@@ -3,6 +3,7 @@ require 'spec_helper'
 describe SheldonClient do
   before(:all) do
     WebMock.allow_net_connect!
+    SheldonClient.host = "http://sheldon.beta.moviepilot.com:2311"
   end
 
   after(:all) do
