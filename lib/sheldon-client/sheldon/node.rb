@@ -117,6 +117,37 @@ class SheldonClient
       end
     end
 
+    def marked?
+      payload[:marked] || false
+    end
+
+    def marks
+      payload[:marks] || []
+    end
+
+    def mark( mark_name )
+      if payload[:marked]
+        payload[:marks] << mark_name
+      else
+        payload[:marked] = :true
+        payload[:marks] = [mark_name]
+      end
+      save
+    end
+
+    def unmark( mark_name )
+      if payload[:marked]
+        payload[:marks].delete(mark_name)
+        if payload[:marks].empty?
+          payload[:marked] = nil
+          payload[:marks]  = nil
+        end
+        save
+      else
+        false
+      end
+    end
+
     def connection_types
       (outgoing_connection_types + incoming_connection_types).uniq.sort
     end

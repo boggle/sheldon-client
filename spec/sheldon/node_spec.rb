@@ -101,6 +101,49 @@ describe SheldonClient::Node do
     end
   end
 
+  context "marking as special" do
+    let(:node_id) { 2 }
+    let(:url) { node_url(node_id) }
+    let(:payload)   { { some: 'key' } }
+    let(:node_type) { :movie }
+
+    before(:each) do
+      @node = SheldonClient::Node.new(id: node_id, type: node_type, payload: payload)
+    end
+
+    it "should add the marker to the payload and add a flag that has a mark" do
+      body = payload.update(marked: :true, marks: [:manual_buzz_bucket])
+      stub_and_expect_request(:put, url, request_data(body), response(:success)) do
+        @node.mark :manual_buzz_bucket
+      end
+    end
+
+    it "should add the marker to the payload" do
+      @node.payload.update(marked: :true, marks: [:manual_buzz_bucket])
+      body = payload.update(marked: :true, marks: [:manual_buzz_bucket, :p_buzz_bucket])
+      stub_and_expect_request(:put, url, request_data(body), response(:success)) do
+        @node.mark :p_buzz_bucket
+      end
+    end
+
+    it "should allow the deletion of a mark and delete flag marked" do
+      @node.payload.update(marked: :true, marks: [:manual_buzz_bucket])
+      body = payload.update(marked: nil, marks: nil)
+      stub_and_expect_request(:put, url, request_data(body), response(:success)) do
+        @node.unmark :manual_buzz_bucket
+      end
+    end
+
+    it "should allow the deletion of a mark and keep the rest" do
+      @node.payload.update(marked: true, marks: [:manual_buzz_bucket, :pontus_buzz])
+      body = payload.update(marked: true, marks: [:manual_buzz_bucket])
+
+      stub_and_expect_request(:put, url, request_data(body), response(:success)) do
+        @node.unmark :pontus_buzz
+      end
+    end
+  end
+
   context "deletion" do
     let(:node_id) { 3 }
     let(:url)     { node_url(node_id) }
