@@ -4,7 +4,7 @@ source 'http://moviepilot:GoodMovies2011!@gems.backend.moviepilot.com'
 gem 'addressable', '~> 2.2.0'
 gem "activesupport", ">= 3.0.0"
 gem 'i18n'
-gem 'elastodon', "~> 0.0.9"
+gem 'elastodon', "~> 0.0.11"
 #gem 'elastodon', path: '../coredump/elastodon'
 
 group :development do

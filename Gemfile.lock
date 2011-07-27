@@ -25,7 +25,7 @@ GEM
       capistrano (>= 1.0.0)
     crack (0.1.8)
     diff-lcs (1.1.2)
-    elastodon (0.0.9)
+    elastodon (0.0.11)
       hashie (~> 1.0.0)
       its-it (~> 1.1.0)
       tire (~> 0.1.15)
@@ -81,7 +81,7 @@ DEPENDENCIES
   activesupport (>= 3.0.0)
   addressable (~> 2.2.0)
   bundler (~> 1.0.0)
-  elastodon (~> 0.0.9)
+  elastodon (~> 0.0.11)
   i18n
   jeweler (~> 1.5.2)
   mp-deployment
