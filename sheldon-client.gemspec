@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.5.4"
+  s.version = "0.5.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-07-26}
+  s.date = %q{2011-07-28}
   s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
   s.email = %q{core@moviepilot.com}
   s.extra_rdoc_files = [
@@ -59,39 +59,36 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<addressable>, ["~> 2.2.0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_runtime_dependency(%q<i18n>, [">= 0"])
-      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.9"])
+      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.11"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<webmock>, ["~> 1.6"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<mp-deployment>, [">= 0"])
-      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.5"])
     else
       s.add_dependency(%q<addressable>, ["~> 2.2.0"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_dependency(%q<i18n>, [">= 0"])
-      s.add_dependency(%q<elastodon>, ["~> 0.0.9"])
+      s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<webmock>, ["~> 1.6"])
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<mp-deployment>, [">= 0"])
-      s.add_dependency(%q<elastodon>, ["~> 0.0.5"])
     end
   else
     s.add_dependency(%q<addressable>, ["~> 2.2.0"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0"])
     s.add_dependency(%q<i18n>, [">= 0"])
-    s.add_dependency(%q<elastodon>, ["~> 0.0.9"])
+    s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<webmock>, ["~> 1.6"])
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<mp-deployment>, [">= 0"])
-    s.add_dependency(%q<elastodon>, ["~> 0.0.5"])
   end
 end
 
