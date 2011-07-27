@@ -204,9 +204,9 @@ describe SheldonClient do
     let(:payload)   { {} }
 
     it "should pass search parameters to elastodon" do
-      Elastodon.should_receive(:emulate_sheldon_search).with('query', 'options').and_return( response(:node_collection)[:body] )
+      Elastodon.should_receive(:emulate_sheldon_search).with('query', {}).and_return( response(:node_collection)[:body] )
 
-      result = SheldonClient.search('query', 'options').should eq( SheldonClient::Search.parse_search_result( response(:node_collection)[:body] ) )
+      result = SheldonClient.search('query', {}).should eq( SheldonClient::Search.parse_search_result( response(:node_collection)[:body] ) )
     end
   end
 
