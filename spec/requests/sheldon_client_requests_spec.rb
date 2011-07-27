@@ -4,6 +4,7 @@ describe SheldonClient do
   before(:all) do
     WebMock.allow_net_connect!
     SheldonClient.host = "http://sheldon.beta.moviepilot.com:2311"
+    SheldonClient.elastodon_host = 'http://db01.moviepilot.com:9200'
   end
 
   after(:all) do
