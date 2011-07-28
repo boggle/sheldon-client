@@ -97,6 +97,10 @@ class SheldonClient
 
     include Elastodon::Node
 
+    def ==(other)
+      self.to_indexed_json == other.to_indexed_json
+    end
+
     def to_s
       "#<Sheldon::Node #{id} (#{type.to_s.camelcase}/#{name})>"
     end
