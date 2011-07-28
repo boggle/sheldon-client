@@ -164,4 +164,28 @@ describe SheldonClient::UrlHelper do
       uri.path.should == "/ids/connections"
     end
   end
+
+  context "user_stream_url" do
+    let(:user_id){2}
+
+    it "should create the user stream url when given user" do
+      user = SheldonClient::Node.new(id: user_id, type: :user)
+      uri  = user_stream_url user
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/stream/users/#{user_id}")
+    end
+
+    it "should create the user stream url when given the user id" do
+      uri  = user_stream_url "2"
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/stream/users/#{user_id}")
+    end
+
+    it "should add page and per_page to the user stream" do
+      uri  = user_stream_url "2", page: 1, per_page: 5
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/stream/users/#{user_id}")
+      uri.query_values.should eq({"page" => "1", "per_page" => "5"})
+    end
+  end
 end
