@@ -49,44 +49,6 @@ describe SheldonClient::UrlHelper do
     end
   end
 
-  context "search_url" do
-    it "should generate global search url" do
-      uri = search_url( 'query' )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?q=query"
-    end
-
-    it "should generate typed search url" do
-      uri = search_url( 'query', type: :movie )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search/nodes/movies?q=query"
-    end
-
-    it "should generate untyped attribute search url" do
-      uri = search_url( { title: 'query' } )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?title=query"
-    end
-
-    it "should generate typed attribute search url" do
-      uri = search_url( { title: 'query'}, type: :movie )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search/nodes/movies?title=query"
-    end
-
-    it "should generate exact untyped search url" do
-      uri = search_url( { title: 'query' }, mode: :fulltext )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?mode=fulltext&title=query"
-    end
-
-    it "should generate search url even if the value of a key is a Fixnum" do
-      uri = search_url( { id: 1 }, mode: :fulltext )
-      uri.should be_a( Addressable::URI )
-      uri.request_uri.should == "/search?id=1&mode=fulltext"
-    end
-  end
-
   context "status_url" do
     it "should create sheldons status url" do
       uri = status_url

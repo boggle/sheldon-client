@@ -15,15 +15,16 @@ describe SheldonClient::Node do
   let(:connection_id){ rand(100) }
 
   describe "Node#(==)" do
-    let(:url)     { "#{SheldonClient.host}/search?some=key" }
+    let(:url)     { node_url(1) }
     let(:node_id) { 0 }
 
     it "should return true when comparing two nodes which are equal" do
       rsp  = response(:node_collection)
 
-      stub_request(:get, url).with(request_data).to_return(response(:node_collection))
-      node1 = SheldonClient.search some: 'key'
-      node2 = SheldonClient.search some: 'key'
+      stub_request(:get, url).with(request_data).to_return(response(:node))
+
+      node1 = SheldonClient.node(1)
+      node2 = SheldonClient.node(1)
       node1.should eq(node2)
     end
   end

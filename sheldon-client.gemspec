@@ -3,15 +3,13 @@
 # Instead, edit Jeweler::Tasks in Rakefile, and run 'rake gemspec'
 # -*- encoding: utf-8 -*-
 
-version  = File.read('VERSION').strip
-
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = version
+  s.version = "0.5.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-06-26}
+  s.date = %q{2011-07-28}
   s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
   s.email = %q{core@moviepilot.com}
   s.extra_rdoc_files = [
@@ -32,15 +30,15 @@ Gem::Specification.new do |s|
     "lib/sheldon-client/http/url_helper.rb",
     "lib/sheldon-client/sheldon/connection.rb",
     "lib/sheldon-client/sheldon/node.rb",
-    "lib/sheldon-client/sheldon/sheldon_object.rb",
     "lib/sheldon-client/sheldon/schema.rb",
+    "lib/sheldon-client/sheldon/sheldon_object.rb",
     "lib/sheldon-client/sheldon/statistics.rb",
     "lib/sheldon-client/sheldon/status.rb"
   ]
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.0}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Talks to Sheldon}
   s.test_files = [
     "spec/client/url_helper_spec.rb",
@@ -59,8 +57,9 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<addressable>, ["~> 2.2.0"])
-      s.add_runtime_dependency(%q<active_support>, [">= 0"])
-      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
+      s.add_runtime_dependency(%q<i18n>, [">= 0"])
+      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.11"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -69,8 +68,9 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<mp-deployment>, [">= 0"])
     else
       s.add_dependency(%q<addressable>, ["~> 2.2.0"])
-      s.add_dependency(%q<active_support>, [">= 0"])
-      s.add_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 3.0.0"])
+      s.add_dependency(%q<i18n>, [">= 0"])
+      s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -80,8 +80,9 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<addressable>, ["~> 2.2.0"])
-    s.add_dependency(%q<active_support>, [">= 0"])
-    s.add_dependency(%q<ruby-debug19>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 3.0.0"])
+    s.add_dependency(%q<i18n>, [">= 0"])
+    s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])

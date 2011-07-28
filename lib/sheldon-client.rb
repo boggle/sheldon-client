@@ -1,6 +1,7 @@
 require 'json'
 require 'active_support/inflector'
 require 'forwardable'
+require 'elastodon'
 
 require 'sheldon-client/crud/crud'
 require 'sheldon-client/sheldon/status'
@@ -211,8 +212,7 @@ class SheldonClient
   #
 
   def self.fetch_collection( uri )
-    response = send_request( :get, build_url(uri) )
-    response.code == '200' ? parse_search_result(response.body) : []
+    SheldonClient::Read.fetch_collection( uri )
   end
 
   #

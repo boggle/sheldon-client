@@ -4,6 +4,7 @@ describe SheldonClient do
   before(:all) do
     WebMock.allow_net_connect!
     SheldonClient.host = "http://sheldon.beta.moviepilot.com:2311"
+    SheldonClient.elastodon_host = 'http://db01.moviepilot.com:9200'
   end
 
   after(:all) do
@@ -12,15 +13,15 @@ describe SheldonClient do
 
   describe "searching" do
     it "should find a node on sheldon" do
-      SheldonClient.search({title: "The Matrix"}, type: :movie).first.should_not be_nil
+      SheldonClient.search(title: "The Matrix", type: :movie).first.should_not be_nil
     end
 
     it "should find an user on sheldon given his facebook's username" do
-      SheldonClient.search( username: 'gonzo gonzales' ).first.should_not be_nil
+      SheldonClient.search( username: 'Gonzo Gonzales' ).first.should_not be_nil
     end
 
     it "should find an user on sheldon given his facebook id" do
-      SheldonClient.search( { facebook_ids: "100002398994863" }, type: :user ).first.should_not be_nil
+      SheldonClient.search( facebook_ids: "100002398994863", type: :user ).first.should_not be_nil
     end
   end
 
@@ -49,6 +50,7 @@ describe SheldonClient do
     end
 
     it "should get the node from sheldon" do
+      sleep 3
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
@@ -57,7 +59,8 @@ describe SheldonClient do
     end
 
     it "should update the node in sheldon" do
-      SheldonClient.update({ node: @node.id }, production_year: "1999").should eq(true)
+      SheldonClient.update(@node, production_year: "1999").should eq(true)
+      sleep 3
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       node = results.first
       @node.should_not eq(node)
@@ -82,13 +85,12 @@ describe SheldonClient do
       results  = SheldonClient.search(sandbox_id: sandbox_id)
       results.each{ |node| SheldonClient.delete(node) }
 
-     @movie =  SheldonClient.create(:node,
+      @movie =  SheldonClient.create(:node,
                            { type: :movie,
                              payload: { title: movie_title,
                                         sandbox_id: sandbox_id }})
 
-      @movie = SheldonClient.search(sandbox_id: sandbox_id).first
-      @gozno = SheldonClient.search( username: 'gonzo gonzales' ).first
+      @gozno = SheldonClient.search( username: 'Gonzo Gonzales' ).first
 
       @connection = SheldonClient.create :connection,
                                     { type: :likes,
@@ -136,33 +138,30 @@ describe SheldonClient do
       nodes_ids = SheldonClient.all(:nodes)
       (nodes_ids.count > 1000).should eq(true)
     end
-
-    it "should have more than a hundred connections" do
-      nodes_ids = SheldonClient.all(:nodes)
-      (nodes_ids.count > 100).should eq(true)
-    end
   end
 
-  describe "reindexing nodes" do
-    it "should reindex a node" do
-      gozno = SheldonClient.search( username: 'gonzo gonzales' ).first
+  #FIXME: reactivate when elastodon can handle connections and sheldonclient can reindex stuff
+  #describe "reindexing nodes" do
+  #  it "should reindex a node" do
+  #    gozno = SheldonClient.search( username: 'Gonzo Gonzales' ).first
+  #    gozno.should_not be_nil
 
-      SheldonClient.reindex(gozno).should eq(true)
-      SheldonClient.reindex(node: gozno).should eq(true)
-      SheldonClient.reindex(node: gozno.id).should eq(true)
-    end
+  #    SheldonClient.reindex(gozno).should eq(true)
+  #    SheldonClient.reindex(node: gozno).should eq(true)
+  #    SheldonClient.reindex(node: gozno.id).should eq(true)
+  #  end
 
-    it "should reindex connections" do
-      connections = SheldonClient.all(:connections)
-      connections.should_not be_empty
+  #  it "should reindex connections" do
+  #    connections = SheldonClient.all(:connections)
+  #    connections.should_not be_empty
 
-      connection = SheldonClient.connection connections.first
-      connection.should be_a SheldonClient::Connection
-      SheldonClient.reindex(connection).should eq(true)
-      SheldonClient.reindex(connection: connection).should eq(true)
-      SheldonClient.reindex(connection: connection.id).should eq(true)
-    end
-  end
+  #    connection = SheldonClient.connection connections.first
+  #    connection.should be_a SheldonClient::Connection
+  #    SheldonClient.reindex(connection).should eq(true)
+  #    SheldonClient.reindex(connection: connection).should eq(true)
+  #    SheldonClient.reindex(connection: connection.id).should eq(true)
+  #  end
+  #end
 
   describe "statistics" do
     it "should have a thousands of movies" do

@@ -1,3 +1,6 @@
+=== Version 0.5
+* integrate elasticsearch
+
 === Version 0.4
 
 * enhancements

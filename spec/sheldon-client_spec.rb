@@ -199,50 +199,14 @@ describe SheldonClient do
   end
 
   context "searching for nodes" do
-    before(:all){ SheldonClient.host = "http://sheldon.host" }
+    let(:node_type) {:movie}
+    let(:node_id)   {0}
+    let(:payload)   { {} }
 
-    let(:payload)   { {}  }
+    it "should pass search parameters to elastodon" do
+      Elastodon.should_receive(:emulate_sheldon_search).with('query', {}).and_return( response(:node_collection)[:body] )
 
-    it "should search for movies" do
-      url = "http://sheldon.host/search/nodes/movies?mode=fulltext&production_year=1999&title=Matrix"
-      node_type = :movie
-      node_id   = 123
-      response = response(:node_collection, node_id: node_id, node_type: node_type)
-
-      stub_and_expect_request(:get, url, request_data, response ) do
-        result = SheldonClient.search( {title: 'Matrix', production_year: '1999'}, type: :movies, mode: :fulltext)
-        result.first.should be_a SheldonClient::Node
-        result.first.id.should eq(123)
-        result.first.type.should eq(:movie)
-      end
-    end
-
-    it "should convert given query parameters to strings" do
-      node_id = 1
-      node_type = :genre
-      url = "http://sheldon.host/search/nodes/genres?id=#{node_id}"
-      response = response(:node_collection, node_id: node_id, node_type: node_type)
-
-      stub_and_expect_request(:get, url, request_data, response ) do
-        result = SheldonClient.search({id: 1}, type: node_type)
-      end
-    end
-
-    it "should search for genres" do
-      url = "http://sheldon.host/search/nodes/genres?name=Action"
-      stub_and_expect_request(:get, url, request_data, response(:node_collection, node_type: :genre, node_id: 321 )) do
-        result = SheldonClient.search({name: 'Action'}, type: :genre)
-        result.first.should be_a SheldonClient::Node
-        result.first.id.should eq(321)
-        result.first.type.should eq(:genre)
-      end
-    end
-
-    it "should return an empty array on no-content responses" do
-      url = "http://sheldon.host/search/nodes/genres?name=Action"
-      stub_and_expect_request(:get, url, request_data, response(:empty_collection)) do
-        SheldonClient.search({name: 'Action'}, type: :genre ).should eq([])
-      end
+      result = SheldonClient.search('query', {}).should eq( SheldonClient::Search.parse_search_result( response(:node_collection)[:body] ) )
     end
   end
 
