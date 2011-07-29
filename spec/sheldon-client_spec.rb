@@ -328,6 +328,13 @@ describe SheldonClient do
       end
     end
 
+    it "should not return nil values all the ids of a certain type" do
+      result  = {status: 200, body: [12, 34, nil, nil].to_json }
+      stub_and_expect_request(:get, url, request_data, result) do
+        SheldonClient.all(type).should eq([12, 34])
+      end
+    end
+
     it "should fetch nodes ids" do
       result  = {status: 200, body: [1, 2, 3].to_json }
       stub_and_expect_request(:get, node_url, request_data, result) do

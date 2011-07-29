@@ -50,7 +50,7 @@ class SheldonClient
       else
         response = send_request(:get, node_type_ids_url(type))
       end
-      response.code == '200' ? JSON.parse(response.body) : false
+      response.code == '200' ? JSON.parse(response.body).compact : false
     end
 
     def self.fetch_collection( uri )
