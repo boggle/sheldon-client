@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe SheldonClient do
+  def sandbox_id
+    269086
+  end
+
+  def delete_test_nodes
+    results  = SheldonClient.search(sandbox_id: sandbox_id)
+    results.each do  |node|
+      SheldonClient.delete(node)
+      Elastodon.remove_from_index node.id
+    end
+  end
+
   before(:all) do
     WebMock.allow_net_connect!
     SheldonClient.host = "http://sheldon.beta.moviepilot.com:2311"
@@ -30,16 +42,14 @@ describe SheldonClient do
       "1234-This is a dummy movie"
     end
 
-    let(:sandbox_id){ 269086 }
-
     before(:all) do
-      results  = SheldonClient.search(sandbox_id: sandbox_id)
-      results.each{ |node| SheldonClient.delete(node) }
+      delete_test_nodes
 
       @node = SheldonClient.create(:node,
                                    { type: :movie,
                                      payload: { title: movie_title,
                                                 sandbox_id: sandbox_id }})
+      sleep 3
     end
 
     it "should have created a node in sheldon" do
@@ -50,7 +60,6 @@ describe SheldonClient do
     end
 
     it "should get the node from sheldon" do
-      sleep 3
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
@@ -79,12 +88,8 @@ describe SheldonClient do
       "1234-This is a dummy movie"
     end
 
-    let(:sandbox_id){ 269086 }
-
     before(:all) do
-      results  = SheldonClient.search(sandbox_id: sandbox_id)
-      results.each{ |node| SheldonClient.delete(node) }
-
+      delete_test_nodes
       @movie =  SheldonClient.create(:node,
                            { type: :movie,
                              payload: { title: movie_title,
@@ -100,7 +105,7 @@ describe SheldonClient do
     end
 
     after(:all) do
-      SheldonClient.delete(@movie)
+      delete_test_nodes
       SheldonClient.delete(connection: @connection.id)
     end
 
