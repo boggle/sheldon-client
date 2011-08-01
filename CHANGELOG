@@ -1,3 +1,6 @@
+=== Version 0.5.6
+* Adds support for user stream. (SheldonClient.stream('23235')
+
 === Version 0.5
 * integrate elasticsearch
 

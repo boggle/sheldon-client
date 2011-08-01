@@ -297,5 +297,13 @@ Searches over the sheldon's nodes of the given type like.
       => [#<Sheldon::Node 4396 (Movie/Jennifer 8)>, #<Sheldon::Node 10534 (Movie/Untitled Jennifer Lopez Comedy)>]
 
 
+Getting the user stream
+--------------
 
+      => gonzo = SheldonClient.search('Gonzo Gonzales').first
 
+      => SheldonClient.stream(gonzo)
+     [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
+
+      => SheldonClient.stream(gonzo.id)
+     [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
