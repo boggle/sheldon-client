@@ -83,6 +83,13 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
+    def stream_url(user_id, options = {})
+      path = "/stream/users/#{user_id.to_i}"
+      uri = Addressable::URI.parse( SheldonClient.host + path )
+      uri.query_values = stringify_fixnums( options.update(options) ) unless options.empty?
+      uri
+    end
+
     private
 
     def stringify_fixnums(hsh)

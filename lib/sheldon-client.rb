@@ -342,4 +342,30 @@ class SheldonClient
     end
     marks
   end
+
+  # Returns a list of containers related to a given user, includes likes,
+  # with the newest at the begining of the list.
+  # You also can paginate the request using the per_page and page options.
+  #
+  # == Parameters
+  #
+  # <tt>user_id</tt> - You can pass an user object or the user id.
+  # <tt>options</tt> - You can specify page and per_page.
+  #
+  # == Examples
+  #
+  #  => gonzo = SheldonClient.search('Gonzo Gonzales').first
+  #
+  #  => SheldonClient.stream(gonzo)
+  # [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
+  #
+  #  => SheldonClient.stream(gonzo.id)
+  # [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
+  #
+  #  => SheldonClient.stream(gonzo, page: 5, per_page: 5)
+  # [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
+  #
+  def self.stream(node, options = {})
+    SheldonClient::Read.get_stream(node, options)
+  end
 end

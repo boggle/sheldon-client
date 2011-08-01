@@ -427,4 +427,30 @@ describe SheldonClient do
                          adolfo: [@nodes[1]] })
     end
   end
+
+  describe "SheldonClient.stream" do
+    let(:user){ SheldonClient::Node.new(id: 2, type: :user) }
+    let(:payload){ { published_at: "2011-07-06T12:44:03+02:00",
+                     updated_at: "Mon Jul 18 11:16:08 +0200 2011",
+                     created_at: "Fri Jul 08 20:23:13 +0200 2011",
+                     edward_id: 820,
+                     title: "'Dexter's Lab', 'Clone Wars'...'Hotel Transylvania'" }}
+    let(:node_id){ 22 }
+    let(:node_type){ 'Container' }
+
+
+    it "should make the correct http call when called without options" do
+      url = "#{SheldonClient.host}/stream/users/2"
+      stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+        SheldonClient.stream(user).should_not be_empty
+      end
+    end
+
+    it "should make the correct http call with options" do
+      url = "#{SheldonClient.host}/stream/users/2?page=1&per_page=5"
+      stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+        SheldonClient.stream(user, page: 1, per_page: 5).should_not be_empty
+      end
+    end
+  end
 end

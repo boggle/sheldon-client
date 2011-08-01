@@ -57,5 +57,5 @@ end
 
 desc 'Loads a console with lib/sheldon-client.rb'
 task :irb do
-  exec("irb -Ilib -rsheldon-client")
+  exec("./console")
 end

@@ -58,6 +58,11 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
     end
 
+    def self.get_stream( node, options = {} )
+      response = send_request( :get, stream_url(node, options))
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
+    end
+
     private
 
     def self.validate_user(user)
