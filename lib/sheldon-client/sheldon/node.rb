@@ -121,6 +121,23 @@ class SheldonClient
       end
     end
 
+    def reason
+      raw_data[:reason] || reason_from_path || {}
+    end
+
+    # fallback method, can be removed when sheldon returns reason instead of path
+    def reason_from_path
+      if raw_data[:path]
+        path = raw_data[:path][1...-1] # cut first and last element
+        type = case path.length
+               when 1 then 'direct'
+               when 2 then 'bucket'
+               when 3 then 'bucket_hop'
+               end
+        {type: type, path: path}
+      end
+    end
+
     def marked?
       payload[:marked] || false
     end
