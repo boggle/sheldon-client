@@ -189,6 +189,10 @@ class SheldonClient
       end
     end
 
+    def self.neighbours( id, type = nil )
+      Read.fetch_neighbours( id, type )
+    end
+
     def reindex
       Update.reindex_sheldon_object( self )
     end

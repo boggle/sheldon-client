@@ -302,6 +302,15 @@ describe SheldonClient::Node do
           end
       end
 
+      it "should be available as a class method" do
+        url = neighbours_url( node_id, :like )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+            neighbours = SheldonClient::Node.neighbours( node_id, :like )
+            neighbours.should be_a(Array)
+            neighbours.first.id.should == neighbour_id
+          end
+      end
+
       it "should raise an error on invalid neighbour type" do
         lambda{
           node.neighbours( :dummy )
