@@ -143,17 +143,15 @@ class SheldonClient
     end
 
     def marks
-      payload[:marks] || []
+      (payload[:marks] || []).map(&:to_sym)
     end
 
     def mark( mark_name )
-      if payload[:marked]
-        payload[:marks] << mark_name
-      else
-        payload[:marked] = :true
-        payload[:marks] = [mark_name]
+      payload[:marked] = :true unless payload[:marked]
+      unless marks.include?( mark_name.to_sym )
+        payload[:marks] = marks << mark_name.to_sym
+        save
       end
-      save
     end
 
     def unmark( mark_name )
