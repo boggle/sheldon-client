@@ -155,7 +155,7 @@ class SheldonClient
     end
 
     def unmark( mark_name )
-      if payload[:marked]
+      if payload[:marked] && marks.include?( mark_name )
         payload[:marks].delete(mark_name)
         if payload[:marks].empty?
           payload[:marked] = nil
