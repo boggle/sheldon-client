@@ -118,6 +118,16 @@ describe SheldonClient::Node do
       end
     end
 
+    it "should not add the mark twice" do
+      body = payload.update(marked: :true, marks: [:manual_buzz_bucket])
+      stub_and_expect_request(:put, url, request_data(body), response(:success)) do
+        @node.mark :manual_buzz_bucket
+      end
+
+      @node.mark :manual_buzz_bucket
+      @node.marks.should eq([:manual_buzz_bucket])
+    end
+
     it "should add the marker to the payload" do
       @node.payload.update(marked: :true, marks: [:manual_buzz_bucket])
       body = payload.update(marked: :true, marks: [:manual_buzz_bucket, :p_buzz_bucket])
