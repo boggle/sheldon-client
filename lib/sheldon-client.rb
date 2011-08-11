@@ -8,6 +8,7 @@ require 'sheldon-client/crud/batch'
 require 'sheldon-client/sheldon/status'
 require 'sheldon-client/sheldon/schema'
 require 'sheldon-client/sheldon/statistics'
+require 'sheldon-client/sheldon/traverse'
 
 
 require 'sheldon-client/configuration'

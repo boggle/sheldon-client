@@ -63,6 +63,11 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
     end
 
+    def self.traverse( type, start_node_id )
+      response = send_request :get, traversal_url(type, start_node_id)
+      response.code == '200' ? JSON.parse(response.body) : {}
+    end
+
     private
 
     def self.validate_user(user)
