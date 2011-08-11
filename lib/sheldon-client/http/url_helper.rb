@@ -90,6 +90,10 @@ class SheldonClient
       uri
     end
 
+    def batch_connections_url
+      Addressable::URI.parse( SheldonClient.host + "/connections/batch" )
+    end
+
     private
 
     def stringify_fixnums(hsh)

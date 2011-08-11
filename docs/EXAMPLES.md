@@ -307,3 +307,19 @@ Getting the user stream
 
       => SheldonClient.stream(gonzo.id)
      [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
+
+Batch Operations
+----------
+At the moment sheldon client support batch opearations for connections.
+
+      payload     = { weight: 1 }
+      connections = [ { from: 13 , to: 14, type: :likes, payload: payload },
+                      { from: 13 , to: 16, type: :genre_taggings, payload: payload },
+                      { from: 13 , to: 20, type: :actings, payload: payload } ]
+
+
+      SheldonClient.batch do |batch|
+        batch.create :connection, connections[0]
+        batch.create :connection, connections[1]
+        batch.create :connection, connections[2]
+      end
