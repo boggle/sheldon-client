@@ -371,6 +371,27 @@ class SheldonClient
     SheldonClient::Read.get_stream(node, options)
   end
 
+  # Process the given block as a batch operation in sheldon
+  # parameters
+  # <tt> block  </tt> - Receives a block which takes a batch as argument, in the batch
+  #                     you can call create, with the type and info.
+  #
+  # Example
+
+  # payload     = { weight: 1 }
+  # connections = [ { from: 13 , to: 14, type: :likes, payload: payload },
+  #                 { from: 13 , to: 16, type: :genre_taggings, payload: payload },
+  #                 { from: 13 , to: 20, type: :actings, payload: payload } ]
+  #
+  # SheldonClient.batch do |batch|
+  #   batch.create :connection, connections[0]
+  #   batch.create :connection, connections[1]
+  #   batch.create :connection, connections[2]
+  # end
+  #
+  # Note
+  # At the moment the creation in batch is just supported for connections.
+  #
   def self.batch(&block)
     SheldonClient::Create.batch &block
   end
