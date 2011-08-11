@@ -6,6 +6,9 @@ class SheldonClient
   class Crud
     extend SheldonClient::HTTP
     extend SheldonClient::UrlHelper
+    include SheldonClient::HTTP
+    include SheldonClient::UrlHelper
+
 
     def self.sheldon_type_and_id_from_object( object )
       if object.is_a?(Hash) and object.keys.size == 1

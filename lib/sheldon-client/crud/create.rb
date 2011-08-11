@@ -85,5 +85,10 @@ class SheldonClient
       response.code == '200' ? true : false
     end
 
+    def self.batch(&block)
+      batch = SheldonClient::Batch.new
+      yield(batch)
+      batch.process!
+    end
   end
 end

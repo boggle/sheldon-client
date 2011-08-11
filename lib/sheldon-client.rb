@@ -4,9 +4,11 @@ require 'forwardable'
 require 'elastodon'
 
 require 'sheldon-client/crud/crud'
+require 'sheldon-client/crud/batch'
 require 'sheldon-client/sheldon/status'
 require 'sheldon-client/sheldon/schema'
 require 'sheldon-client/sheldon/statistics'
+
 
 require 'sheldon-client/configuration'
 require 'sheldon-client/sheldon/sheldon_object'
@@ -367,5 +369,9 @@ class SheldonClient
   #
   def self.stream(node, options = {})
     SheldonClient::Read.get_stream(node, options)
+  end
+
+  def self.batch(&block)
+    SheldonClient::Create.batch &block
   end
 end
