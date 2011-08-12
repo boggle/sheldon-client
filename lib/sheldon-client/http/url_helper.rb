@@ -53,6 +53,10 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + "/statistics" )
     end
 
+    def traversal_url(type, start_id)
+      Addressable::URI.parse( SheldonClient.host + "/traversals/#{type}/users/#{start_id}" )
+    end
+
     def all_ids_url(type)
       Addressable::URI.parse( "#{SheldonClient.host}/ids/#{type}" )
     end
