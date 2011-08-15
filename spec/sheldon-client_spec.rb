@@ -472,6 +472,20 @@ describe SheldonClient do
       end
     end
 
+    it "should batch the update of connections" do
+      url = batch_connections_url
+      connections = [ { from: 13, to: 14, type: :likes, payload: payload },
+                      { from: 13, to: 16, type: :genre_taggings, payload: payload }]
+
+
+      stub_and_expect_request(:put, url, request_data(connections), response(:success)) do
+        SheldonClient.batch do |batch|
+          batch.update :connection, connections[0]
+          batch.update :connection, connections[1]
+        end
+      end
+    end
+
     it "should raise and error if an unknown type is given" do
       connections = [ { from: 13, to: 14, type: :likes, payload: payload } ]
       lambda{
