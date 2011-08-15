@@ -13,6 +13,10 @@ class SheldonClient
       end
     end
 
+    def update(type, object)
+      create(type, object)
+    end
+
     def process!
       unless @connections.empty?
         response = send_request( :put, batch_connections_url, @connections )
