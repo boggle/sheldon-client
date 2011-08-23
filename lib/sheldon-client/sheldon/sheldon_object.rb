@@ -6,7 +6,7 @@ class SheldonClient
   class SheldonObject
     extend Forwardable
 
-    attr_accessor  :id, :type, :payload, :sheldon_class, :raw_data
+    attr_accessor  :id, :type, :payload, :sheldon_class, :raw_data, :extra_search_data
     def_delegators :payload, :[], :[]=
 
     def initialize( data_hash )
@@ -14,6 +14,7 @@ class SheldonClient
       self.id      = data_hash[:id].to_i
       self.type    = data_hash[:type].to_s.underscore.to_sym
       self.payload = HashWithIndifferentAccess.new( data_hash[:payload] || {} )
+      self.extra_search_data = data_hash[:extra_search_data]
 
       self.raw_data = data_hash
     end

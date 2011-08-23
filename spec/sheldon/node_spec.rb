@@ -29,6 +29,52 @@ describe SheldonClient::Node do
     end
   end
 
+  context "extra_search_data" do
+    let(:node){ SheldonClient::Node.new({"id"=>33, "type"=>:movie, "payload"=>{}, "extra_search_data"=>"The godfather"}) }
+    it "should set the extra_search_data if passed" do
+      node.extra_search_data.should eq("The godfather")
+    end
+
+    it "should not return the extra_search_data by default" do
+      node.to_hash.symbolize_keys.should_not have_key(:extra_search_data)
+    end
+
+    it "should return the extra search data if requested" do
+      node.to_hash(include_search_data: true).symbolize_keys[:extra_search_data].should eq("The godfather")
+    end
+  end
+
+  describe "#update_extra_search_data" do
+    let(:movie){ SheldonClient::Node.new({ "id"=>33, "type"=>:movie,  "payload"=>{ title: 'The Godfather' } })  }
+    let(:person){ SheldonClient::Node.new({"id"=>34, "type"=>:person, "payload"=>{ name: 'Al Pacino'      } }) }
+    let(:bucket){ SheldonClient::Node.new({"id"=>35, "type"=>:bucket, "payload"=>{ name: 'Gangster'       } }) }
+    let(:container){ SheldonClient::Node.new({"id"=>36, "type"=>:container, "payload"=> {} }) }
+
+
+    it "should set the proper extra_search_data if it node is a bucket" do
+      bucket.should_receive(:neighbours).with(:related_tos).and_return([container, movie])
+      bucket.update_extra_search_data!
+      bucket.extra_search_data.should eq("The Godfather")
+    end
+
+    it "should set the proper extra_search_data if it node is a movie" do
+      movie.should_receive(:neighbours).with(:actings).and_return([person])
+      movie.update_extra_search_data!
+      movie.extra_search_data.should eq("Al Pacino")
+    end
+
+    it "should set the proper extra_search_data if it node is a person" do
+      person.should_receive(:neighbours).with(:actings).and_return([movie])
+      person.update_extra_search_data!
+      person.extra_search_data.should eq("The Godfather")
+    end
+
+    it "should put an empty string in extra_search_data if it unhandled type" do
+      container.update_extra_search_data!
+      container.extra_search_data.should be_blank
+    end
+  end
+
   context "creation" do
     let(:url)     { node_url(:movie) }
     let(:node_id) { 0 }
