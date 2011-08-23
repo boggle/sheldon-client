@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.5.7"
+  s.version = "0.5.15"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-08-05}
+  s.date = %q{2011-08-23}
   s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
   s.email = %q{core@moviepilot.com}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     "lib/sheldon-client.rb",
     "lib/sheldon-client/configuration.rb",
+    "lib/sheldon-client/crud/batch.rb",
     "lib/sheldon-client/crud/create.rb",
     "lib/sheldon-client/crud/crud.rb",
     "lib/sheldon-client/crud/delete.rb",
@@ -33,7 +34,8 @@ Gem::Specification.new do |s|
     "lib/sheldon-client/sheldon/schema.rb",
     "lib/sheldon-client/sheldon/sheldon_object.rb",
     "lib/sheldon-client/sheldon/statistics.rb",
-    "lib/sheldon-client/sheldon/status.rb"
+    "lib/sheldon-client/sheldon/status.rb",
+    "lib/sheldon-client/sheldon/traverse.rb"
   ]
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
   s.licenses = ["MIT"]
@@ -47,6 +49,7 @@ Gem::Specification.new do |s|
     "spec/sheldon/node_spec.rb",
     "spec/sheldon/schema_spec.rb",
     "spec/sheldon/statistics_spec.rb",
+    "spec/sheldon/traverse_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/http_support.rb",
     "spec/support/web_mock_support.rb"
@@ -59,7 +62,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<addressable>, ["~> 2.2.0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_runtime_dependency(%q<i18n>, [">= 0"])
-      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.11"])
+      s.add_runtime_dependency(%q<elastodon>, ["~> 0.0.14"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -70,7 +73,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<addressable>, ["~> 2.2.0"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_dependency(%q<i18n>, [">= 0"])
-      s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
+      s.add_dependency(%q<elastodon>, ["~> 0.0.14"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -82,7 +85,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<addressable>, ["~> 2.2.0"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0"])
     s.add_dependency(%q<i18n>, [">= 0"])
-    s.add_dependency(%q<elastodon>, ["~> 0.0.11"])
+    s.add_dependency(%q<elastodon>, ["~> 0.0.14"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
