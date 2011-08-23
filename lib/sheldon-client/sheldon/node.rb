@@ -199,11 +199,13 @@ class SheldonClient
     def update_extra_search_data!
       self.extra_search_data = case type
                                when :person
-                                 self.neighbours(:actings).first.name
+                                 node = self.neighbours(:actings).first
+                                 node ? node.name : ''
                                when :movie
                                  self.neighbours(:actings).first(2).map(&:name).join(', ')
                                when :bucket
-                                 self.neighbours(:related_tos).reject(&its.type == :container).first.name
+                                 node = self.neighbours(:related_tos).reject(&its.type == :container).first
+                                 node ? node.name : ''
                                else
                                  ""
                                end
