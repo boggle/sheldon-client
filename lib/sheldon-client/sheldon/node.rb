@@ -94,7 +94,6 @@ class SheldonClient
     # ==== Create Neighbours
     #
     #
-
     include Elastodon::Node
 
     def ==(other)
@@ -105,12 +104,14 @@ class SheldonClient
       "#<Sheldon::Node #{id} (#{type.to_s.camelcase}/#{name})>"
     end
 
-    def to_hash
-      HashWithIndifferentAccess.new({
+    def to_hash(opts = {})
+      hash = HashWithIndifferentAccess.new({
         id:      self.id,
         type:    self.type,
         payload: self.payload
       })
+      hash[:extra_search_data] = extra_search_data if opts[:include_search_data] && !extra_search_data.nil?
+      hash
     end
 
     def connections( type )
@@ -193,6 +194,19 @@ class SheldonClient
 
     def reindex
       Update.reindex_sheldon_object( self )
+    end
+
+    def update_extra_search_data!
+      self.extra_search_data = case type
+                               when :person
+                                 self.neighbours(:actings).first.name
+                               when :movie
+                                 self.neighbours(:actings).first(2).map(&:name).join(', ')
+                               when :bucket
+                                 self.neighbours(:related_tos).reject(&its.type == :container).first.name
+                               else
+                                 ""
+                               end
     end
 
     private
