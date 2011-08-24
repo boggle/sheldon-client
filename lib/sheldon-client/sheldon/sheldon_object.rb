@@ -14,7 +14,7 @@ class SheldonClient
       self.id      = data_hash[:id].to_i
       self.type    = data_hash[:type].to_s.underscore.to_sym
       self.payload = HashWithIndifferentAccess.new( data_hash[:payload] || {} )
-      self.extra_search_data = data_hash[:extra_search_data]
+      self.extra_search_data = data_hash[:extra_search_data] || ""
 
       self.raw_data = data_hash
     end
