@@ -200,7 +200,9 @@ class SheldonClient
                                when :movie
                                  self.neighbours(:actings).first(2).map(&:name).join(', ')
                                when :bucket
-                                 node = self.neighbours(:related_tos).reject(&its.type == :container).first
+                                 node = self.neighbours(:related_tos).reject do |n|
+                                   [:container,:bucket].include? n.type
+                                 end.first
                                  node ? node.name : ''
                                else
                                  ""
