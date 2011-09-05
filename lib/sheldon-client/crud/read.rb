@@ -37,12 +37,6 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
 
-    def self.fetch_high_scores(user, type = nil)
-      validate_user(user)
-      response = send_request(:get, user_high_scores_url(user, type))
-      response.code == '200' ? connection_collection( JSON.parse(response.body) ) : false
-    end
-
     def self.fetch_node_type_ids( type )
       #TODO:  validate type
       if [:nodes, :connections].include?(type)
