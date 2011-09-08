@@ -308,6 +308,22 @@ Getting the user stream
       => SheldonClient.stream(gonzo.id)
      [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
 
+
+Doing pagerank traversals
+--------------
+One type of our custom traversals are pagerank like calculations on
+subgraphs of sheldon, starting from a user.
+
+    => j = SheldonClient.search('Jannis Hermanns').first
+    => SheldonClient.pagerank j, :type => :movies
+    [ { :rank => 15, :node => #<Sheldon::Node 1234 (Movie/Snatch)>},
+      { :rank => 5,  :node => #<Sheldon::Node 1234 (Movie/Big Lebowski)>},
+      { :rank => 1,  :node => #<Sheldon::Node 1234 (Movie/Casablanca)>} ]
+
+Valid types are `movies`, `people`, `buckets` and `containers`. The
+result list is ordered by rank, and the ranks are not normalized yet.
+
+
 Batch Operations
 ----------
 At the moment sheldon client support batch opearations for connections.
