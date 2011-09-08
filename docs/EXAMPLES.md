@@ -315,7 +315,7 @@ One type of our custom traversals are pagerank like calculations on
 subgraphs of sheldon, starting from a user.
 
     => j = SheldonClient.search('Jannis Hermanns').first
-    => SheldonClient.pagerank j, :type => :movies
+    => SheldonClient::Traverse.pagerank j, :movies
     [ { :rank => 15, :node => #<Sheldon::Node 1234 (Movie/Snatch)>},
       { :rank => 5,  :node => #<Sheldon::Node 1234 (Movie/Big Lebowski)>},
       { :rank => 1,  :node => #<Sheldon::Node 1234 (Movie/Casablanca)>} ]
