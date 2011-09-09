@@ -64,7 +64,7 @@ describe SheldonClient do
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
 
-      results.first.should eq(@node)
+      results.first.id.should eq(@node.id)
     end
 
     it "should update the node in sheldon" do
@@ -115,7 +115,7 @@ describe SheldonClient do
 
       @connection.should be_a SheldonClient::Connection
 
-      @connection.from.should eq(@gozno)
+      @connection.from_id.should eq(@gozno.id)
       @connection.to.should eq(@movie)
       @connection.payload[:weight].should eq(0.5)
     end

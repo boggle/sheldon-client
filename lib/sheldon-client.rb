@@ -286,22 +286,6 @@ class SheldonClient
   end
 
   #
-  # Fetches all the high score edges for a user
-  #
-  # === Parameters
-  #
-  # <tt>id</tt> - The sheldon node id of the user
-  #
-  # === Examples
-  #
-  # SheldonClient.high_scores 13
-  # => [ #<Sheldon::Connection 5 (/6->1)>,  ]
-  #
-  def self.high_scores( id, type = nil )
-    SheldonClient::Read.fetch_high_scores(id, type)
-  end
-
-  #
   # temporarily set a different host to connect to. This
   # takes a block where the given sheldon node should be
   # the one we're talking to
