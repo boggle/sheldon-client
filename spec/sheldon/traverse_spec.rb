@@ -17,6 +17,7 @@ describe SheldonClient::Statistics do
     stub_and_expect_request(:get, pagerank_url, request_data, response(:container_pagerank)) do
       response = SheldonClient::Traverse.pagerank 123, :containers
       response.should be_a Array
+      response.first[:node].should be_a SheldonClient::Node
     end
   end
 end
