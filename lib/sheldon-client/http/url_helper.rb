@@ -106,7 +106,7 @@ class SheldonClient
 
     def stringify_fixnums(hsh)
       hsh.each do |key, value|
-        hsh[key] = value.to_s if value.is_a?(Fixnum)
+        hsh[key] = value.to_s if value.is_a?(Numeric)
       end
     end
 
