@@ -317,8 +317,8 @@ subgraphs of sheldon, starting from a user.
     => j = SheldonClient.search('Jannis Hermanns').first
     => SheldonClient::Traverse.pagerank j, :movies
     [ { :rank => 15, :node => #<Sheldon::Node 1234 (Movie/Snatch)>},
-      { :rank => 5,  :node => #<Sheldon::Node 1234 (Movie/Big Lebowski)>},
-      { :rank => 1,  :node => #<Sheldon::Node 1234 (Movie/Casablanca)>} ]
+      { :rank => 5,  :node => #<Sheldon::Node 1235 (Movie/Big Lebowski)>},
+      { :rank => 1,  :node => #<Sheldon::Node 1236 (Movie/Casablanca)>} ]
 
 Valid types are `movies`, `people`, `buckets` and `containers`. The
 result list is ordered by rank, and the ranks are not normalized yet.
