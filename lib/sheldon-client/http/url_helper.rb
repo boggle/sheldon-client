@@ -53,11 +53,11 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + "/statistics" )
     end
 
-    def traversal_url(type, start_id, extra = nil, options = {})
+    def traversal_url(type, start_id, extra = nil, options = nil)
       e = extra ? "/#{extra}" : ''
       start_id = start_id.is_a?(SheldonClient::Node) ? start_id.id : start_id
       uri = Addressable::URI.parse( SheldonClient.host + "/traversals/#{type}/users/#{start_id}#{e}" )
-      uri.query_values = stringify_fixnums( options ) unless options.empty?
+      uri.query_values = stringify_fixnums( options ) unless !options or options.empty?
       uri
     end
 
