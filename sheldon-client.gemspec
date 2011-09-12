@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
+  s.rubygems_version = %q{1.5.2}
   s.summary = %q{Talks to Sheldon}
   s.test_files = [
     "spec/client/url_helper_spec.rb",
