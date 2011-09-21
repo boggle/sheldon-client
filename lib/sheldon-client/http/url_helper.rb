@@ -81,12 +81,19 @@ class SheldonClient
     def stream_url(user_id, options = {})
       path = "/stream/users/#{user_id.to_i}"
       uri = Addressable::URI.parse( SheldonClient.host + path )
-      uri.query_values = stringify_fixnums( options.update(options) ) unless options.empty?
+      uri.query_values = stringify_fixnums( options ) unless options.empty?
       uri
     end
 
     def batch_connections_url
       Addressable::URI.parse( SheldonClient.host + "/connections/batch" )
+    end
+
+    def node_containers_url(node, options = {})
+      path = "/nodes/#{node.to_i}/containers"
+      uri = Addressable::URI.parse( SheldonClient.host + path )
+      uri.query_values = stringify_fixnums( options ) unless options.empty?
+      uri
     end
 
     private

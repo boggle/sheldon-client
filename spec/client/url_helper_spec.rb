@@ -161,4 +161,23 @@ describe SheldonClient::UrlHelper do
       uri.query_values.should eq({"page" => "1", "per_page" => "5"})
     end
   end
+
+  context "node container url" do
+    let(:node_id){ 23 }
+    let(:node){ SheldonClient::Node.new(id: node_id, type: :container) }
+
+    it "should return the containers url for the given node" do
+      uri = node_containers_url node
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/nodes/#{node_id}/containers")
+    end
+
+    it "should accpet params and use them in the query" do
+      uri = node_containers_url node, per_page: 10, page: 13, zoom: 2
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/nodes/#{node_id}/containers")
+
+      uri.query_values.should eq({"page" => "13", "per_page" => "10", "zoom" => "2"})
+    end
+  end
 end
