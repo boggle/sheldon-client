@@ -119,7 +119,7 @@ describe SheldonClient::Node do
 
     it "should return false on error" do
       stub_and_expect_request(:get, url, request_data, response(:not_found)) do
-        SheldonClient.node( node_id ).should be_nil
+        SheldonClient.node( node_id ).should be_false
       end
     end
   end
