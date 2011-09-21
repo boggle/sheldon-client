@@ -1,3 +1,6 @@
+=== Version 0.5.19
+* Adds support for pagerank traversal urls (SheldonClient::Traverse.pagerank)
+
 === Version 0.5.6
 * Adds support for user stream. (SheldonClient.stream('23235')
 

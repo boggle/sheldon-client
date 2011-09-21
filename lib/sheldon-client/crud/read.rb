@@ -57,12 +57,12 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
     end
 
-    def self.traverse( type, start_node_id )
-      response = send_request :get, traversal_url(type, start_node_id)
+    def self.traverse( type, start_node_id, options = {} )
+      response = send_request :get, traversal_url(type, start_node_id, nil, options)
       response.code == '200' ? JSON.parse(response.body) : {}
     end
 
-    def self.pagerank( type, start_node_id, extra, options = {} )
+    def self.pagerank( type, start_node_id, extra, options )
       response = send_request :get, traversal_url(type, start_node_id, extra, options)
       return [] unless response.code == '200'
       JSON.parse(response.body).map do |o|
