@@ -451,4 +451,17 @@ describe SheldonClient do
 
     end
   end
+
+  describe "questionnaire" do
+    let(:questionnaire_id){ 22 }
+    let(:url){ questionnaire_url questionnaire_id }
+    let(:question){ "Will Cthulhu appear in south park again?" }
+
+    it "should get the questionnaire with the given id" do
+      stub_and_expect_request(:get, url, request_data, response(:questionnaire)) do
+        questionnaire = SheldonClient.questionnaire(questionnaire_id)
+        questionnaire.should_not be_false
+      end
+    end
+  end
 end
