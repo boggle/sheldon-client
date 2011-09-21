@@ -96,6 +96,10 @@ class SheldonClient
       uri
     end
 
+    def questionnaire_url(questionnaire)
+      Addressable::URI.parse( "#{SheldonClient.host}/questionnaires/#{questionnaire.to_i}")
+    end
+
     private
 
     def stringify_fixnums(hsh)

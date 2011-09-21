@@ -180,4 +180,16 @@ describe SheldonClient::UrlHelper do
       uri.query_values.should eq({"page" => "13", "per_page" => "10", "zoom" => "2"})
     end
   end
+
+  context "questionnaire url" do
+    let(:questionnaire){ double('questionnaire') }
+    let(:questionnaire_id){ 22 }
+
+    it "should generate the questionnaire url" do
+      questionnaire.stub(:to_i).and_return(questionnaire_id)
+      uri = questionnaire_url questionnaire
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/questionnaires/#{questionnaire_id}")
+    end
+  end
 end
