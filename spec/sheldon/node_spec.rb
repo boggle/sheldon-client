@@ -277,6 +277,28 @@ describe SheldonClient::Node do
       end
     end
 
+    context "containers" do
+      let(:url){node_containers_url(node) }
+      let(:node_type){ "Container" }
+      let(:node_id){ 23 }
+      let(:payload){ {'title' =>  "Cartman says: 'Justing Bieber should burn in hell'" } }
+
+      it "should fetch recently published containers" do
+        stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+            containers = node.containers
+            containers.should_not be_empty
+            containers.first.id.should eq(23)
+        end
+      end
+
+      it "should return an empty array if there are no container" do
+        stub_and_expect_request(:get, url, request_data, response(:empty_collection)) do
+          containers = node.containers
+          containers.should be_empty
+        end
+      end
+    end
+
     context "connections" do
       let(:from_id)             { node_id }
       let(:to_id)               { node_id + 1 }

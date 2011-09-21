@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class SheldonClient
   class Node < SheldonObject
     #
@@ -207,6 +208,26 @@ class SheldonClient
                                else
                                  ""
                                end
+    end
+
+    # Fetch the recently published containers about this node
+    # === Parameters
+    #
+    # options    - You can specify page, per_page and zoom.
+    #
+    # ===  Examples
+    #
+    # node = SheldonClient.node 205352
+    # node.containers
+    # => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
+    #      #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
+    #
+    # node.containers(per_page:1, page:1)
+    # => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>]
+    #
+    def containers(opts = {})
+      opts ||= { page: 1, per_page: 10 }
+      Read.get_node_containers(self, opts)
     end
 
     private
