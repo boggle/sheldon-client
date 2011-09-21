@@ -154,6 +154,19 @@ Getting all marked_nodes
           buzz_people: [ #<Sheldon::Node 304272 (Person/Sora Aoi)>,
                          #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
 
+Fetching all containers related with a node
+----------
+    node = SheldonClient.node 205352
+    node.containers
+    => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
+         #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
+
+Specify options
+
+    node = SheldonClient.node 205352
+    node.containers(page:1, per_page:2)
+    => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
+         #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
 
 
 Working with Connections
@@ -393,3 +406,4 @@ Copyright
 -----------
 
 Copyright (c) 2011 moviepilot. See LICENSE.txt for further details.
+ ]
