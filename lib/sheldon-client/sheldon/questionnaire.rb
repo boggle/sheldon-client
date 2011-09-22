@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class SheldonClient
   class Questionnaire < Node
     attr_reader :answerers, :replies
@@ -13,7 +12,7 @@ class SheldonClient
     def parse_replies(replies = {})
       if not replies.empty?
         replies.each do |key,value|
-          replies[key] = SheldonClient:: Node.new(value)
+          replies[key] = SheldonClient::Node.new(value)
         end
       else
         {}

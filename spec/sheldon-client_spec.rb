@@ -473,9 +473,11 @@ describe SheldonClient do
         questionnaire = SheldonClient.questionnaire(questionnaire_id)
         questionnaire.should_not be_false
 
+        questionnaire.should be_a(SheldonClient::Questionnaire)
+
         questionnaire["question"].should eq(question)
-        questionnaire.replies.first[1].type.should eq(:reply)
-        questionnaire.answerers.first[0].should eq("255412")
+        questionnaire.replies.should have_key("255412")
+        questionnaire.answerers.should have_key("255412")
       end
     end
   end
