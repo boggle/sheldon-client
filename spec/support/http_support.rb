@@ -89,7 +89,9 @@ module HttpSupport
 
   def questionnaire_body(opts = {})
     { id: opts[:id] || questionnaire_id,
-      question: opts[:question] || question }
+      payload: opts[:payload] || payload,
+      replies: opts[:replies] || replies,
+      answerers: opts[:answerers] || answerers }
   end
 
   def statistics_body

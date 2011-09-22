@@ -31,7 +31,6 @@ class SheldonClient
         Node.new( connection_data )
       end
     end
-
   end
 end
 

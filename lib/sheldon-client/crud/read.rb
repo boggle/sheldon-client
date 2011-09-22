@@ -79,7 +79,7 @@ class SheldonClient
 
     def self.questionnaire(id)
       response = send_request :get, questionnaire_url(id)
-      response.code == '200' ? JSON.parse(response.body) : false
+      response.code == '200' ? Questionnaire.new(JSON.parse(response.body)) : false
     end
 
     private

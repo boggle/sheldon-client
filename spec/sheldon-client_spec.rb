@@ -456,11 +456,26 @@ describe SheldonClient do
     let(:questionnaire_id){ 22 }
     let(:url){ questionnaire_url questionnaire_id }
     let(:question){ "Will Cthulhu appear in south park again?" }
+    let(:payload){ { "question" => question } }
+    let(:answerers){ { "255412" => [{ "facebook_ids" => ["2"], "id" => 2 }] } }
+    let(:replies){
+      {
+        "255412" => {
+                      "payload" => { "type" => "replies", "text" => "jhghjjgj"},
+                      "type" => "Reply",
+                      "id" => 2525
+                    }
+      }
+    }
 
     it "should get the questionnaire with the given id" do
       stub_and_expect_request(:get, url, request_data, response(:questionnaire)) do
         questionnaire = SheldonClient.questionnaire(questionnaire_id)
         questionnaire.should_not be_false
+
+        questionnaire["question"].should eq(question)
+        questionnaire.replies.first[1].type.should eq(:reply)
+        questionnaire.answerers.first[0].should eq("255412")
       end
     end
   end
