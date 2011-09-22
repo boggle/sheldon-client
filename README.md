@@ -1,5 +1,37 @@
-Sheldon-Client Examples
-===
+sheldon-client
+=====
+
+This is the basic library to fetch data from or store data to sheldon. This
+gem is not publicly available. To install it, check out the source, bundle
+and install the gem manually, like that:
+
+  git clone git@github.com:moviepilot/sheldon-client.git
+  cd sheldon-client
+  bundle
+  rake build
+
+Sheldon Communication
+-------
+
+
+As this is a simple REST wrapper around the Sheldon REST API. Please refer
+to the examples and spec folder documentation and howtos.
+
+
+Configuration
+--------
+
+
+There just two basic configuration settings. You can set the sheldon host
+and you can activate logging. If you omit the :log_file option, sheldon-client
+will log to stdout.
+
+    irb > SheldonClient.host = 'http://my.sheldon/host'
+    irb > SheldonClient.log  = true
+
+
+Using sheldon-client
+-----
 
 Working with Nodes
 ---
@@ -122,6 +154,19 @@ Getting all marked_nodes
           buzz_people: [ #<Sheldon::Node 304272 (Person/Sora Aoi)>,
                          #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
 
+Fetching all containers related with a node
+----------
+    node = SheldonClient.node 205352
+    node.containers
+    => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
+         #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
+
+Specify options
+
+    node = SheldonClient.node 205352
+    node.containers(page:1, per_page:2)
+    => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
+         #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
 
 
 Working with Connections
@@ -339,3 +384,26 @@ At the moment sheldon client support batch opearations for connections.
         batch.create :connection, connections[1]
         batch.create :connection, connections[2]
       end
+
+
+
+Contributing to sheldon-client
+------------
+
+
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+
+ Using sheldon client
+
+Copyright
+-----------
+
+Copyright (c) 2011 moviepilot. See LICENSE.txt for further details.
+ ]

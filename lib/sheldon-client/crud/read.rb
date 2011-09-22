@@ -72,6 +72,11 @@ class SheldonClient
       end
     end
 
+    def self.get_node_containers(node, opts = {})
+      response = send_request :get, node_containers_url(node, opts)
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
+    end
+
     private
 
     def self.validate_user(user)
