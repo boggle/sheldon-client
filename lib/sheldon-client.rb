@@ -380,4 +380,8 @@ class SheldonClient
   def self.batch(&block)
     SheldonClient::Create.batch &block
   end
+
+  def self.questionnaire(id)
+    SheldonClient::Read.questionnaire id
+  end
 end

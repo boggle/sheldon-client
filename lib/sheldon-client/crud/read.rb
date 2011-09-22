@@ -7,7 +7,7 @@ class SheldonClient
 
     def self.fetch_sheldon_node( node_id )
       response = send_request( :get, node_url(node_id) )
-      response.code == '200' ? Node.new( JSON.parse(response.body) ) : nil
+      response.code == '200' ? Node.new( JSON.parse(response.body) ) : false
     end
 
     def self.fetch_sheldon_connection( object )
@@ -75,6 +75,11 @@ class SheldonClient
     def self.get_node_containers(node, opts = {})
       response = send_request :get, node_containers_url(node, opts)
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
+    end
+
+    def self.questionnaire(id)
+      response = send_request :get, questionnaire_url(id)
+      response.code == '200' ? Questionnaire.new(JSON.parse(response.body)) : false
     end
 
     private
