@@ -230,12 +230,20 @@ class SheldonClient
       Read.get_node_containers(self, opts)
     end
 
+    def subscribe(to, rank)
+      create_connection(:subscription, to, {:weight => rank_to_weight(rank) })
+    end
+
     private
 
     def create_connection( connection_type = '', to_node = nil, payload = nil )
       if to_node
         SheldonClient.create :connection, from: self.id, to: to_node.to_i, type: connection_type, payload: payload
       end
+    end
+
+    def rank_to_weight(rank)
+      0.5
     end
 
     def valid_connection_type?( connection_type, type = :all )

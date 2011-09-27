@@ -377,7 +377,7 @@ describe SheldonClient::Node do
             neighbours = node.neighbours( :like )
             neighbours.should be_a(Array)
             neighbours.first.id.should == neighbour_id
-          end
+        end
       end
 
       it "should be available as a class method" do
@@ -409,6 +409,20 @@ describe SheldonClient::Node do
       it "should return false when reindexing failed" do
         stub_and_expect_request(:put, url, request_data, response(:not_found)) do
           SheldonClient::Node.new( id: node_id, type: node_type ).reindex.should == false
+        end
+      end
+    end
+
+    context "subscribing" do
+      let(:node_id){ 23 }
+      let(:node){ SheldonClient::Node.new( id: 23, type: :user ) }
+      let(:movie){ SheldonClient::Node.new("id"=>33, "type"=>:movie)  }
+      let(:payload){ {weight: 0.5} }
+
+      it "shoud create a new subscription" do
+        url = neighbours_url( node_id, :susbcriptions )
+        stub_and_expect_request(:put, url, request_data(payload), response(:success)) do
+          node.subscribe(movie, :important_story)
         end
       end
     end
