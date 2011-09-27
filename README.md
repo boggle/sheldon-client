@@ -371,7 +371,7 @@ result list is ordered by rank, and the ranks are not normalized yet.
 
 Batch Operations
 ----------
-At the moment sheldon client support batch opearations for connections.
+At the moment sheldon client support batch operations for connections.
 
       payload     = { weight: 1 }
       connections = [ { from: 13 , to: 14, type: :likes, payload: payload },
@@ -400,10 +400,7 @@ Contributing to sheldon-client
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 
- Using sheldon client
-
 Copyright
 -----------
 
 Copyright (c) 2011 moviepilot. See LICENSE.txt for further details.
- ]
