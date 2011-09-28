@@ -417,12 +417,19 @@ describe SheldonClient::Node do
       let(:node_id){ 23 }
       let(:node){ SheldonClient::Node.new( id: 23, type: :user ) }
       let(:movie){ SheldonClient::Node.new("id"=>33, "type"=>:movie)  }
-      let(:payload){ {weight: 0.5} }
+      let(:payload){ { :weight => :everything } }
 
-      it "shoud create a new subscription" do
-        url = neighbours_url( node_id, :susbcriptions )
-        stub_and_expect_request(:put, url, request_data(payload), response(:success)) do
-          node.subscribe(movie, :important_story)
+      it "should create a new subscription" do
+        rsp = response(:connection_created,
+                       connection_type: :subscriptions,
+                       from_id: node.id,
+                       to_id: movie.id,
+                       payload: payload,
+                       connection_id: 88 )
+        url = node_connections_url(node_id, :subscriptions, movie)
+
+        stub_and_expect_request(:put, url, request_data(payload), rsp) do
+          response = node.subscribe(movie, :everything)
         end
       end
     end
