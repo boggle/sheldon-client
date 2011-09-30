@@ -11,9 +11,9 @@ class SheldonClient
     def node_connections_url( from, type, opts = {} )
       if opts[:to].nil?
         path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}"
+        path = "#{path}/#{opts[:direction]}" if opts[:direction]
       else
         path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}/#{opts[:to].to_i}"
-
       end
       Addressable::URI.parse( SheldonClient.host + path )
     end

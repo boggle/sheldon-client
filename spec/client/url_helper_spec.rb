@@ -77,6 +77,24 @@ describe SheldonClient::UrlHelper do
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes"
     end
+
+    it "should create an outgoing fetch connection url" do
+      uri = node_connections_url( 1, :like, direction: :outgoing )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/connections/likes/outgoing"
+    end
+
+    it "should create an incoming fetch connection url" do
+      uri = node_connections_url( 1, :like, direction: :incoming )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/connections/likes/incoming"
+    end
+
+    it "should ignore direction if to is given" do
+      uri = node_connections_url( 1, :like, to: 2, direction: :incoming )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/connections/likes/2"
+    end
   end
 
   context "node_type_ids" do
