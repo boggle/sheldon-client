@@ -305,11 +305,33 @@ describe SheldonClient::Node do
       let(:connection_type)     { :like }
       let(:connection_payload)  { { weight: 0.8 } }
 
-      context "fetch connection in both directions" do
-        let(:url) { node_connections_url( node, connection_type ) }
+      context "fetch connections" do
         it "should fetch all connections of certain type" do
+          url = node_connections_url( node, connection_type )
           stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
             connections = node.connections( :likes )
+            connections.should be_a(Array)
+            connections.first.should be_a(SheldonClient::Connection)
+            connections.first.from_id.should == from_id
+            connections.first.to_id.should   == to_id
+          end
+        end
+
+        it "should fetch outgoing connections" do
+          url = node_connections_url( node, connection_type, direction: :outgoing )
+          stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+            connections = node.connections( :likes, direction: :outgoing )
+            connections.should be_a(Array)
+            connections.first.should be_a(SheldonClient::Connection)
+            connections.first.from_id.should == from_id
+            connections.first.to_id.should   == to_id
+          end
+        end
+
+        it "should fetch incoming connections" do
+          url = node_connections_url( node, connection_type, direction: :incoming )
+          stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+            connections = node.connections( :likes, direction: :incoming )
             connections.should be_a(Array)
             connections.first.should be_a(SheldonClient::Connection)
             connections.first.from_id.should == from_id

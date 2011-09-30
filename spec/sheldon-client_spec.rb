@@ -222,6 +222,28 @@ describe SheldonClient do
       SheldonClient.host = host_url
     end
 
+    it "should get the outgoing connections, given the from, type and direction" do
+      url = node_connections_url( from_id, connection_type, direction: :outgoing )
+      stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+        connections = SheldonClient.connection(from: from_id, type: :likes, direction: :outgoing )
+        connections.should be_a(Array)
+        connections.first.should be_a(SheldonClient::Connection)
+        connections.first.from_id.should == from_id
+        connections.first.to_id.should   == to_id
+      end
+    end
+
+    it "should get the incoming connections, given the from, type and direction" do
+      url = node_connections_url( from_id, connection_type, direction: :incoming )
+      stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+        connections = SheldonClient.connection(from: from_id, type: :likes, direction: :incoming )
+        connections.should be_a(Array)
+        connections.first.should be_a(SheldonClient::Connection)
+        connections.first.from_id.should == from_id
+        connections.first.to_id.should   == to_id
+      end
+    end
+
     it "should get a connection given the the ids of from, to and the type " do
       stub_and_expect_request(:get, url, request_data, response(:connection) ) do
         connection = SheldonClient.connection(from:13, to:15, type: :like)

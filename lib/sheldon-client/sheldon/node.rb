@@ -111,9 +111,9 @@ class SheldonClient
       hash
     end
 
-    def connections( type )
+    def connections( type, opts = {} )
       if valid_connection_type?( type )
-        Read.fetch_edges( self.id, type )
+        Read.fetch_edges( self.id, type, opts )
       else
         raise ArgumentError.new("unknown connection type #{type} for #{self.type}")
       end

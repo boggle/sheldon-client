@@ -91,6 +91,11 @@ Fetch connections from a node
     SheldonClient.connection(from:17007, type: :actors)
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
+With direction (incoming or outgoing)
+
+    SheldonClient.connection(from:17007, type: :actors, direction: :outgoing)
+    => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
+
 Fetch connections between nodes
 ----
 
