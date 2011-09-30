@@ -18,7 +18,7 @@ class SheldonClient
 
         return fetch_edges(object[:from], object[:type]) unless object[:to]
 
-        url = node_connections_url(object[:from], object[:type], object[:to])
+        url = node_connections_url(object[:from], object[:type], to: object[:to])
       else
         url = connnections_url( object )
       end

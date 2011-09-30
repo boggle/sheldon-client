@@ -305,7 +305,7 @@ describe SheldonClient::Node do
       let(:connection_type)     { :like }
       let(:connection_payload)  { { weight: 0.8 } }
 
-      context "fetch" do
+      context "fetch connection in both directions" do
         let(:url) { node_connections_url( node, connection_type ) }
         it "should fetch all connections of certain type" do
           stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
@@ -319,7 +319,7 @@ describe SheldonClient::Node do
       end
 
       context "create" do
-        let(:url) { node_connections_url( from_id, connection_type, to_id ) }
+        let(:url) { node_connections_url( from_id, connection_type, to: to_id ) }
 
         it "should create an connection (via node object)" do
           stub_and_expect_request(:put, url, request_data(payload), response(:connection_created)) do
@@ -426,7 +426,7 @@ describe SheldonClient::Node do
                        to_id: movie.id,
                        payload: payload,
                        connection_id: 88 )
-        url = node_connections_url(node_id, :subscriptions, movie)
+        url = node_connections_url(node_id, :subscriptions, to: movie)
 
         stub_and_expect_request(:put, url, request_data(payload), rsp) do
           response = node.subscribe(movie, :everything)

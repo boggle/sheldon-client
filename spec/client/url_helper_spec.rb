@@ -67,7 +67,7 @@ describe SheldonClient::UrlHelper do
 
   context "node_connections_url" do
     it "should create new connection url" do
-      uri = node_connections_url( 1, :like, 2 )
+      uri = node_connections_url( 1, :like, to: 2 )
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes/2"
     end

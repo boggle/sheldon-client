@@ -56,7 +56,7 @@ describe SheldonClient do
     end
 
     it "should make the correct http call when creating a connection" do
-      url     = node_connections_url(13, :likes, 14)
+      url     = node_connections_url(13, :likes, to: 14)
       payload = {"weight" => 1.0 }
       req_data = request_data(payload)
       rsp = response(:connection_created,
@@ -94,7 +94,7 @@ describe SheldonClient do
 
   context "updating a connection" do
     let(:payload){ { weight: '0.5' } }
-    let(:url){ node_connections_url( 2, :likes, 3)}
+    let(:url){ node_connections_url( 2, :likes, to: 3)}
 
     it "should accept a hash as parameter" do
       stub_and_expect_request(:put, url, request_data(payload), response(:success)) do
@@ -175,7 +175,7 @@ describe SheldonClient do
                         to_id: 15,
                         payload: {})
       stub_and_expect_request(:delete, url, request_data, response(:success)) do
-        connection_url = node_connections_url(13, :like, 15)
+        connection_url = node_connections_url(13, :like, to: 15)
 
         stub_and_expect_request(:get, connection_url, request_data, result ) do
           SheldonClient.delete(connection: {from:13, to:15, type: :like}).should eq(true)
@@ -215,7 +215,7 @@ describe SheldonClient do
     let(:from_id){ 13 }
     let(:to_id){ 15 }
     let(:connection_payload){ { 'weight' => '0.5' } }
-    let(:url){ node_connections_url(from_id, :like, to_id) }
+    let(:url){ node_connections_url(from_id, :like, to: to_id ) }
     let(:connection_id){ 45 }
 
     before(:each) do

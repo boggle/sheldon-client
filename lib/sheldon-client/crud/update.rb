@@ -30,9 +30,9 @@ class SheldonClient
 
     def self.connection_update_url( object )
       if object.is_a?(Hash)
-        node_connections_url(object[:from], object[:type], object[:to])
+        node_connections_url(object[:from], object[:type], to: object[:to])
       else
-        node_connections_url(object.from_id, object.type, object.to_id)
+        node_connections_url(object.from_id, object.type, to: object.to_id)
       end
     end
   end
