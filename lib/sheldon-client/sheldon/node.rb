@@ -111,9 +111,9 @@ class SheldonClient
       hash
     end
 
-    def connections( type )
+    def connections( type, opts = {} )
       if valid_connection_type?( type )
-        Read.fetch_edges( self.id, type )
+        Read.fetch_edges( self.id, type, opts )
       else
         raise ArgumentError.new("unknown connection type #{type} for #{self.type}")
       end
@@ -177,16 +177,12 @@ class SheldonClient
       SheldonClient::Schema.valid_connections_to( self.type )
     end
 
-    def neighbours( type = nil )
-      if valid_connection_type?( type ) or type.nil?
-        Read.fetch_neighbours( self.id, type )
-      else
-        raise ArgumentError.new("invalid neighbour type #{type} for #{self.type}")
-      end
+    def neighbours(type = nil, direction = nil)
+      Read.fetch_neighbours(self.id, type, direction)
     end
 
-    def self.neighbours( id, type = nil )
-      Read.fetch_neighbours( id, type )
+    def self.neighbours(id, type = nil, direction = nil)
+      Read.fetch_neighbours(id, type, direction)
     end
 
     def reindex
@@ -230,12 +226,14 @@ class SheldonClient
       Read.get_node_containers(self, opts)
     end
 
+    def subscribe(to, rank)
+      create_connection(:subscription, to, {:weight => rank })
+    end
+
     private
 
-    def create_connection( connection_type = '', to_node = nil, payload = nil )
-      if to_node
-        SheldonClient.create :connection, from: self.id, to: to_node.to_i, type: connection_type, payload: payload
-      end
+    def create_connection(connection_type, to_node, payload)
+      SheldonClient::Create.create_sheldon_object :connection, from: self.id, to: to_node.to_i, type: connection_type, payload: payload
     end
 
     def valid_connection_type?( connection_type, type = :all )

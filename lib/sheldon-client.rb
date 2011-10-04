@@ -285,6 +285,10 @@ class SheldonClient
     SheldonClient::Read.fetch_sheldon_connection(object)
   end
 
+  class << self
+    alias :connections :connection
+  end
+
   #
   # temporarily set a different host to connect to. This
   # takes a block where the given sheldon node should be

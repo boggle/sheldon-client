@@ -54,7 +54,7 @@ class SheldonClient
 
     def self.create_connection( options )
       validate_connection_options( options )
-      response = send_request( :put,  node_connections_url( options[:from], options[:type], options[:to] ),
+      response = send_request( :put,  node_connections_url( options[:from], options[:type], to: options[:to] ),
                                       (options[:payload] || {}) )
       response.code == '200' ?
         parse_sheldon_response(response.body) : false
@@ -68,8 +68,6 @@ class SheldonClient
 
     def self.validate_connection_options( options )
       raise ArgumentError.new("you must specify the type of connection") unless options[:type]
-      raise ArgumentError.new("unknown connection type #{options[:type]}") unless
-        SheldonClient.connection_types.include?( options[:type].to_s.pluralize.to_sym )
       raise ArgumentError.new("you must specify the source node") unless options[:from]
       raise ArgumentError.new("you must specify the target node") unless options[:to]
     end

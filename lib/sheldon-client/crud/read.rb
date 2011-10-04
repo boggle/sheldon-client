@@ -16,9 +16,9 @@ class SheldonClient
           raise ArgumentError.new('You have to specify from and type')
         end
 
-        return fetch_edges(object[:from], object[:type]) unless object[:to]
+        return fetch_edges(object[:from], object[:type], direction: object[:direction]) unless object[:to]
 
-        url = node_connections_url(object[:from], object[:type], object[:to])
+        url = node_connections_url(object[:from], object[:type], to: object[:to])
       else
         url = connnections_url( object )
       end
@@ -27,13 +27,13 @@ class SheldonClient
       response.code == '200' ? Connection.new( JSON.parse(response.body) ) : false
     end
 
-    def self.fetch_edges( node_id, type )
-      response = send_request( :get, node_connections_url(node_id, type) )
+    def self.fetch_edges( node_id, type, opts = {} )
+      response = send_request( :get, node_connections_url(node_id, type, opts) )
       response.code == '200' ? connection_collection( JSON.parse(response.body) ) : false
     end
 
-    def self.fetch_neighbours( from_id, type )
-      response = send_request( :get, neighbours_url(from_id, type) )
+    def self.fetch_neighbours( from_id, type, direction = nil )
+      response = send_request( :get, neighbours_url(from_id, type, direction) )
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
 

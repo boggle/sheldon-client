@@ -305,11 +305,33 @@ describe SheldonClient::Node do
       let(:connection_type)     { :like }
       let(:connection_payload)  { { weight: 0.8 } }
 
-      context "fetch" do
-        let(:url) { node_connections_url( node, connection_type ) }
+      context "fetch connections" do
         it "should fetch all connections of certain type" do
+          url = node_connections_url( node, connection_type )
           stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
             connections = node.connections( :likes )
+            connections.should be_a(Array)
+            connections.first.should be_a(SheldonClient::Connection)
+            connections.first.from_id.should == from_id
+            connections.first.to_id.should   == to_id
+          end
+        end
+
+        it "should fetch outgoing connections" do
+          url = node_connections_url( node, connection_type, direction: :outgoing )
+          stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+            connections = node.connections( :likes, direction: :outgoing )
+            connections.should be_a(Array)
+            connections.first.should be_a(SheldonClient::Connection)
+            connections.first.from_id.should == from_id
+            connections.first.to_id.should   == to_id
+          end
+        end
+
+        it "should fetch incoming connections" do
+          url = node_connections_url( node, connection_type, direction: :incoming )
+          stub_and_expect_request(:get, url, request_data, response(:connection_collection)) do
+            connections = node.connections( :likes, direction: :incoming )
             connections.should be_a(Array)
             connections.first.should be_a(SheldonClient::Connection)
             connections.first.from_id.should == from_id
@@ -319,7 +341,7 @@ describe SheldonClient::Node do
       end
 
       context "create" do
-        let(:url) { node_connections_url( from_id, connection_type, to_id ) }
+        let(:url) { node_connections_url( from_id, connection_type, to: to_id ) }
 
         it "should create an connection (via node object)" do
           stub_and_expect_request(:put, url, request_data(payload), response(:connection_created)) do
@@ -377,22 +399,52 @@ describe SheldonClient::Node do
             neighbours = node.neighbours( :like )
             neighbours.should be_a(Array)
             neighbours.first.id.should == neighbour_id
-          end
+        end
+      end
+
+      it "should fetch all neighbours of certain type" do
+        url = neighbours_url( node_id, :like )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+            neighbours = node.neighbours( :like )
+            neighbours.should be_a(Array)
+            neighbours.first.id.should == neighbour_id
+        end
+      end
+
+      it "should fetch all incoming neighbours of certain type" do
+        url = neighbours_url( node_id, :like, :incoming )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = node.neighbours(:like, :incoming)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
+      end
+
+      it "should fetch all outgoing neighbours of certain type" do
+        url = neighbours_url( node_id, :like, :outgoing )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = node.neighbours(:like, :outgoing)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
       end
 
       it "should be available as a class method" do
         url = neighbours_url( node_id, :like )
         stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
-            neighbours = SheldonClient::Node.neighbours( node_id, :like )
-            neighbours.should be_a(Array)
-            neighbours.first.id.should == neighbour_id
-          end
+          neighbours = SheldonClient::Node.neighbours(node_id, :like)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
       end
 
-      it "should raise an error on invalid neighbour type" do
-        lambda{
-          node.neighbours( :dummy )
-        }.should raise_error( ArgumentError )
+      it "should allow direction in the class method" do
+        url = neighbours_url(node_id, :like, :incoming)
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = SheldonClient::Node.neighbours( node_id, :like, :incoming )
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
       end
     end
 
@@ -409,6 +461,27 @@ describe SheldonClient::Node do
       it "should return false when reindexing failed" do
         stub_and_expect_request(:put, url, request_data, response(:not_found)) do
           SheldonClient::Node.new( id: node_id, type: node_type ).reindex.should == false
+        end
+      end
+    end
+
+    context "subscribing" do
+      let(:node_id){ 23 }
+      let(:node){ SheldonClient::Node.new( id: 23, type: :user ) }
+      let(:movie){ SheldonClient::Node.new("id"=>33, "type"=>:movie)  }
+      let(:payload){ { :weight => :everything } }
+
+      it "should create a new subscription" do
+        rsp = response(:connection_created,
+                       connection_type: :subscriptions,
+                       from_id: node.id,
+                       to_id: movie.id,
+                       payload: payload,
+                       connection_id: 88 )
+        url = node_connections_url(node_id, :subscriptions, to: movie)
+
+        stub_and_expect_request(:put, url, request_data(payload), rsp) do
+          response = node.subscribe(movie, :everything)
         end
       end
     end

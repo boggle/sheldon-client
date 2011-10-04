@@ -8,12 +8,12 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + "/connections/#{id}" )
     end
 
-    def node_connections_url( from, type, to = nil )
-      if to.nil?
+    def node_connections_url( from, type, opts = {} )
+      if opts[:to].nil?
         path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}"
+        path = "#{path}/#{opts[:direction]}" if opts[:direction]
       else
-        path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}/#{to.to_i}"
-
+        path = "/nodes/#{from.to_i}/connections/#{type.to_s.pluralize}/#{opts[:to].to_i}"
       end
       Addressable::URI.parse( SheldonClient.host + path )
     end
@@ -35,9 +35,10 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
-    def neighbours_url( from, type = nil )
+    def neighbours_url( from, type = nil, direction = nil)
       path = "/nodes/#{from}/neighbours"
       path = path + "/#{type.to_s.pluralize}" if type
+      path = path + "/#{direction.to_s}" if direction
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
