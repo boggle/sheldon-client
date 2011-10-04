@@ -79,13 +79,10 @@ Delete  anode
 Fetch connections from a node
 ----
 
-    SheldonClient.node(17007).connection_types
-    => [ :actors, :genre_taggings, :likes ]
-
-    SheldonClient.node(17007).incoming_connection_types
-    => [ :likes ]
-
     SheldonClient.node(17007).connections( :actors )
+    => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
+
+    SheldonClient.node(17007).connections( :actors, type: :outgoing )
     => [ <Sheldon::Connection 64323 (Actor/17007->76423), ... ]
 
     SheldonClient.connection(from:17007, type: :actors)
@@ -173,6 +170,12 @@ Specify options
     => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
          #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
 
+Subscribing to other node.
+----------
+
+    movie = SheldonClient.search('The Matrix').first
+    user  = ShedlonClient.node 201962
+    user.subscribe(movie, :everything)
 
 Working with Connections
 ---
