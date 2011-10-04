@@ -74,7 +74,7 @@ GEM
       rake (>= 0.8.0)
       rest-client (~> 1.6.0)
     webmock (1.6.4)
-      addressable (~> 2.2, > 2.2.5)
+      addressable (> 2.2.5, ~> 2.2)
       crack (>= 0.1.7)
 
 PLATFORMS
