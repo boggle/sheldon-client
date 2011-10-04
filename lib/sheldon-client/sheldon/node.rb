@@ -177,16 +177,12 @@ class SheldonClient
       SheldonClient::Schema.valid_connections_to( self.type )
     end
 
-    def neighbours( type = nil )
-      if valid_connection_type?( type ) or type.nil?
-        Read.fetch_neighbours( self.id, type )
-      else
-        raise ArgumentError.new("invalid neighbour type #{type} for #{self.type}")
-      end
+    def neighbours(type = nil, direction = nil)
+      Read.fetch_neighbours(self.id, type, direction)
     end
 
-    def self.neighbours( id, type = nil )
-      Read.fetch_neighbours( id, type )
+    def self.neighbours(id, type = nil, direction = nil)
+      Read.fetch_neighbours(id, type, direction)
     end
 
     def reindex

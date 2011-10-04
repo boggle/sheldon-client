@@ -402,19 +402,49 @@ describe SheldonClient::Node do
         end
       end
 
+      it "should fetch all neighbours of certain type" do
+        url = neighbours_url( node_id, :like )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+            neighbours = node.neighbours( :like )
+            neighbours.should be_a(Array)
+            neighbours.first.id.should == neighbour_id
+        end
+      end
+
+      it "should fetch all incoming neighbours of certain type" do
+        url = neighbours_url( node_id, :like, :incoming )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = node.neighbours(:like, :incoming)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
+      end
+
+      it "should fetch all outgoing neighbours of certain type" do
+        url = neighbours_url( node_id, :like, :outgoing )
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = node.neighbours(:like, :outgoing)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
+      end
+
       it "should be available as a class method" do
         url = neighbours_url( node_id, :like )
         stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
-            neighbours = SheldonClient::Node.neighbours( node_id, :like )
-            neighbours.should be_a(Array)
-            neighbours.first.id.should == neighbour_id
-          end
+          neighbours = SheldonClient::Node.neighbours(node_id, :like)
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
       end
 
-      it "should raise an error on invalid neighbour type" do
-        lambda{
-          node.neighbours( :dummy )
-        }.should raise_error( ArgumentError )
+      it "should allow direction in the class method" do
+        url = neighbours_url(node_id, :like, :incoming)
+        stub_and_expect_request(:get, url, request_data, response(:neighbour_collection)) do
+          neighbours = SheldonClient::Node.neighbours( node_id, :like, :incoming )
+          neighbours.should be_a(Array)
+          neighbours.first.id.should == neighbour_id
+        end
       end
     end
 

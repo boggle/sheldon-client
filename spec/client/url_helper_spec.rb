@@ -15,6 +15,17 @@ describe SheldonClient::UrlHelper do
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/neighbours/likes"
     end
+
+    it "should generate the neigbour url for incoming connectiong if specified" do
+      uri = neighbours_url( 1, :like, :incoming )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/neighbours/likes/incoming"
+    end
+    it "should generate the neigbour url for outgoing connectiong if specified" do
+      uri = neighbours_url( 1, :like, :outgoing )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/neighbours/likes/outgoing"
+    end
   end
 
   context "node_url" do

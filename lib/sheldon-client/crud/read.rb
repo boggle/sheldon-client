@@ -32,8 +32,8 @@ class SheldonClient
       response.code == '200' ? connection_collection( JSON.parse(response.body) ) : false
     end
 
-    def self.fetch_neighbours( from_id, type )
-      response = send_request( :get, neighbours_url(from_id, type) )
+    def self.fetch_neighbours( from_id, type, direction = nil )
+      response = send_request( :get, neighbours_url(from_id, type, direction) )
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : false
     end
 

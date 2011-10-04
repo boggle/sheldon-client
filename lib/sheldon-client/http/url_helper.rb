@@ -35,9 +35,10 @@ class SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
-    def neighbours_url( from, type = nil )
+    def neighbours_url( from, type = nil, direction = nil)
       path = "/nodes/#{from}/neighbours"
       path = path + "/#{type.to_s.pluralize}" if type
+      path = path + "/#{direction.to_s}" if direction
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
