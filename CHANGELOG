@@ -1,6 +1,7 @@
-=== Version 0.5.X
+=== Version 0.5.21
 * Allow to specify the direction in which you want the connection.( node.connection(:likes, direction: :outgoing)
-
+* Specify direction in which you want the neighbours.( node.neighbours(:likes, :incoming)
+* Add node.subscribe method.( node.subscribe(movie_node, :everything) )
 
 === Version 0.5.19
 * Adds support for pagerank traversal urls (SheldonClient::Traverse.pagerank)
