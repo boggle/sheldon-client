@@ -227,7 +227,7 @@ class SheldonClient
     end
 
     def subscribe(to, rank)
-      create_connection(:subscription, to, {:weight => rank })
+      create_connection(:subscription, to, {:level => rank })
     end
 
     private

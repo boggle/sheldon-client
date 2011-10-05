@@ -469,7 +469,7 @@ describe SheldonClient::Node do
       let(:node_id){ 23 }
       let(:node){ SheldonClient::Node.new( id: 23, type: :user ) }
       let(:movie){ SheldonClient::Node.new("id"=>33, "type"=>:movie)  }
-      let(:payload){ { :weight => :everything } }
+      let(:payload){ { :level => :everything } }
 
       it "should create a new subscription" do
         rsp = response(:connection_created,
