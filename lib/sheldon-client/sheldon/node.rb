@@ -234,8 +234,10 @@ class SheldonClient
     private
 
     def delete_previous_subscriptions(to)
-      SheldonClient.delete(connection: { from: self.id, to: to.to_i, type: :all_featured_subscriptions })
-      SheldonClient.delete(connection: { from: self.id, to: to.to_i, type: :all_stories_subscriptions })
+      featured = SheldonClient.connection from: self.id, to: to.to_i, type: :featured_stories_subscriptions
+      all      = SheldonClient.connection from: self.id, to: to.to_i, type: :all_stories_subscriptions
+      SheldonClient.delete featured if featured
+      SheldonClient.delete all if all
     end
 
     def create_connection(connection_type, to_node, payload)
