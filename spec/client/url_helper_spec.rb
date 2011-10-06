@@ -198,16 +198,35 @@ describe SheldonClient::UrlHelper do
     it "should return the containers url for the given node" do
       uri = node_containers_url node
       uri.should be_a( Addressable::URI )
-      uri.path.should eq("/nodes/#{node_id}/containers")
+      uri.path.should eq("/nodes/#{node_id}/containers/featured_stories")
     end
 
-    it "should accpet params and use them in the query" do
-      uri = node_containers_url node, per_page: 10, page: 13, zoom: 2
+    it "should accept params and use them in the query" do
+      uri = node_containers_url node, per_page: 10, page: 13, show: "all_stories"
       uri.should be_a( Addressable::URI )
-      uri.path.should eq("/nodes/#{node_id}/containers")
+      uri.path.should eq("/nodes/#{node_id}/containers/all_stories")
 
-      uri.query_values.should eq({"page" => "13", "per_page" => "10", "zoom" => "2"})
+      uri.query_values.should eq({"page" => "13", "per_page" => "10"})
     end
+  end
+
+  context "node suggestions url" do
+    let(:node_id){ 34 }
+    let(:node){ SheldonClient::Node.new(id: node_id, type: :container) }
+
+    it "builds the sheldon correct url" do
+      uri = node_suggestions_url node
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/suggestions/items/#{node_id}")
+    end
+
+    it "accpets params and use them in the query" do
+      uri = node_suggestions_url node, per_page: 10, page: 13
+      uri.should be_a( Addressable::URI )
+      uri.path.should eq("/suggestions/items/#{node_id}")
+      uri.query_values.should eq({"page" => "13", "per_page" => "10"})
+    end
+
   end
 
   context "questionnaire url" do

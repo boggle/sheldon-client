@@ -91,7 +91,15 @@ class SheldonClient
     end
 
     def node_containers_url(node, options = {})
-      path = "/nodes/#{node.to_i}/containers"
+      show = options.delete(:show) || :featured_stories
+      path = "/nodes/#{node.to_i}/containers/#{show}"
+      uri = Addressable::URI.parse( SheldonClient.host + path )
+      uri.query_values = stringify_fixnums( options ) unless options.empty?
+      uri
+    end
+
+    def node_suggestions_url(node, options = {})
+      path = "/suggestions/items/#{node.to_i}"
       uri = Addressable::URI.parse( SheldonClient.host + path )
       uri.query_values = stringify_fixnums( options ) unless options.empty?
       uri

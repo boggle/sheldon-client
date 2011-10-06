@@ -209,21 +209,39 @@ class SheldonClient
     # Fetch the recently published containers about this node
     # === Parameters
     #
-    # options    - You can specify page, per_page and zoom.
+    # options    - You can specify page, per_page and type of stories.
     #
     # ===  Examples
     #
     # node = SheldonClient.node 205352
     # node.containers
     # => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>,
-    #      #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)> ]
+    #      #<Sheldon::Node 205352 (Container/Who Are 2012’s Oscar Contenders to Date?)> ]
     #
-    # node.containers(per_page:1, page:1)
+    # node.containers(per_page:1, page:1, show: :featured_stories)
     # => [ #<Sheldon::Node 205352 (Container/Who Are 2011’s Oscar Contenders to Date?)>]
     #
     def containers(opts = {})
       opts ||= { page: 1, per_page: 10 }
       Read.get_node_containers(self, opts)
+    end
+    
+    # Fetch suggestions about this node
+    # === Parameters
+    #
+    # options    - You can specify page and per_page.
+    #
+    # ===  Examples
+    #
+    # node = SheldonClient.node 205352
+    # node.suggestions
+    # => [ #<Sheldon::Node 205352 (Movie/One Suggested Movie)>,
+    #      #<Sheldon::Node 205352 (Movie/Another Suggested Movie)> ]
+    #
+    
+    def suggestions(opts = {})
+      opts ||= { page: 1, per_page: 10 }
+      Read.get_node_suggestions(self, opts)
     end
 
     def subscribe(to, type)

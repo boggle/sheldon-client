@@ -1,3 +1,9 @@
+=== Version 0.5.24
+* Rewrite subscription action to create subscription edges. Use user_node.subscribe( other_node, :all_stories )
+  * Valid subscription types are :all_stories and :featured_stories
+* Added node.subscription method to fetch subscriptions for a specific node
+* Fetching containers for a certain node now supports :show => :all_stories or :show => :featured_stories, defaulting to :featured_stories
+
 === Version 0.5.21
 * Allow to specify the direction in which you want the connection.( node.connection(:likes, direction: :outgoing)
 * Specify direction in which you want the neighbours.( node.neighbours(:likes, :incoming)

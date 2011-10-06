@@ -298,6 +298,22 @@ describe SheldonClient::Node do
         end
       end
     end
+    
+    context "suggestions" do
+      let(:url){node_suggestions_url(node) }
+      let(:node_type){ "Movie" }
+      let(:node_id){ 23 }
+      let(:payload){ {'title' =>  "Cartman says: 'Justing Bieber should burn in hell'" } }
+
+      it "should suggestions for a given node" do
+        stub_and_expect_request(:get, url, request_data, response(:node_collection)) do
+            nodes = node.suggestions
+            nodes.should_not be_empty
+            nodes.first.id.should eq(23)
+        end
+      end
+    end
+    
 
     context "connections" do
       let(:from_id)             { node_id }

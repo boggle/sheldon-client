@@ -77,6 +77,11 @@ class SheldonClient
       response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
     end
 
+    def self.get_node_suggestions(node, opts = {})
+      response = send_request :get, node_suggestions_url(node, opts)
+      response.code == '200' ? node_collection( JSON.parse(response.body) ) : []
+    end
+
     def self.questionnaire(id)
       response = send_request :get, questionnaire_url(id)
       response.code == '200' ? Questionnaire.new(JSON.parse(response.body)) : false
