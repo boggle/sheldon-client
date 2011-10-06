@@ -469,19 +469,19 @@ describe SheldonClient::Node do
       let(:node_id){ 23 }
       let(:node){ SheldonClient::Node.new( id: 23, type: :user ) }
       let(:movie){ SheldonClient::Node.new("id"=>33, "type"=>:movie)  }
-      let(:payload){ { :level => :everything } }
+      let(:payload){ {} }
 
       it "should create a new subscription" do
         rsp = response(:connection_created,
-                       connection_type: :subscriptions,
+                       connection_type: :featured_stories,
                        from_id: node.id,
                        to_id: movie.id,
                        payload: payload,
                        connection_id: 88 )
-        url = node_connections_url(node_id, :subscriptions, to: movie)
+        url = node_connections_url(node_id, :featured_stories, to: movie)
 
         stub_and_expect_request(:put, url, request_data(payload), rsp) do
-          response = node.subscribe(movie, :everything)
+          response = node.subscribe(movie, :featured_stories)
         end
       end
     end

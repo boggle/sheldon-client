@@ -226,8 +226,8 @@ class SheldonClient
       Read.get_node_containers(self, opts)
     end
 
-    def subscribe(to, rank)
-      create_connection(:subscription, to, {:level => rank })
+    def subscribe(to, type)
+      create_connection(type.to_sym, to, {})
     end
 
     private
