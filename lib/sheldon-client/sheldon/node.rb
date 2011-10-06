@@ -227,10 +227,16 @@ class SheldonClient
     end
 
     def subscribe(to, type)
+      delete_previous_subscriptions(to)
       create_connection(type.to_sym, to, {})
     end
 
     private
+
+    def delete_previous_subscriptions(to)
+      SheldonClient.delete(connection: { from: self.id, to: to.to_i, type: :all_featured_subscriptions })
+      SheldonClient.delete(connection: { from: self.id, to: to.to_i, type: :all_stories_subscriptions })
+    end
 
     def create_connection(connection_type, to_node, payload)
       SheldonClient::Create.create_sheldon_object :connection, from: self.id, to: to_node.to_i, type: connection_type, payload: payload
