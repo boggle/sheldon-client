@@ -480,8 +480,10 @@ describe SheldonClient::Node do
                        connection_id: 88 )
         url = node_connections_url(node_id, :featured_stories, to: movie)
 
-        SheldonClient.should_receive(:delete).with(connection: { from: node.id, to: movie.id, type: :all_featured_subscriptions }).and_return(true)
-        SheldonClient.should_receive(:delete).with(connection: { from: node.id, to: movie.id, type: :all_stories_subscriptions }).and_return(true)
+        connection_stub = double(:connection)
+        SheldonClient.should_receive(:delete).twice.with(connection_stub)
+        SheldonClient.should_receive(:connection).with({ from: node.id, to: movie.to_i, type: :featured_stories_subscriptions }).and_return(connection_stub)
+        SheldonClient.should_receive(:connection).with({ from: node.id, to: movie.to_i, type: :all_stories_subscriptions }).and_return(connection_stub)
 
         stub_and_expect_request(:put, url, request_data(payload), rsp) do
           response = node.subscribe(movie, :featured_stories)
