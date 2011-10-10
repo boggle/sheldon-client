@@ -225,7 +225,7 @@ class SheldonClient
       opts ||= { page: 1, per_page: 10 }
       Read.get_node_containers(self, opts)
     end
-    
+
     # Fetch suggestions about this node
     # === Parameters
     #
@@ -234,12 +234,12 @@ class SheldonClient
     # ===  Examples
     #
     # node = SheldonClient.node 205352
-    # node.suggestions
+    # node.node_suggestions
     # => [ #<Sheldon::Node 205352 (Movie/One Suggested Movie)>,
     #      #<Sheldon::Node 205352 (Movie/Another Suggested Movie)> ]
     #
-    
-    def suggestions(opts = {})
+
+    def node_suggestions(opts = {})
       opts ||= { page: 1, per_page: 10 }
       Read.get_node_suggestions(self, opts)
     end
