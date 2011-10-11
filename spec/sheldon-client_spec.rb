@@ -383,7 +383,7 @@ describe SheldonClient do
   end
 
   describe "SheldonClient.special_nodes" do
-    let(:payload)   { { some: 'key', marked: :true } }
+    let(:payload)   { { some: 'key', marked: true } }
     let(:node_type) { :movie }
 
     before(:each) do
@@ -394,7 +394,7 @@ describe SheldonClient do
                                          type: node_type,
                                          payload: payload.update(marks: [:adolfo,
                                                                          :pontus]))]
-      SheldonClient.stub!(:search).with(marked: :true){ @nodes }
+      SheldonClient.stub!(:search).with(marked: true){ @nodes }
     end
 
     it "should return all the categories and the nodes in it" do

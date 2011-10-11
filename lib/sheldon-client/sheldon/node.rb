@@ -145,7 +145,7 @@ class SheldonClient
     end
 
     def mark( mark_name )
-      payload[:marked] = :true unless payload[:marked]
+      payload[:marked] = true unless payload[:marked]
       unless marks.include?( mark_name.to_sym )
         payload[:marks] = marks << mark_name.to_sym
         save
@@ -153,8 +153,8 @@ class SheldonClient
     end
 
     def unmark( mark_name )
-      if payload[:marked] && marks.include?( mark_name )
-        payload[:marks].delete(mark_name)
+      if payload[:marked] && payload[:marks].include?( mark_name.to_s )
+        payload[:marks].delete(mark_name.to_s)
         if payload[:marks].empty?
           payload[:marked] = nil
           payload[:marks]  = nil

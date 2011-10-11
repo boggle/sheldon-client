@@ -322,7 +322,7 @@ class SheldonClient
   #                      #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
 
   def self.marked_nodes
-    nodes = search(marked: :true)
+    nodes = search(marked: true)
     marks = Hash.new do |h,k|
         h[k] = []
     end
