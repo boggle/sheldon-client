@@ -446,15 +446,15 @@ describe SheldonClient do
 
     it "should batch the creation of connections" do
       url = batch_connections_url
-      connections = [ { from: 13, to: 14, type: :likes, payload: payload },
+      connections = [ { from: 13, "to" => 14, type: :likes, payload: payload },
                       { from: 13, to: 16, type: :genre_taggings, payload: payload },
                       { from: 13, to: 20, type: :actings, payload: payload } ]
 
       stub_and_expect_request(:put, url, request_data(connections), response(:success)) do
         SheldonClient.batch do |batch|
           batch.create :connection, connections[0]
-          batch.create :connection, connections[1]
           batch.create :connection, connections[2]
+          batch.create :connection, connections[1]
         end
       end
     end

@@ -19,7 +19,8 @@ class SheldonClient
 
     def process!
       unless @connections.empty?
-        response = send_request( :put, batch_connections_url, @connections )
+        connections = @connections.sort_by{|c| c.symbolize_keys[:to] }
+        response = send_request( :put, batch_connections_url, connections )
         true
       end
     end
