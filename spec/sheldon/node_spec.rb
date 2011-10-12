@@ -355,41 +355,6 @@ describe SheldonClient::Node do
           end
         end
       end
-
-      context "create" do
-        let(:url) { node_connections_url( from_id, connection_type, to: to_id ) }
-
-        it "should create an connection (via node object)" do
-          stub_and_expect_request(:put, url, request_data(payload), response(:connection_created)) do
-            node.likes SheldonClient::Node.new( id: to_id, type: :movie ), payload
-          end
-        end
-
-        it "should create an connection (via node-id)" do
-          stub_and_expect_request(:put, url, request_data(connection_payload), response(:connection_created)) do
-            node.likes to_id, connection_payload
-          end
-        end
-
-        it "should return false if invalid connection target given" do
-          stub_and_expect_request(:put, url, request_data, response(:bad_request)) do
-            node.likes( to_id, connection_payload ).should == false
-          end
-        end
-
-        it "should create an connection without a payload" do
-          stub_and_expect_request(:put, url, request_data({}), response(:connection_created)) do
-            node.likes( to_id ).should be_a( SheldonClient::Connection )
-          end
-        end
-
-        it "should raise error if a wrong connection type is specified" do
-          node.type.should == :user
-          lambda {
-            node.actors( SheldonClient::Node.new( id: node_id + 1 ), payload )
-          }.should raise_error( NoMethodError )
-        end
-      end
     end
 
     context "fetch neighbours" do
