@@ -79,15 +79,16 @@ describe SheldonClient do
       end
     end
 
-    it "should return false if the response code is different of 200" do
+    it "raises and exception when response is not 200" do
       url     = "#{host_url}/nodes/movies"
       payload = {"title" => 'The Matrix' }
       rsp      = response(:bad_request)
       req_data = request_data(payload)
 
       stub_and_expect_request(:post, url, req_data, rsp) do
-        result = SheldonClient.create :node, { type: :movie, payload: payload }
-        result.should be(false)
+        lambda{
+          SheldonClient.create :node, { type: :movie, payload: payload }
+        }.should raise_error SheldonClient::BadRequest
       end
     end
   end
@@ -109,10 +110,12 @@ describe SheldonClient do
       end
     end
 
-    it "should return false when node not found" do
+    it "raises NotFound when trying to update a nonexistent connection" do
       connection = SheldonClient::Connection.new(from: 2, to: 3, type: :like)
       stub_and_expect_request(:put, url, request_data(payload), response(:not_found)) do
-        SheldonClient.update( connection, payload ).should eq(false)
+        lambda{
+          SheldonClient.update( connection, payload )
+        }.should raise_error SheldonClient::NotFound
       end
     end
   end
@@ -183,10 +186,12 @@ describe SheldonClient do
       end
     end
 
-    it "should return false when deleting non existance nodes" do
+    it "raises NotFound when deleting nonexistent nodes" do
       url = "#{host_url}/connections/122"
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
-        SheldonClient.delete(connection: 122).should eq(false)
+        lambda{
+          SheldonClient.delete(connection: 122)
+        }.should raise_error SheldonClient::NotFound
       end
     end
 
@@ -284,10 +289,11 @@ describe SheldonClient do
       end
     end
 
-    it "should result false if the connection doesn't exist" do
+    it "raises NotFound with nonexistent connections" do
       stub_and_expect_request(:get, url, request_data, response(:not_found)) do
-        connection = SheldonClient.connection(from:from_id, to:to_id, type: :like)
-        connection.should eq(false)
+        lambda{
+          SheldonClient.connection(from:from_id, to:to_id, type: :like)
+        }.should raise_error(SheldonClient::NotFound)
       end
     end
   end
@@ -369,15 +375,19 @@ describe SheldonClient do
       end
     end
 
-    it "shoudld return false if response is not 200" do
+    it "raises NotFound with nonexistent nodes" do
       stub_and_expect_request(:put, node_url , request_data, response(:not_found)) do
-        SheldonClient.reindex(node).should eq(false)
+        lambda{
+          SheldonClient.reindex(node)
+        }.should raise_error(SheldonClient::NotFound)
       end
     end
 
-    it "shoudld return false if response is not 200" do
+    it "raises NotFound with nonexistent connections" do
       stub_and_expect_request(:put, connection_url , request_data, response(:not_found)) do
-        SheldonClient.reindex(connection ).should eq(false)
+        lambda{
+          SheldonClient.reindex(connection)
+        }.should raise_error(SheldonClient::NotFound)
       end
     end
   end

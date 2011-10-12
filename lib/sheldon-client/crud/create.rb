@@ -46,18 +46,17 @@ class SheldonClient
 
     def self.create_node( options )
       validate_node_options( options )
-      response = send_request( :post, node_url( options[:type] ),
-                                      options[:payload] )
-      response.code == '201' ?
-        parse_sheldon_response(response.body) : false
+      response = send_request(:post,
+                              node_url( options[:type] ),
+                              options[:payload] )
+      parse_sheldon_response(response.body)
     end
 
     def self.create_connection( options )
       validate_connection_options( options )
       response = send_request( :put,  node_connections_url( options[:from], options[:type], to: options[:to] ),
                                       (options[:payload] || {}) )
-      response.code == '200' ?
-        parse_sheldon_response(response.body) : false
+      parse_sheldon_response(response.body)
     end
 
     def self.validate_type( type )
@@ -80,7 +79,7 @@ class SheldonClient
 
     def self.dispatch_edge_creation(options)
       response = send_request( :put, create_edge_url( options ), options[:payload] )
-      response.code == '200' ? true : false
+      true
     end
 
     def self.batch(&block)

@@ -4,7 +4,7 @@ class SheldonClient
     def self.delete_sheldon_object( object )
       type, params = *sheldon_type_and_id_from_object( object )
       url = (type == :node) ? node_url( params.to_i ) : delete_connections_url( params )
-      send_request( :delete, url ).code == '200' ? true : false
+      send_request(:delete, url) and true
     end
 
     private

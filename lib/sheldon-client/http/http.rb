@@ -1,9 +1,11 @@
 require 'benchmark'
 require 'logger'
 require 'net/http'
+require_relative 'exceptions'
 
 class SheldonClient
   module HTTP
+    include Exceptions
 
     private
 
@@ -17,6 +19,7 @@ class SheldonClient
         log_sheldon_request( method, uri, time, body )
         log_sheldon_response( result )
       end
+      raise_exception(result)
       result
     end
 
@@ -62,7 +65,5 @@ class SheldonClient
       SheldonClient.write_log_line( "#{time.real} #{method.upcase} #{url}" )
       SheldonClient.write_log_line( "curl -v -X #{method.upcase} '#{url}" + ((!body or body.empty?) ? "'" : "' -d '#{body.to_json}'") )
     end
-
-
   end
 end

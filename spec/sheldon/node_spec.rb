@@ -91,9 +91,11 @@ describe SheldonClient::Node do
       end
     end
 
-    it "should return false if the node could not be created" do
+    it "raises bad request error if the node could not be created" do
       stub_and_expect_request(:post, url, request_data(payload), response(:bad_request)) do
-        SheldonClient.create( :node, type: :movie, payload: payload ).should eq(false)
+        lambda{
+          SheldonClient.create( :node, type: :movie, payload: payload)
+        }.should raise_error SheldonClient::BadRequest
       end
     end
 
@@ -117,9 +119,11 @@ describe SheldonClient::Node do
       end
     end
 
-    it "should return false on error" do
+    it "raises NotFound" do
       stub_and_expect_request(:get, url, request_data, response(:not_found)) do
-        SheldonClient.node( node_id ).should be_false
+        lambda{
+          SheldonClient.node( node_id )
+        }.should raise_error SheldonClient::NotFound
       end
     end
   end
@@ -140,9 +144,12 @@ describe SheldonClient::Node do
       end
     end
 
-    it "should return false when node not found" do
+    it "raises NotFound" do
       stub_and_expect_request(:put, url, request_data(payload), response(:not_found)) do
-        SheldonClient.update( SheldonClient::Node.new(id: node_id, type: node_type), payload ).should == false
+        lambda{
+          node = SheldonClient::Node.new(id: node_id, type: node_type)
+          SheldonClient.update( node, payload )
+        }.should raise_error SheldonClient::NotFound
       end
     end
   end
@@ -222,9 +229,11 @@ describe SheldonClient::Node do
       end
     end
 
-    it "should return false on an error" do
+    it "raises NotFound" do
       stub_and_expect_request(:delete, url, request_data, response(:not_found)) do
-        SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type) ).should eq(false)
+        lambda{
+          SheldonClient.delete( SheldonClient::Node.new(id: node_id, type: node_type))
+        }.should raise_error SheldonClient::NotFound
       end
     end
   end
@@ -439,9 +448,11 @@ describe SheldonClient::Node do
         end
       end
 
-      it "should return false when reindexing failed" do
+      it "raises NotFound" do
         stub_and_expect_request(:put, url, request_data, response(:not_found)) do
-          SheldonClient::Node.new( id: node_id, type: node_type ).reindex.should == false
+          lambda{
+            SheldonClient::Node.new( id: node_id, type: node_type ).reindex
+          }.should raise_error SheldonClient::NotFound
         end
       end
     end
