@@ -5,16 +5,16 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sheldon-client}
-  s.version = "0.5.15"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-08-23}
+  s.date = %q{2011-10-13}
   s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
   s.email = %q{core@moviepilot.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     "lib/sheldon-client.rb",
@@ -26,11 +26,12 @@ Gem::Specification.new do |s|
     "lib/sheldon-client/crud/read.rb",
     "lib/sheldon-client/crud/search.rb",
     "lib/sheldon-client/crud/update.rb",
-    "lib/sheldon-client/edge.rb",
+    "lib/sheldon-client/http/exceptions.rb",
     "lib/sheldon-client/http/http.rb",
     "lib/sheldon-client/http/url_helper.rb",
     "lib/sheldon-client/sheldon/connection.rb",
     "lib/sheldon-client/sheldon/node.rb",
+    "lib/sheldon-client/sheldon/questionnaire.rb",
     "lib/sheldon-client/sheldon/schema.rb",
     "lib/sheldon-client/sheldon/sheldon_object.rb",
     "lib/sheldon-client/sheldon/statistics.rb",
@@ -40,9 +41,10 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/gozmo/sheldon-client}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Talks to Sheldon}
   s.test_files = [
+    "spec/client/exceptions_spec.rb",
     "spec/client/url_helper_spec.rb",
     "spec/requests/sheldon_client_requests_spec.rb",
     "spec/sheldon-client_spec.rb",
@@ -56,6 +58,7 @@ Gem::Specification.new do |s|
   ]
 
   if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
