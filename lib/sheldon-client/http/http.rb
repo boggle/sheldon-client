@@ -19,7 +19,7 @@ class SheldonClient
         log_sheldon_request( method, uri, time, body )
         log_sheldon_response( result )
       end
-      raise_exception(result)
+      raise_exception(result) unless [200, 201].include?(result.code.to_i)
       result
     end
 

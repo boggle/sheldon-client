@@ -8,8 +8,6 @@ class SheldonClient
   module HTTP
     module Exceptions
       def raise_exception(response)
-        return if [200, 201].include?(response.code.to_i)
-
         case response.code.to_i
         when 400
           raise BadRequest, get_message(response)
