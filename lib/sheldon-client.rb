@@ -15,6 +15,7 @@ require 'sheldon-client/configuration'
 require 'sheldon-client/sheldon/sheldon_object'
 
 module SheldonClient
+  extend self
   extend SheldonClient::Configuration
 
   @status = SheldonClient::Status
@@ -23,12 +24,11 @@ module SheldonClient
 
   # Forward few status methods to the Status class. See
   # SheldonClient::Status for more information
-  class << self
-    extend Forwardable
-    def_delegators :@status, :status, :node_types, :connection_types
-    def_delegators :@schema, :schema, :node_types, :connection_types
-    def_delegators :@statistics, :statistics
-  end
+  extend Forwardable
+  def_delegators :@status, :status, :node_types, :connection_types
+  def_delegators :@schema, :schema, :node_types, :connection_types
+  def_delegators :@statistics, :statistics
+
 
   #
   # Create a Node or Connection in Sheldon. Please see SheldonClient::Create
@@ -54,7 +54,7 @@ module SheldonClient
   #   SheldonClient.create :connection, type: 'like', from:    123, to:   321,
   #                         payload: { weight: 0.5 }
 
-  def self.create(type, options)
+  def create(type, options)
     SheldonClient::Create.create_sheldon_object( type, options )
   end
 
@@ -89,7 +89,7 @@ module SheldonClient
   #   SheldonClient.update( { connection: {from:1, to:2, type: :like}}, weight: 0.4 )
   #    => true
   #
-  def self.update( object, payload )
+  def update( object, payload )
     if object.is_a?(SheldonClient::Connection)
       object = { connection: object }
     end
@@ -122,7 +122,7 @@ module SheldonClient
   # Delete a node's connections of a given type
   # SheldonClient.delete(connection: {from: 201, type: likes)
   #
-  def self.delete( object )
+  def delete( object )
     SheldonClient::Delete.delete_sheldon_object( object )
   end
 
@@ -140,7 +140,7 @@ module SheldonClient
   #   SheldonClient.node 17007
   #   => #<Sheldon::Node 17007 (Movie/Tonari no Totoro)>]
   #
-  def self.node( node_id )
+  def node( node_id )
     SheldonClient::Read.fetch_sheldon_object( :node, node_id )
   end
 
@@ -183,7 +183,7 @@ module SheldonClient
   #    SheldonClient.search :movies, { title: 'Fist*', type: fulltext }
   #
 
-  def self.search( query, options = {} )
+  def search( query, options = {} )
     SheldonClient::Search.search( query, options )
   end
 
@@ -198,8 +198,8 @@ module SheldonClient
   #  e = SheldonClient.fetch_edges("/high_scores/users/13/untracked")
   #
 
-  def self.fetch_edge_collection( uri )
-    self.fetch_collection(uri)
+  def fetch_edge_collection( uri )
+    fetch_collection(uri)
   end
 
   # Fetch a collection of edges/nodes given an url.
@@ -214,7 +214,7 @@ module SheldonClient
   #  e = SheldonClient.fetch_collection("/recommendations/users/13/containers") # fetches nodes
   #
 
-  def self.fetch_collection( uri )
+  def fetch_collection( uri )
     SheldonClient::Read.fetch_collection( uri )
   end
 
@@ -236,7 +236,7 @@ module SheldonClient
   #
   #   SheldonClient.all( :connections )
   #   => [1,2,3,4,5,6,7,8, ..... ,9999]
-  def self.all( type )
+  def all( type )
     SheldonClient::Read.fetch_node_type_ids(type)
   end
 
@@ -253,7 +253,7 @@ module SheldonClient
   # SheldonClient.reindex_edge( 5464 )
   #
 
-  def self.reindex( object )
+  def reindex( object )
     SheldonClient::Update.reindex(object)
   end
 
@@ -281,7 +281,7 @@ module SheldonClient
   #
   # => [#<Sheldon::Connection 5 (GenreTagging/1->2)>, #<Sheldon::Connection 6 (GenreTagging/1->3)>]
   #
-  def self.connection(object)
+  def connection(object)
     SheldonClient::Read.fetch_sheldon_connection(object)
   end
 
@@ -304,7 +304,7 @@ module SheldonClient
   # SheldonClient.with_host( "http://www.sheldon.com" ) do
   #   SheldonClient.node( 1234 )
   # end
-  def self.with_host( host, &block )
+  def with_host( host, &block )
     begin
       SheldonClient.temp_host = host
       yield
@@ -321,7 +321,7 @@ module SheldonClient
   #       buzz_people: [ #<Sheldon::Node 304272 (Person/Sora Aoi)>,
   #                      #<Sheldon::Node 304233 (Person/Al Paccino)> ] }
 
-  def self.marked_nodes
+  def marked_nodes
     nodes = search(marked: true)
     marks = Hash.new do |h,k|
         h[k] = []
@@ -356,7 +356,7 @@ module SheldonClient
   #  => SheldonClient.stream(gonzo, page: 5, per_page: 5)
   # [ #<Sheldon::Node 204272 (Container/My Neighbour Totoro and his friends news)> ]
   #
-  def self.stream(node, options = {})
+  def stream(node, options = {})
     SheldonClient::Read.get_stream(node, options)
   end
 
@@ -381,11 +381,11 @@ module SheldonClient
   # Note
   # At the moment the creation in batch is just supported for connections.
   #
-  def self.batch(&block)
+  def batch(&block)
     SheldonClient::Create.batch &block
   end
 
-  def self.questionnaire(id)
+  def questionnaire(id)
     SheldonClient::Read.questionnaire id
   end
 end
