@@ -378,7 +378,7 @@ module SheldonClient
   # At the moment the creation in batch is just supported for connections.
   #
   def batch(&block)
-    SheldonClient::Create.batch &block
+    SheldonClient::Create.batch(&block)
   end
 
   def questionnaire(id)
