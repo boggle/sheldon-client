@@ -3,6 +3,7 @@
   Methods like node.likes and node.suggestions will raise an exception,
   use node.connections(:likes) or node.connections(:suggestions).
 * Exceptions are rise for response codes different to 2.X
+* SheldonClient is now a module.
 
 === Version 0.5.24
 * Rewrite subscription action to create subscription edges. Use user_node.subscribe( other_node, :all_stories )
