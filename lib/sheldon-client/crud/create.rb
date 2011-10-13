@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Create < Crud
 
     # Create Sheldon Node and Connection objects.

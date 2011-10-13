@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class SheldonClient
+module SheldonClient
   class Node < SheldonObject
     #
     # Naive Sheldon Node object implementation. You can access Sheldon

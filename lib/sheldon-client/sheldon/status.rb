@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Status < Crud
     #
     # Get the sheldon status json hash including some basic

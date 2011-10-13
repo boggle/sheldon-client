@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Questionnaire < Node
     attr_reader :answerers, :replies
     def initialize(data_hash)

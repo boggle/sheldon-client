@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Delete < Crud
 
     def self.delete_sheldon_object( object )

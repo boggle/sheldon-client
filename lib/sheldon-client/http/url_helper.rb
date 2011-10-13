@@ -1,6 +1,6 @@
 require 'addressable/uri'
 
-class SheldonClient
+module SheldonClient
   module UrlHelper
     include ActiveSupport::Inflector
 

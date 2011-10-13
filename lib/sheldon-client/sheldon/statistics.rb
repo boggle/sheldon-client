@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Statistics < Crud
     def self.statistics
       @statistics || get_sheldon_statistics

@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class BadRequest          < StandardError; end
   class Conflict            < StandardError; end
   class InternalServerError < StandardError; end

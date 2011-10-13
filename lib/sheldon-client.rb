@@ -14,7 +14,7 @@ require 'sheldon-client/sheldon/traverse'
 require 'sheldon-client/configuration'
 require 'sheldon-client/sheldon/sheldon_object'
 
-class SheldonClient
+module SheldonClient
   extend SheldonClient::Configuration
 
   @status = SheldonClient::Status

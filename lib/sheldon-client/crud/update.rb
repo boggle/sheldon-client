@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Update < Crud
 
     # Update Sheldon Node and Connection objects.

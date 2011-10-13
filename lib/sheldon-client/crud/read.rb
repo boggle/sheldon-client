@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Read < Crud
 
     def self.fetch_sheldon_object( type, id )
