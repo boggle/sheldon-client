@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   module Configuration
     def host
       temp_host || @host || "http://sheldon.staging.moviepilot.com:2311"

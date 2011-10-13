@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Schema < Crud
 
     def self.schema

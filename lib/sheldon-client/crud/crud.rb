@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/keys'
 require 'sheldon-client/http/http'
 require 'sheldon-client/http/url_helper'
 
-class SheldonClient
+module SheldonClient
   class Crud
     extend SheldonClient::HTTP
     extend SheldonClient::UrlHelper

@@ -98,12 +98,6 @@ describe SheldonClient::Node do
         }.should raise_error SheldonClient::BadRequest
       end
     end
-
-    it "should raise ArgumentError on unsupported node type" do
-      lambda do
-        SheldonClient.create( :node, type: :unknown )
-      end.should raise_error( ArgumentError )
-    end
   end
 
   context "retrieval" do

@@ -8,15 +8,15 @@ describe SheldonClient do
   def delete_test_nodes
     results  = SheldonClient.search(sandbox_id: sandbox_id)
     results.each do  |node|
-      SheldonClient.delete(node)
+      SheldonClient.delete(node) rescue true
       Elastodon.remove_from_index node.id
     end
   end
 
   before(:all) do
     WebMock.allow_net_connect!
-    SheldonClient.host = "http://sheldon.beta.moviepilot.com:2311"
-    SheldonClient.elastodon_host = 'http://db01.moviepilot.com:9200'
+    SheldonClient.host = "http://sheldon.staging.moviepilot.com:2311"
+    SheldonClient.elastodon_host = 'http://ci-staging01.moviepilot.com:9200'
   end
 
   after(:all) do
@@ -60,6 +60,7 @@ describe SheldonClient do
     end
 
     it "should get the node from sheldon" do
+      sleep 3
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
@@ -69,11 +70,9 @@ describe SheldonClient do
 
     it "should update the node in sheldon" do
       SheldonClient.update(@node, production_year: "1999").should eq(true)
-      sleep 3
-      results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
-      node = results.first
+      node = SheldonClient.node @node.id
       @node.should_not eq(node)
-      node.payload[:title].should  eq(movie_title)
+      node.payload[:title].should eq(movie_title)
       node.payload[:sandbox_id].should eq(sandbox_id)
       node.payload[:production_year].should eq("1999")
     end
@@ -105,8 +104,8 @@ describe SheldonClient do
     end
 
     after(:all) do
+      SheldonClient.delete(connection: @connection.id) rescue true
       delete_test_nodes
-      SheldonClient.delete(connection: @connection.id)
     end
 
     it "should create a connection between two nodes" do
@@ -128,8 +127,8 @@ describe SheldonClient do
     it "should delete a connection" do
       SheldonClient.delete(connection: @connection.id).should eq(true)
 
-      SheldonClient.connection(@connection.id).should eq(false)
-      SheldonClient.connection(from:@gozno, to: @movie, type: :likes ).should eq(false)
+      lambda{ SheldonClient.connection(@connection.id) }.should raise_error SheldonClient::NotFound
+      lambda{ SheldonClient.connection(from:@gozno, to: @movie, type: :likes ) }.should raise_error SheldonClient::NotFound
     end
   end
 

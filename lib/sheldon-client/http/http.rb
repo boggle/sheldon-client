@@ -3,7 +3,7 @@ require 'logger'
 require 'net/http'
 require_relative 'exceptions'
 
-class SheldonClient
+module SheldonClient
   module HTTP
     include Exceptions
 

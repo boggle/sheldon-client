@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Connection < SheldonObject
     attr_accessor :to_id, :from_id
 

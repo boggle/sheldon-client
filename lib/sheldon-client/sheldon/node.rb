@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class SheldonClient
+module SheldonClient
   class Node < SheldonObject
     #
     # Naive Sheldon Node object implementation. You can access Sheldon
@@ -112,11 +112,7 @@ class SheldonClient
     end
 
     def connections( type, opts = {} )
-      if valid_connection_type?( type )
-        Read.fetch_edges( self.id, type, opts )
-      else
-        raise ArgumentError.new("unknown connection type #{type} for #{self.type}")
-      end
+      Read.fetch_edges( self.id, type, opts )
     end
 
     def reason
@@ -260,17 +256,6 @@ class SheldonClient
 
     def create_connection(connection_type, to_node, payload)
       SheldonClient::Create.create_sheldon_object :connection, from: self.id, to: to_node.to_i, type: connection_type, payload: payload
-    end
-
-    def valid_connection_type?( connection_type, type = :all )
-      ctype =  connection_type.to_s.pluralize.to_sym
-      if  type == :incoming
-        incoming_connection_types.include?( ctype )
-      elsif type == :outgoing
-        outgoing_connection_types.include?( ctype )
-      else
-        connection_types.include?( ctype )
-      end
     end
   end
 end

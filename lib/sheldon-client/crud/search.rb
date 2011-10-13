@@ -1,4 +1,4 @@
-class SheldonClient
+module SheldonClient
   class Search < Crud
 
     #
