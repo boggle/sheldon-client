@@ -272,21 +272,5 @@ class SheldonClient
         connection_types.include?( ctype )
       end
     end
-
-    def method_missing( *args )
-      if valid_connection_type?( args[0] )
-        if    args[1].nil?
-          # e.g. node.likes
-          warn "[DEPRECATION] node##{args[0]} is deprecated and will be permanently removed in the next major version. Use node.connections(:#{args[0]}) instead"
-          return connections( args[0] )
-        elsif valid_connection_type?( args[0], :outgoing ) and
-              (args[1].is_a?(SheldonClient::Node) or args[1].is_a?(Numeric))
-          # e.g. node.likes 123  <or>  node.likes SheldonClient.node(123)
-          warn "[DEPRECATION] node##{args[0]} is deprecated for and will be permanently removed in the next major version. Use SheldonClient.create instead."
-          return create_connection( args[0], args[1], args[2] )
-        end
-      end
-      super
-    end
   end
 end

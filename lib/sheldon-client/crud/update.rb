@@ -12,17 +12,17 @@ class SheldonClient
     def self.update_sheldon_object( object, payload )
       type, params = *sheldon_type_and_id_from_object( object )
       url = (type == :node) ? node_url( params ) : connection_update_url( params )
-      send_request( :put, url, payload ).code == '200' ? true : false
+      send_request( :put, url, payload ) and  true
     end
 
     def self.reindex( object )
-      send_request( :put, reindex_url(object) ).code == '200' ? true : false
+      send_request( :put, reindex_url(object) ) and true
     end
 
     def self.reindex_sheldon_object( object )
       type, id = *sheldon_type_and_id_from_object( object )
       url = (type == :node) ? node_url( id.to_i, :reindex ) : edge_url( id.to_i, :reindex )
-      send_request( :put, url ).code == '200' ? true : false
+      send_request( :put, url ) and true
     end
 
 
