@@ -1,5 +1,5 @@
 === Version 1.0
-* Method missing support has been deprecated.
+* Method missing support has been removed.
   Methods like node.likes and node.suggestions will raise an exception,
   use node.connections(:likes) or node.connections(:suggestions).
 * Exceptions are rise for response codes different to 2.X
