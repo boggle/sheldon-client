@@ -34,12 +34,6 @@ describe SheldonClient do
       SheldonClient.stub(:connection_types){ [ :likes, :actors, :g_tags ] }
     end
 
-    it "should raise and exception if the given type is not valid" do
-      lambda {
-        SheldonClient.create :invalid_type, {}
-      }.should raise_error(ArgumentError, 'Unknown type')
-    end
-
     it "should make the correct http call  when creating a node" do
       url     = "#{host_url}/nodes/movies"
       payload = {"title" => 'The Matrix' }

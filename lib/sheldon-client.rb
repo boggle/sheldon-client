@@ -18,16 +18,12 @@ module SheldonClient
   extend self
   extend SheldonClient::Configuration
 
-  @status = SheldonClient::Status
-  @schema = SheldonClient::Schema
-  @statistics = SheldonClient::Statistics
-
   # Forward few status methods to the Status class. See
   # SheldonClient::Status for more information
   extend Forwardable
-  def_delegators :@status, :status, :node_types, :connection_types
-  def_delegators :@schema, :schema, :node_types, :connection_types
-  def_delegators :@statistics, :statistics
+  def_delegators SheldonClient::Status, :status, :node_types, :connection_types
+  def_delegators SheldonClient::Schema, :schema, :node_types, :connection_types
+  def_delegators SheldonClient::Statistics, :statistics
 
 
   #

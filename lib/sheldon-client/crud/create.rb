@@ -16,70 +16,29 @@ module SheldonClient
     #
     # type:    The type of the connection. Please see
     #          SheldonClient#connection_types for all supported types.
-    #          An ArgumentError is raised if wether specified nor known.
     # from:    The source-node of the connection.
     # to:      The target-node of the connection.
     #
     # Payloads are not mandatory for connections but are strongly encouraged.
     #
-    #
-    # For your convienience you can also easily create connections using
-    # the Node objects.
-    #
-    #     me     = SheldonClient.search( :users, username: 'Chuck Norris' )
-    #     totoro = SheldonClient.search( :movies, title: 'Totoro' )
-    #     me.likes totoro
-    #
-
     extend SheldonClient::HTTP
     extend SheldonClient::UrlHelper
-
-    VALID_TYPES = [ :node, :connection ]
 
     private
 
     def self.create_sheldon_object( type, options )
-      validate_type( type )
-      return create_node( options ) if type == :node
-      return create_connection( options ) if type == :connection
+      type == :node ? create_node(options) : create_connection(options)
     end
 
     def self.create_node( options )
-      validate_node_options( options )
-      response = send_request(:post,
-                              node_url( options[:type] ),
-                              options[:payload] )
+      response = send_request(:post, node_url(options[:type]), options[:payload] )
       parse_sheldon_response(response.body)
     end
 
     def self.create_connection( options )
-      validate_connection_options( options )
-      response = send_request( :put,  node_connections_url( options[:from], options[:type], to: options[:to] ),
-                                      (options[:payload] || {}) )
+      url = node_connections_url( options[:from], options[:type], to: options[:to] )
+      response = send_request(:put, url, options[:payload] || {} )
       parse_sheldon_response(response.body)
-    end
-
-    def self.validate_type( type )
-      unless VALID_TYPES.include?( type.to_sym )
-        raise ArgumentError.new('Unknown type')
-      end
-    end
-
-    def self.validate_connection_options( options )
-      raise ArgumentError.new("you must specify the type of connection") unless options[:type]
-      raise ArgumentError.new("you must specify the source node") unless options[:from]
-      raise ArgumentError.new("you must specify the target node") unless options[:to]
-    end
-
-    def self.validate_node_options( options )
-      raise ArgumentError.new("you must specify the type of node") unless options[:type]
-      raise ArgumentError.new("unknown node type #{options[:type]}") unless
-        SheldonClient.node_types.include?( options[:type].to_s.pluralize.to_sym )
-    end
-
-    def self.dispatch_edge_creation(options)
-      response = send_request( :put, create_edge_url( options ), options[:payload] )
-      true
     end
 
     def self.batch(&block)
