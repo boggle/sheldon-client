@@ -1,9 +1,10 @@
 module SheldonClient
-  class BadRequest          < StandardError; end
-  class Conflict            < StandardError; end
-  class InternalServerError < StandardError; end
-  class NotFound            < StandardError; end
-  class ServiceUnavaiable   < StandardError; end
+  class Error               < StandardError; end
+  class BadRequest          < Error; end
+  class Conflict            < Error; end
+  class InternalServerError < Error; end
+  class NotFound            < Error; end
+  class ServiceUnavaiable   < Error; end
 
   module HTTP
     module Exceptions
