@@ -66,7 +66,8 @@ module SheldonClient
       response = send_request :get, traversal_url(type, start_node_id, extra, options)
       JSON.parse(response.body).map do |o|
         { :rank => o["rank"],
-          :node => Node.new(o["node"])
+          :node => Node.new(o["node"]),
+          :based_on => o["based_on"]
         }
       end
     end

@@ -117,7 +117,8 @@ module HttpSupport
       "type" => "Container",
       "id" => "212541"
     },
-      "rank" => 10
+      "rank" => 10,
+       "based_on" => [1220, 2333]
     },
       {
       "node" => {
@@ -131,7 +132,8 @@ module HttpSupport
       "type" => "Container",
       "id" => "212510"
     },
-      "rank" => 7
+      "rank" => 7,
+      "based_on" => [1220, 2333]
     }]
   end
 end
