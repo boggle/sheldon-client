@@ -1,7 +1,8 @@
 module SheldonClient
   class Batch < Crud
-    def initialize
+    def initialize(size)
       @connections = []
+      @size = size
     end
 
     def create(type, object)
@@ -20,7 +21,10 @@ module SheldonClient
     def process!
       unless @connections.empty?
         connections = @connections.sort_by{|c| c.symbolize_keys[:to].to_i }
-        response = send_request( :put, batch_connections_url, connections )
+        response = nil
+        connections.each_slice(@size) do |slice|
+          response = send_request( :put, batch_connections_url, slice )
+        end
         true
       end
     end

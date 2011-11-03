@@ -453,6 +453,42 @@ describe SheldonClient do
       end
     end
 
+    it "should work on batches of 50 elements, by default per request" do
+      url = batch_connections_url
+      connections = []
+      70.times do |i|
+        connections << { from: 13, to: i.to_s, type: :actings, payload: payload }
+      end
+
+      stub_and_expect_request(:put, url, request_data(connections[50..69]), response(:success)) do
+        stub_and_expect_request(:put, url, request_data(connections[0..49]), response(:success)) do
+          SheldonClient.batch do |batch|
+            connections.each do |connection|
+              batch.create :connection, connection
+            end
+          end
+        end
+      end
+    end
+
+    it "should work on batches of 20 elements (not default batch size) per request" do
+      url = batch_connections_url
+      connections = []
+      20.times do |i|
+        connections << { from: 13, to: i.to_s, type: :actings, payload: payload }
+      end
+
+      stub_and_expect_request(:put, url, request_data(connections[10..19]), response(:success)) do
+        stub_and_expect_request(:put, url, request_data(connections[0..9]), response(:success)) do
+          SheldonClient.batch(10) do |batch|
+            connections.each do |connection|
+              batch.create :connection, connection
+            end
+          end
+        end
+      end
+    end
+
     it "should batch the update of connections" do
       url = batch_connections_url
       connections = [ { from: 13, to: 14, type: :likes, payload: payload },
