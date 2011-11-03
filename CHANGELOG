@@ -1,3 +1,8 @@
+=== Version 1.0.5
+* Connection creation throw batch operation now operates on batches of N
+  elememts each time. This is like this cause seems to be the smart way of doing
+  it in neo4j.
+
 === Version 1.0
 * Method missing support has been removed.
   Methods like node.likes and node.suggestions will raise an exception,
