@@ -21,9 +21,8 @@ module SheldonClient
     def process!
       unless @connections.empty?
         connections = @connections.sort_by{|c| c.symbolize_keys[:to].to_i }
-        response = nil
         connections.each_slice(@size) do |slice|
-          response = send_request( :put, batch_connections_url, slice )
+          send_request( :put, batch_connections_url, slice )
         end
         true
       end
