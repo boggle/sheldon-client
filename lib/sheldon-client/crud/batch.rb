@@ -1,14 +1,17 @@
 module SheldonClient
   class Batch < Crud
     def initialize(size)
-      @connections = []
+      @connections = Hash.new do |hsh, key|
+        hsh[key] = {}
+      end
       @size = size
     end
 
     def create(type, object)
       case type
       when :connection
-        @connections << object
+        object.symbolize_keys!
+        @connections[object[:type]][object[:to].to_i] = object
       else
         raise ArgumentError.new("Batch operation is not supported for:#{type}")
       end
@@ -20,7 +23,8 @@ module SheldonClient
 
     def process!
       unless @connections.empty?
-        connections = @connections.sort_by{|c| c.symbolize_keys[:to].to_i }
+        connections = @connections.values.map{|c| c.values }.flatten
+        connections = connections.sort_by{|c| c[:to].to_i }
         connections.each_slice(@size) do |slice|
           send_request( :put, batch_connections_url, slice )
         end
