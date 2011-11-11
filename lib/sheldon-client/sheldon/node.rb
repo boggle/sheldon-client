@@ -111,7 +111,7 @@ module SheldonClient
       hash
     end
 
-    def connections( type, opts = {} )
+    def connections( type = :all, opts = {} )
       Read.fetch_edges( self.id, type, opts )
     end
 

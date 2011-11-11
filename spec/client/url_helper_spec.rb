@@ -106,6 +106,12 @@ describe SheldonClient::UrlHelper do
       uri.should be_a( Addressable::URI )
       uri.path.should == "/nodes/1/connections/likes/2"
     end
+
+    it "should default to all types of connections" do
+      uri = node_connections_url( 1, :all )
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/nodes/1/connections/all"
+    end
   end
 
   context "node_type_ids" do
