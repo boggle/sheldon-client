@@ -41,8 +41,8 @@ module SheldonClient
       parse_sheldon_response(response.body)
     end
 
-    def self.batch(&block)
-      batch = SheldonClient::Batch.new
+    def self.batch(size, &block)
+      batch = SheldonClient::Batch.new(size)
       yield(batch)
       batch.process!
     end

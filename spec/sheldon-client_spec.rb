@@ -437,12 +437,12 @@ describe SheldonClient do
 
   describe "batch operations" do
     let(:payload){{ weight: 1 }}
+    let(:url){ batch_connections_url }
 
-    it "should batch the creation of connections" do
-      url = batch_connections_url
+    it "allows batch creation for connections" do
       connections = [ { from: 13, "to" => 14, type: :likes, payload: payload },
-                      { from: 13, to: 16, type: :genre_taggings, payload: payload },
-                      { from: 13, to: 20, type: :actings, payload: payload } ]
+                      { from: 13, to: "16", type: :genre_taggings, payload: payload },
+                      { from: 13, to: "20", type: :actings, payload: payload } ]
 
       stub_and_expect_request(:put, url, request_data(connections), response(:success)) do
         SheldonClient.batch do |batch|
@@ -453,8 +453,56 @@ describe SheldonClient do
       end
     end
 
+    it "doesn't creates more than one connection to the same node" do
+      connections = [ { from: 13, to:  14, type: :likes, payload: payload },
+                      { from: 13, to:  14, type: :genre_taggings, payload: payload },
+                      { from: 13, to:  14,  type: :likes, payload: payload } ]
+
+      stub_and_expect_request(:put, url, request_data(connections[0..1]), response(:success)) do
+        SheldonClient.batch do |batch|
+          batch.create :connection, connections[0]
+          batch.create :connection, connections[1]
+          batch.create :connection, connections[2]
+
+        end
+      end
+    end
+
+    it "works on batches of 50 elements, by default per request" do
+      connections = []
+      70.times do |i|
+        connections << { from: 13, to: i.to_s, type: :actings, payload: payload }
+      end
+
+      stub_and_expect_request(:put, url, request_data(connections[50..69]), response(:success)) do
+        stub_and_expect_request(:put, url, request_data(connections[0..49]), response(:success)) do
+          SheldonClient.batch do |batch|
+            connections.each do |connection|
+              batch.create :connection, connection
+            end
+          end
+        end
+      end
+    end
+
+    it "works on batches of 20 elements (not default batch size) per request" do
+      connections = []
+      20.times do |i|
+        connections << { from: 13, to: i.to_s, type: :actings, payload: payload }
+      end
+
+      stub_and_expect_request(:put, url, request_data(connections[10..19]), response(:success)) do
+        stub_and_expect_request(:put, url, request_data(connections[0..9]), response(:success)) do
+          SheldonClient.batch(10) do |batch|
+            connections.each do |connection|
+              batch.create :connection, connection
+            end
+          end
+        end
+      end
+    end
+
     it "should batch the update of connections" do
-      url = batch_connections_url
       connections = [ { from: 13, to: 14, type: :likes, payload: payload },
                       { from: 13, to: 16, type: :genre_taggings, payload: payload }]
 

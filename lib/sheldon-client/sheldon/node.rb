@@ -248,8 +248,8 @@ module SheldonClient
     private
 
     def delete_previous_subscriptions(to)
-      featured = SheldonClient.connection from: self.id, to: to.to_i, type: :featured_stories_subscriptions
-      all      = SheldonClient.connection from: self.id, to: to.to_i, type: :all_stories_subscriptions
+      featured = SheldonClient.connection(from: self.id, to: to.to_i, type: :featured_stories_subscriptions) rescue false
+      all      = SheldonClient.connection(from: self.id, to: to.to_i, type: :all_stories_subscriptions) rescue false
       SheldonClient.delete featured if featured
       SheldonClient.delete all if all
     end

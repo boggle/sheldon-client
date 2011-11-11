@@ -357,12 +357,16 @@ module SheldonClient
   end
 
   # Process the given block as a batch operation in sheldon
-  # parameters
+  #
+  # == Parameters
+  # <tt> size   </tt> - Lets you specify the size of the batch operation. By default it
+  #                     is of 50 elements, so if you have more two or more request will
+  #                     be issued.
   # <tt> block  </tt> - Receives a block which takes a batch as argument, in the batch
   #                     you can call create, with the type and info.
   #
-  # Example
-
+  # == Example
+  #
   # payload     = { weight: 1 }
   # connections = [ { from: 13 , to: 14, type: :likes, payload: payload },
   #                 { from: 13 , to: 16, type: :genre_taggings, payload: payload },
@@ -374,11 +378,17 @@ module SheldonClient
   #   batch.create :connection, connections[2]
   # end
   #
+  # SheldonClient.batch(2) do |batch|
+  #   batch.create :connection, connections[0]
+  #   batch.create :connection, connections[1]
+  #   batch.create :connection, connections[2]
+  # end
+  #
   # Note
   # At the moment the creation in batch is just supported for connections.
   #
-  def batch(&block)
-    SheldonClient::Create.batch(&block)
+  def batch(size=50, &block)
+    SheldonClient::Create.batch(size, &block)
   end
 
   def questionnaire(id)
