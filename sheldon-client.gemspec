@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{sheldon-client}
-  s.version = "1.0.6"
+  s.name = "sheldon-client"
+  s.version = "1.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = %q{2011-11-10}
-  s.description = %q{The gem makes it possible to talk to sheldon using easy calls}
-  s.email = %q{core@moviepilot.com}
+  s.date = "2011-11-14"
+  s.description = "The gem makes it possible to talk to sheldon using easy calls"
+  s.email = "core@moviepilot.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -38,11 +38,11 @@ Gem::Specification.new do |s|
     "lib/sheldon-client/sheldon/status.rb",
     "lib/sheldon-client/sheldon/traverse.rb"
   ]
-  s.homepage = %q{http://github.com/gozmo/sheldon-client}
+  s.homepage = "http://github.com/gozmo/sheldon-client"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Talks to Sheldon}
+  s.rubygems_version = "1.8.11"
+  s.summary = "Talks to Sheldon"
   s.test_files = [
     "spec/client/exceptions_spec.rb",
     "spec/client/url_helper_spec.rb",
@@ -58,7 +58,6 @@ Gem::Specification.new do |s|
   ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
