@@ -49,12 +49,10 @@ describe SheldonClient do
                                    { type: :movie,
                                      payload: { title: movie_title,
                                                 sandbox_id: sandbox_id }})
-      @order = 0
       sleep 3
     end
 
     it "should have created a node in sheldon" do
-      (@order += 1).should == 1 
       @node.should be_a SheldonClient::Node
       @node.type.should eq(:movie)
       @node.payload[:title].should  eq(movie_title)
@@ -63,7 +61,6 @@ describe SheldonClient do
 
     it "should get the node from sheldon" do
       sleep 3
-      (@order += 1).should == 2
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
@@ -72,7 +69,6 @@ describe SheldonClient do
     end
 
     it "should update the node in sheldon" do
-      (@order += 1).should == 3
       SheldonClient.update(@node, production_year: "1999").should eq(true)
       node = SheldonClient.node @node.id
       @node.should_not eq(node)
@@ -82,7 +78,6 @@ describe SheldonClient do
     end
 
     it "should delete node in sheldon" do
-      (@order += 1).should == 4
       SheldonClient.delete(@node).should eq(true)
     end
   end
