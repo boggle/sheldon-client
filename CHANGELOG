@@ -1,3 +1,7 @@
+=== Version 1.0.7
+* Added support for retrieving project based on similarities recommendations
+from sheldon.
+
 === Version 1.0.5
 * Connection creation throw batch operation now operates on batches of N
   elememts each time. This is like this cause seems to be the smart way of doing
