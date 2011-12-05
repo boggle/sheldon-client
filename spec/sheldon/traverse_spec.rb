@@ -24,7 +24,7 @@ describe SheldonClient::Statistics do
   let(:similarity_url){ traversal_url( 'similarity', 123, 'likes/movies') }
   it "calls the url for similar liked movies" do
     stub_and_expect_request(:get, similarity_url, request_data, response(:similar_movies)) do
-      response = SheldonClient::Traverse.similarity 123, 'likes', 'movies'
+      response = SheldonClient::Traverse.similarity 123, :likes, :movies
       response.should be_a Array
       response.first[:node].should be_a SheldonClient::Node
     end
