@@ -14,9 +14,10 @@ describe SheldonClient do
   end
 
   before(:all) do
+    SheldonClient.log = true
     WebMock.allow_net_connect!
-    SheldonClient.host = "http://sheldon.staging.moviepilot.com:2311"
-    SheldonClient.elastodon_host = 'http://ci-staging01.moviepilot.com:9200'
+    SheldonClient.host = ENV['sheldon'] || "http://sheldon.staging.moviepilot.com:2311"
+    SheldonClient.elastodon_host = ENV['elastodon'] || 'http://ci-staging01.moviepilot.com:9200'
   end
 
   after(:all) do
