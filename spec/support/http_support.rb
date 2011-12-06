@@ -63,6 +63,7 @@ module HttpSupport
       when :statistics            then { status: 200, body: statistics_body.to_json }
       when :status                then { status: 200, body: sheldon_status.to_json }
       when :container_pagerank    then { status: 200, body: pagerank_body.to_json }
+      when :similar_movies        then { status: 200, body: similar_movies.to_json }
       when :neighbour_collection then
        { status: 200,
          body: [{ type: neighbour_type.to_s.camelcase,
@@ -101,6 +102,26 @@ module HttpSupport
                          "directings" => { "count" => 455 },
                          "genre_taggings" => { "count" => 953 }}
     }
+  end
+
+  def similar_movies
+    [
+      {
+        "node" => {
+        "payload" => {
+        "published_at" => "2011-07-29T14:08:04+02:00",
+        "created_at" => "2011-07-29T14:15:48+02:00",
+        "updated_at" => "2011-09-07T10:39:12+02:00",
+        "title" => "Judge: Marvel Owns Rights to 'Fantastic Four,' 'Spider-Man,' 'X-Men,' 'Iron Man' and 'Incredible Hulk'",
+        "edward_id" => 2326
+      },
+        "type" => "Container",
+        "id" => "212541"
+      },
+        "rank" => 10,
+        "based_on" => [1220, 2333]
+     }
+    ]
   end
 
   def pagerank_body
