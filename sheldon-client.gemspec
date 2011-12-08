@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sheldon-client"
-  s.version = "1.0.7"
+  s.version = "1.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = "2011-11-14"
+  s.date = "2011-12-08"
   s.description = "The gem makes it possible to talk to sheldon using easy calls"
   s.email = "core@moviepilot.com"
   s.extra_rdoc_files = [
