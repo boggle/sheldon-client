@@ -10,7 +10,7 @@ module SheldonClient
 
     def self.similarity(start_node, source, type, options = {})
       extra = "#{source}/#{type}"
-      SheldonClient::Read.pagerank( "similarity", start_node, extra, options )
+      SheldonClient::Read.pagerank( "similarities", start_node, extra, options )
     end
 
   end
