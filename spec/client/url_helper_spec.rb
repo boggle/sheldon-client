@@ -114,6 +114,17 @@ describe SheldonClient::UrlHelper do
     end
   end
 
+  context 'node_degree_url' do
+    it 'should call node_connections_url and append /degree' do
+      connections_uri = Addressable::URI.parse('http://some.server/blub')
+      self.should_receive(:node_connections_url).with(1, 2, 3).and_return(connections_uri)
+
+      uri = node_degree_url(1, 2, 3)
+      uri.should be_a( Addressable::URI )
+      uri.path.should == "/blub/degree"
+    end
+  end
+
   context "node_type_ids" do
     let(:type){ :movie }
     it "should return the correct url to node/:type/ids" do

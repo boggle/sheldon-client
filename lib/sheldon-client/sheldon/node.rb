@@ -52,6 +52,13 @@ module SheldonClient
     #   => [ #<Sheldon::Connection 509177 (GenreTagging/17007->190661)>, ... ]
     #
     #
+    # ==== Degree (edge count)
+    #
+    # Return the count of edges. Takes the same options as #connections
+    #
+    #   SheldonClient.node(17007).degree(:all, direction: :incoming)
+    #   SheldonClient.node(17007).degree(:likes)
+    #
     # ==== Create Connections
     #
     # Create a connection. If the connection type is not valid for the
@@ -113,6 +120,15 @@ module SheldonClient
 
     def connections( type = :all, opts = {} )
       Read.fetch_edges( self.id, type, opts )
+    end
+
+    def degree( type = :all, opts = {} )
+      Read.fetch_degree( self.id, type, opts )['degree']
+    end
+
+    # syntactic sugar
+    def subscription_count
+      degree(:all_stories_subscriptions) + degree(:featured_stories_subscriptions)
     end
 
     def reason

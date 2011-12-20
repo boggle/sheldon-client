@@ -32,6 +32,11 @@ module SheldonClient
       connection_collection( JSON.parse(response.body) )
     end
 
+    def self.fetch_degree( node_id, type, opts = {} )
+      response = send_request( :get, node_degree_url(node_id, type, opts) )
+      JSON.parse(response.body)
+    end
+
     def self.fetch_neighbours( from_id, type, direction = nil )
       response = send_request( :get, neighbours_url(from_id, type, direction) )
       node_collection( JSON.parse(response.body) )

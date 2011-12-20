@@ -64,6 +64,7 @@ module HttpSupport
       when :status                then { status: 200, body: sheldon_status.to_json }
       when :container_pagerank    then { status: 200, body: pagerank_body.to_json }
       when :similar_movies        then { status: 200, body: similar_movies.to_json }
+      when :degree                then { status: 200, body: {degree: opts[:degree]}.to_json }
       when :neighbour_collection then
        { status: 200,
          body: [{ type: neighbour_type.to_s.camelcase,

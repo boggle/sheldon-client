@@ -360,6 +360,19 @@ describe SheldonClient::Node do
       end
     end
 
+    context 'degree' do
+      let(:connection_type)     { :like }
+
+      it "should fetch all connections of certain type" do
+        url = node_degree_url( node, connection_type )
+        stub_and_expect_request(:get, url, request_data, response(:degree, degree: 123)) do
+          degree = node.degree( :likes )
+          degree.should be_a(Integer)
+          degree.should eq(123)
+        end
+      end
+    end
+
     context "fetch neighbours" do
       # see context connections create for create neighbour specs
       let(:neighbour_id)      { node_id + 2 }

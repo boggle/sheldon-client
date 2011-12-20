@@ -19,6 +19,12 @@ module SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
+    def node_degree_url( from, type, opts = {} )
+      node_connections_url(from, type, opts).tap do |uri|
+        uri.path += '/degree'
+      end
+    end
+
     def node_url( *args )
       if is_id?(*args) and args[1].nil?
         # e.g. node_url( 1 )
