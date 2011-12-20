@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sheldon-client"
-  s.version = "1.0.9"
+  s.version = "1.0.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pontus Lindstrom", "Benjamin Krause"]
-  s.date = "2011-12-08"
+  s.date = "2011-12-20"
   s.description = "The gem makes it possible to talk to sheldon using easy calls"
   s.email = "core@moviepilot.com"
   s.extra_rdoc_files = [
@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/gozmo/sheldon-client"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.11"
+  s.rubygems_version = "1.8.10"
   s.summary = "Talks to Sheldon"
   s.test_files = [
     "spec/client/exceptions_spec.rb",
