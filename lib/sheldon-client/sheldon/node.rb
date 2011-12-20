@@ -126,6 +126,11 @@ module SheldonClient
       Read.fetch_degree( self.id, type, opts )['degree']
     end
 
+    # syntactic sugar
+    def subscription_count
+      degree(:all_stories_subscriptions) + degree(:featured_stories_subscriptions)
+    end
+
     def reason
       raw_data[:reason] || reason_from_path || {}
     end

@@ -37,6 +37,16 @@ describe SheldonClient do
     end
   end
 
+  describe 'degree' do
+    it 'counts the amount of matrix directors correctly' do
+      SheldonClient.node(416).degree(:directings).should eq(2)
+    end
+
+    it 'counts amount of subscribers to twilight' do
+      SheldonClient.node(41139).subscription_count.should be > 1300
+    end
+  end
+
   context "creating, searching and updating nodes" do
     let(:movie_title) do
       "1234-This is a dummy movie"
@@ -143,13 +153,11 @@ describe SheldonClient do
 
   describe "getting all the ids of the nodes with the given type" do
     it "has several entries for users" do
-      users_ids = SheldonClient.all(:users)
-      (users_ids.count > 100).should eq(true)
+      SheldonClient.all(:users).count.should be > 100
     end
 
     it "has more than a thousand of nodes" do
-      nodes_ids = SheldonClient.all(:nodes)
-      (nodes_ids.count > 1000).should eq(true)
+      SheldonClient.all(:nodes).count.should be > 1000
     end
   end
 
