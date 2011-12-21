@@ -58,6 +58,7 @@ module HttpSupport
       when :node_collection       then { status: 200, body: [node_body(opts)].to_json }
       when :node_created          then { status: 201, body: node_body(opts).to_json   }
       when :questionnaire         then { status: 200, body: questionnaire_body(opts).to_json }
+      when :activity              then { status: 200, body: activity_body(opts).to_json }
       when :not_found             then { status: 404 }
       when :success               then { status: 200, body: {}.to_json}
       when :statistics            then { status: 200, body: statistics_body.to_json }
@@ -92,6 +93,18 @@ module HttpSupport
       payload: opts[:payload] || payload,
       replies: opts[:replies] || replies,
       answerers: opts[:answerers] || answerers }
+  end
+
+  def activity_body(opts = {})
+    [
+      {
+        :content => opts[:content] || content ,
+        :date    => opts[:date] || date,
+        :reason  => opts[:reason] || reason,
+        :friend  => opts[:friend] || friend
+      }
+    ]
+
   end
 
   def statistics_body

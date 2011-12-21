@@ -394,4 +394,12 @@ module SheldonClient
   def questionnaire(id)
     SheldonClient::Read.questionnaire id
   end
+
+  ##
+  # Fetch the user activity from sheldon
+  #
+  def activity(id)
+    SheldonClient::Read.activities id
+  end
+
 end
