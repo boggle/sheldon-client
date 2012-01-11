@@ -90,7 +90,7 @@ module SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
-    def udpate_rule_url(node_id, rule)
+    def update_rule_url(node_id, rule)
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/#{node_id}/rules/#{rule}" )
     end
 

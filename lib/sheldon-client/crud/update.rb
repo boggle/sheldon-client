@@ -16,7 +16,7 @@ module SheldonClient
     end
 
     def self.update_rule(rule, object_id)
-      send_request( :put, update_rule_url(object_id, rule) ) and  true
+      send_request( :put, update_rule_url(object_id, rule), {} ) and  true
     end
 
     def self.reindex( object )
