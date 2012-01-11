@@ -41,3 +41,4 @@ end
 require 'sheldon-client/sheldon/node'
 require 'sheldon-client/sheldon/connection'
 require 'sheldon-client/sheldon/questionnaire'
+require 'sheldon-client/sheldon/activity'

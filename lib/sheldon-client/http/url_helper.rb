@@ -124,6 +124,10 @@ module SheldonClient
       Addressable::URI.parse( "#{SheldonClient.host}/questionnaires/#{questionnaire.to_i}")
     end
 
+    def activity_url(user)
+      Addressable::URI.parse( "#{SheldonClient.host}/activity/users/#{user.to_i}")
+    end
+
     private
 
     def stringify_fixnums(hsh)

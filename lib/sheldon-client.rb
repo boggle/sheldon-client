@@ -404,4 +404,11 @@ module SheldonClient
     SheldonClient::Update.update_rule(rule, id)
   end
 
+  ##
+  # Fetch the user activity from sheldon
+  #
+  def activity(id)
+    SheldonClient::Read.activities id
+  end
+
 end
