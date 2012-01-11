@@ -73,6 +73,10 @@ module SheldonClient
       Addressable::URI.parse( "#{SheldonClient.host}/ids/#{type}" )
     end
 
+    def all_nodes_url
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/all_nodes" )
+    end
+
     def node_type_ids_url( type )
       path  = "/nodes/#{type.to_s.pluralize.to_sym}/ids"
 
@@ -84,6 +88,10 @@ module SheldonClient
       path = "/#{type.to_s.pluralize.to_sym}/#{id.to_i}/reindex"
 
       Addressable::URI.parse( SheldonClient.host + path )
+    end
+
+    def udpate_rule_url(node_id, rule)
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/#{node_id}/rules/#{rule}" )
     end
 
     def stream_url(user_id, options = {})

@@ -394,4 +394,14 @@ module SheldonClient
   def questionnaire(id)
     SheldonClient::Read.questionnaire id
   end
+
+
+  def all_nodes
+    SheldonClient::Read.all_nodes
+  end
+
+  def update_rule(rule, id)
+    SheldonClient::Update.update_rule(rule, id)
+  end
+
 end

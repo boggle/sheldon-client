@@ -92,6 +92,11 @@ module SheldonClient
       Questionnaire.new( JSON.parse(response.body) )
     end
 
+    def self.all_nodes
+      response = send_request(:get, all_nodes_url)
+      JSON.parse(response.body).compact
+    end
+
     private
 
     def self.validate_user(user)
