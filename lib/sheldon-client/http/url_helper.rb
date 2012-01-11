@@ -125,7 +125,7 @@ module SheldonClient
     end
 
     def activity_url(user)
-      Addressable::URI.parse( "#{SheldonClient.host}/activity/users/#{user.to_i}")
+      Addressable::URI.parse( "#{SheldonClient.host}/activities/users/#{user.to_i}")
     end
 
     private
