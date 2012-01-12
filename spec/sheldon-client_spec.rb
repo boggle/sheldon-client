@@ -555,4 +555,31 @@ describe SheldonClient do
       end
     end
   end
+
+  describe "activity" do 
+    let(:user_id) { 69 }
+    let(:url){ activity_url user_id }
+    
+    let(:content) { {
+        :payload => { :updated_at => "2011-12-18T20:17:39+01:00",
+            :created_at => "2011-12-18T20:14:41+01:00",
+            :facebook_ids => [],
+            :index => 1,
+            :text => "Gotta build it!"
+         }
+     }}
+    let(:date)   { 1324235681 }
+    let(:reason) { "answers" }
+    let(:friend) { 206077 }
+
+    it "gets the activity for the given user" do
+      stub_and_expect_request(:get, url, request_data, response(:activity)) do
+        activity = SheldonClient.activity(user_id)
+        activity.should_not be_false
+        activity.should be_a(SheldonClient::Activities)
+        activity.activities.first.object.payload.symbolize_keys.should eq(content[:payload])
+      end
+
+    end
+  end
 end
