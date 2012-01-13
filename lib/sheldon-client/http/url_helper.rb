@@ -82,6 +82,10 @@ module SheldonClient
       Addressable::URI.parse( url )
     end
 
+    def newest_containers_url
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/containers" )
+    end
+
     def node_type_ids_url( type )
       path  = "/nodes/#{type.to_s.pluralize.to_sym}/ids"
 

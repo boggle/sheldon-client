@@ -400,6 +400,10 @@ module SheldonClient
     SheldonClient::Read.all_nodes(clazz)
   end
 
+  def newest_containers
+    SheldonClient::Read.newest_containers
+  end
+
   def update_rule(rule, id)
     SheldonClient::Update.update_rule(rule, id)
   end

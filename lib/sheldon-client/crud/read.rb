@@ -98,6 +98,12 @@ module SheldonClient
       JSON.parse(response.body).compact
     end
 
+    def self.newest_containers
+      response = send_request(:get, newest_containers_url)
+      JSON.parse(response.body).compact
+    end
+
+
     def self.activities(id)
       response = send_request :get, activity_url(id)
       Activities.new( JSON.parse(response.body) )
