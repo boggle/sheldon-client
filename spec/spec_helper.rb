@@ -8,6 +8,11 @@ require 'webmock/rspec'
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
+if ENV['verbose']
+  puts "Sheldon client in verbose mode"
+  SheldonClient.log = true
+end
+
 RSpec.configure do |config|
 
 end
