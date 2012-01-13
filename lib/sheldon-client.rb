@@ -395,7 +395,6 @@ module SheldonClient
     SheldonClient::Read.questionnaire id
   end
 
-
   def all_nodes(clazz=nil)
     SheldonClient::Read.all_nodes(clazz)
   end
@@ -406,6 +405,10 @@ module SheldonClient
 
   def update_rule(rule, id)
     SheldonClient::Update.update_rule(rule, id)
+  end
+
+  def connected_to_rule(rule, id)
+    SheldonClient::Read.update_rule(rule, id)
   end
 
   ##
