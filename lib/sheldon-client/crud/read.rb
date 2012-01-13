@@ -24,7 +24,7 @@ module SheldonClient
       end
 
       response = send_request( :get, url)
-      Connection.new( JSON.parse(response.body) )
+      Connection.new( JSON.parse(response.body) ) rescue raise  SheldonClient::NotFound
     end
 
     def self.fetch_edges( node_id, type, opts = {} )
