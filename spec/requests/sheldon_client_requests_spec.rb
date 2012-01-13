@@ -59,7 +59,7 @@ describe SheldonClient do
                                    { type: :movie,
                                      payload: { title: movie_title,
                                                 sandbox_id: sandbox_id }})
-      sleep 3
+      sleep 30
     end
 
     it "creates a node in sheldon" do
@@ -70,7 +70,7 @@ describe SheldonClient do
     end
 
     it "gets the node from sheldon" do
-      sleep 3
+      sleep 10
       results = SheldonClient.search(title: movie_title, sandbox_id: sandbox_id )
       results.size.should eq(1)
       results.first.should be_a SheldonClient::Node
