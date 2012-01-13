@@ -93,8 +93,8 @@ module SheldonClient
       Questionnaire.new( JSON.parse(response.body) )
     end
 
-    def self.all_nodes
-      response = send_request(:get, all_nodes_url)
+    def self.all_nodes(clazz)
+      response = send_request(:get, all_nodes_url(clazz))
       JSON.parse(response.body).compact
     end
 

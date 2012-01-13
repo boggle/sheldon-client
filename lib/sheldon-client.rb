@@ -396,8 +396,8 @@ module SheldonClient
   end
 
 
-  def all_nodes
-    SheldonClient::Read.all_nodes
+  def all_nodes(clazz=nil)
+    SheldonClient::Read.all_nodes(clazz)
   end
 
   def update_rule(rule, id)
