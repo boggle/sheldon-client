@@ -24,7 +24,6 @@ module SheldonClient
       end
 
       response = send_request( :get, url)
-      raise  SheldonClient::NotFound if response.body.empty?
       Connection.new( JSON.parse(response.body) )
     end
 
