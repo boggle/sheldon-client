@@ -395,8 +395,8 @@ module SheldonClient
     SheldonClient::Read.questionnaire id
   end
 
-  def all_nodes(clazz=nil)
-    SheldonClient::Read.all_nodes(clazz)
+  def all_nodes
+    SheldonClient::Read.all_nodes
   end
 
   def newest_containers

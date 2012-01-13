@@ -73,13 +73,8 @@ module SheldonClient
       Addressable::URI.parse( "#{SheldonClient.host}/ids/#{type}" )
     end
 
-    def all_nodes_url(clazz=nil)
-      if clazz.nil?
-        url = "#{SheldonClient.host}/specials/graphs/nodes/all"
-      else
-        url = "#{SheldonClient.host}/specials/graphs/nodes/#{clazz}/all"
-      end
-      Addressable::URI.parse( url )
+    def all_nodes_url
+      Addressable::URI.parse("#{SheldonClient.host}/specials/graphs/nodes/all")
     end
 
     def newest_containers_url
