@@ -407,8 +407,8 @@ module SheldonClient
     SheldonClient::Update.update_rule(rule, id)
   end
 
-  def connected_to_rule(rule, id)
-    SheldonClient::Read.update_rule(rule, id)
+  def all_nodes_in_a_rule(rule)
+    SheldonClient::Read.all_nodes_in_a_rule(rule)
   end
 
   ##

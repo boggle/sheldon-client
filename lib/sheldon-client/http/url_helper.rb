@@ -98,6 +98,11 @@ module SheldonClient
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/#{node_id}/rules/#{rule}" )
     end
 
+    def all_nodes_rule_url(rule)
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/nodes/all/rules/#{rule}" )
+    end
+
+
     def stream_url(user_id, options = {})
       path = "/stream/users/#{user_id.to_i}"
       uri = Addressable::URI.parse( SheldonClient.host + path )

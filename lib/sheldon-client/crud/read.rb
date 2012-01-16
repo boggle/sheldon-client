@@ -102,8 +102,9 @@ module SheldonClient
       JSON.parse(response.body).compact
     end
 
-    def self.update_rule(rule, object_id)
-      (send_request( :get, update_rule_url(object_id, rule), {} ) rescue false) and  true
+    def self.all_nodes_in_a_rule(rule)
+      response = send_request( :get, all_nodes_rule_url(rule))
+      JSON.parse(response.body)
     end
 
 
