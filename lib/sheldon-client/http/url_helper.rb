@@ -94,8 +94,8 @@ module SheldonClient
       Addressable::URI.parse( SheldonClient.host + path )
     end
 
-    def update_rule_url(node_id, rule)
-      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/#{node_id}/rules/#{rule}" )
+    def repair_node_url(id)
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/nodes/#{id}/repair" )
     end
 
     def all_nodes_rule_url(rule)
