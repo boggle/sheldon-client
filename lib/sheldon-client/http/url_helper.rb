@@ -74,7 +74,11 @@ module SheldonClient
     end
 
     def all_nodes_url
-      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/all_nodes" )
+      Addressable::URI.parse("#{SheldonClient.host}/specials/graphs/nodes/all")
+    end
+
+    def newest_containers_url
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/containers" )
     end
 
     def node_type_ids_url( type )

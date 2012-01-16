@@ -395,13 +395,20 @@ module SheldonClient
     SheldonClient::Read.questionnaire id
   end
 
-
   def all_nodes
     SheldonClient::Read.all_nodes
   end
 
+  def newest_containers
+    SheldonClient::Read.newest_containers
+  end
+
   def update_rule(rule, id)
     SheldonClient::Update.update_rule(rule, id)
+  end
+
+  def connected_to_rule(rule, id)
+    SheldonClient::Read.update_rule(rule, id)
   end
 
   ##
