@@ -15,8 +15,8 @@ module SheldonClient
       send_request( :put, url, payload ) and  true
     end
 
-    def self.update_rule(rule, object_id)
-      send_request( :put, update_rule_url(object_id, rule), {} ) and  true
+    def self.repair_node(node_id)
+      send_request( :put, repair_node_url(node_id), {} ) and  true
     end
 
     def self.reindex( object )

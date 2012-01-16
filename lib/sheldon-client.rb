@@ -403,8 +403,8 @@ module SheldonClient
     SheldonClient::Read.newest_containers
   end
 
-  def update_rule(rule, id)
-    SheldonClient::Update.update_rule(rule, id)
+  def repair_node(id)
+    SheldonClient::Update.repair_node(id)
   end
 
   def all_nodes_in_a_rule(rule)
