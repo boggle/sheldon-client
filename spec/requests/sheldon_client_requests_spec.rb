@@ -184,11 +184,5 @@ describe SheldonClient do
   #  end
   #end
 
-  describe "statistics" do
-    it "has a thousands of movies" do
-      statistics = SheldonClient.statistics
-      (statistics["nodes"]["movies"]["count"] > 1000 ).should eq(true)
-    end
-  end
 end
 
