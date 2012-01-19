@@ -31,6 +31,14 @@ module SheldonClient
         Node.new( connection_data )
       end
     end
+
+    def self.pagerank_collection( json_array )
+      json_array.map do |e1|
+        e1.symbolize_keys.tap do |e2|
+          e2[:node] = Node.new(e2[:node])
+        end
+      end
+    end
   end
 end
 

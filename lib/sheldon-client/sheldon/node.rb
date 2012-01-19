@@ -261,6 +261,45 @@ module SheldonClient
       create_connection(type.to_sym, to, {})
     end
 
+    # Subscriber favorites
+    #
+    # @param options [Hash] valid keys: page, per_page
+    #
+    # @return [Array] list of pagerank objects with keys node and rank where node is a
+    #   {SheldonClient::Node} and rank is an integer
+    def subscriber_favorites(options={})
+      Read.get_subscriber_favorites_for(id, options)
+    end
+
+    # Uncommon Subscriber favorites
+    #   Removes top global subscriber favorites from the node specific ones
+    #
+    # @param options [Hash] valid keys: limit, slice_size
+    #
+    # @return [Array] list of pagerank objects with keys node and rank where node is a
+    #   {SheldonClient::Node} and rank is an integer
+    def uncommon_subscriber_favorites(options={})
+      options    = {slice_size: 3, limit: 25}.merge(options)
+      limit      = options[:limit]
+      slice_size = options[:slice_size]
+
+      local      = subscriber_favorites(per_page: limit*2)
+      global     = SheldonClient.subscriber_favorites(per_page: limit*2)
+
+      global_ids    = global.map(&its[:node].id)
+      ids_to_remove = []
+      slice_wrapper = [nil]*(slice_size/2)
+
+      [slice_wrapper, local, slice_wrapper].flatten.each_cons(slice_size).to_a.each_with_index do |slice, idx|
+        global_id = global_ids[idx]
+        ids_to_remove << global_id if slice.map{|x| x[:node].id if x}.include?(global_id)
+      end
+
+      local.reject do |pagerank|
+        ids_to_remove.include? pagerank[:node].id
+      end[0...limit]
+    end
+
     private
 
     def delete_previous_subscriptions(to)

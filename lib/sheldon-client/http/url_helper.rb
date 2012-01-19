@@ -129,6 +129,20 @@ module SheldonClient
       uri
     end
 
+    def subscriber_favorites_url(node, options={})
+      path = "/traversals/pagerank/subscriber_favorites/for/#{node.to_i}"
+      uri = Addressable::URI.parse( SheldonClient.host + path )
+      uri.query_values = stringify_fixnums( options ) unless options.empty?
+      uri
+    end
+
+    def global_subscriber_favorites_url(options={})
+      path = "/traversals/pagerank/subscriber_favorites"
+      uri = Addressable::URI.parse( SheldonClient.host + path )
+      uri.query_values = stringify_fixnums( options ) unless options.empty?
+      uri
+    end
+
     def questionnaire_url(questionnaire)
       Addressable::URI.parse( "#{SheldonClient.host}/questionnaires/#{questionnaire.to_i}")
     end

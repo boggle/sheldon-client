@@ -411,6 +411,10 @@ module SheldonClient
     SheldonClient::Read.all_nodes_in_a_rule(rule)
   end
 
+  def subscriber_favorites(options={})
+    SheldonClient::Read.get_global_subscriber_favorites(options)
+  end
+
   ##
   # Fetch the user activity from sheldon
   #
