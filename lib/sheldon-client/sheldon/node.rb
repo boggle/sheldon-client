@@ -271,8 +271,7 @@ module SheldonClient
       Read.get_subscriber_favorites_for(id, options)
     end
 
-    # Uncommon Subscriber favorites
-    #   Removes top global subscriber favorites from the node specific ones
+    # Removes top global subscriber favorites from the node specific favorites
     #
     # @param options [Hash] valid keys: limit, slice_size
     #
@@ -287,12 +286,13 @@ module SheldonClient
       global     = SheldonClient.subscriber_favorites(per_page: limit*2)
 
       global_ids    = global.map(&its[:node].id)
+      local_ids     = local.map(&its[:node].id)
       ids_to_remove = []
       slice_wrapper = [nil]*(slice_size/2)
 
-      [slice_wrapper, local, slice_wrapper].flatten.each_cons(slice_size).to_a.each_with_index do |slice, idx|
-        global_id = global_ids[idx]
-        ids_to_remove << global_id if slice.map{|x| x[:node].id if x}.include?(global_id)
+      [slice_wrapper, global_ids, slice_wrapper].flatten.each_cons(slice_size).to_a.each_with_index do |slice, idx|
+        local_id = local_ids[idx]
+        ids_to_remove << local_id if slice.include?(local_id)
       end
 
       local.reject do |pagerank|
