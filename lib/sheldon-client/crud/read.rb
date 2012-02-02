@@ -69,17 +69,17 @@ module SheldonClient
 
     def self.pagerank( type, start_node_id, extra, options )
       response = send_request :get, traversal_url(type, start_node_id, extra, options)
-      subscriber_favorites_collection(JSON.parse(response.body))
+      pagerank_collection(JSON.parse(response.body))
     end
 
     def self.get_subscriber_favorites_for(node, options={})
       response = send_request :get, subscriber_favorites_url(node, options)
-      subscriber_favorites_collection(JSON.parse(response.body))
+      JSON.parse(response.body)
     end
 
     def self.get_global_subscriber_favorites(options={})
       response = send_request :get, global_subscriber_favorites_url(options)
-      subscriber_favorites_collection(JSON.parse(response.body))
+      JSON.parse(response.body)
     end
 
     def self.get_node_containers(node, opts = {})
