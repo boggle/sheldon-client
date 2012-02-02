@@ -39,11 +39,6 @@ module SheldonClient
         end
       end
     end
-
-    def self.subscriber_favorites_collection( json_hash )
-      json_hash['top_list'] = pagerank_collection(json_hash['top_list'])
-      json_hash
-    end
   end
 end
 
