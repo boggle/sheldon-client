@@ -1,3 +1,10 @@
+=== Version 1.0.16
+* Fixed wrong subscriber favorites response expectations seitens sheldon
+client
+
+=== Version 1.0.15
+* Fixed subscriber favorites traversal url
+
 === Version 1.0.8
 * Added support for retrieving project based on similarities recommendations
 from sheldon.
