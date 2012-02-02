@@ -77,6 +77,10 @@ module SheldonClient
       Addressable::URI.parse("#{SheldonClient.host}/specials/graphs/nodes/all")
     end
 
+    def all_connections_url(clazz)
+      Addressable::URI.parse("#{SheldonClient.host}/specials/graphs/connections/#{clazz}/all")
+    end
+
     def newest_containers_url
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/containers" )
     end
@@ -96,6 +100,14 @@ module SheldonClient
 
     def repair_node_url(id)
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/nodes/#{id}/repair" )
+    end
+
+    def repair_connection_url(id)
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/connections/#{id}/repair" )
+    end
+
+    def initialize_connections_rules_url
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/connections/all/rules/initialize" )
     end
 
     def all_nodes_rule_url(rule)

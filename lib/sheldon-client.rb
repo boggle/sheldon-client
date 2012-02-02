@@ -395,18 +395,55 @@ module SheldonClient
     SheldonClient::Read.questionnaire id
   end
 
+  # Special method: Retrieves the list of all nodes, identified by their neo4j ids. It's important to 
+  # notices that cause this ids are only in use inside the special methods, not on the
+  # regular ones.
+  #
   def all_nodes
     SheldonClient::Read.all_nodes
   end
 
+  # Special method: Retrieves the list of all connections, identified by their neo4j ids. It's
+  # important to notices that cause this ids are only in use inside the special 
+  # methods, not on the regular ones.
+  #
+  # == Parameters
+  # <tt> type <tt> - The connection type we want to get the connection from.
+  #
+  def all_connections(type)
+    SheldonClient::Read.all_connections(type)
+  end
+
+  # Special method: It gets the 1000 newest containers from sheldon
+  #
   def newest_containers
     SheldonClient::Read.newest_containers
   end
 
+  # Special method: It repair a node, attaching it to their rules, fixing external_ids, etc..
+  # so it takes care that a node is consistent again.
+  #
   def repair_node(id)
     SheldonClient::Update.repair_node(id)
   end
 
+  # Special method: It repair a connection, attaching it to their rules, 
+  # fixing external_ids, etc.. so it takes care that a connection is consistent again.
+  #
+  def repair_connection(id)
+    SheldonClient::Update.repair_connection(id)
+  end
+
+  # Special method: It takes care of initializing the connection schema nodes in order
+  # to be sure all the proper counters are initialized before we start to repair 
+  # connections.
+  #
+  def initialize_connections_rules
+    SheldonClient::Update.initialize_connections_rules
+  end
+
+  ## Special method: Get's a list of nodes that belongs to a certain rule.
+  #
   def all_nodes_in_a_rule(rule)
     SheldonClient::Read.all_nodes_in_a_rule(rule)
   end
