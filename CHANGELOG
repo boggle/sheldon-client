@@ -1,8 +1,6 @@
-=== Version 1.0.16
+=== Version 1.0.17
 * Changed the way subscriber favorites json gets messed up. It gets
 messed up less now
-
-=== Version 1.0.16
 * Fixed wrong subscriber favorites response expectations seitens sheldon
 client
 
