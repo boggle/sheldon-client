@@ -399,6 +399,10 @@ module SheldonClient
     SheldonClient::Read.all_nodes
   end
 
+  def all_connections(clazz)
+    SheldonClient::Read.all_connections(clazz)
+  end
+
   def newest_containers
     SheldonClient::Read.newest_containers
   end

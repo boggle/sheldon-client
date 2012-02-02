@@ -102,6 +102,12 @@ module SheldonClient
       JSON.parse(response.body).compact
     end
 
+    def self.all_connections(clazz)
+      response = send_request(:get, all_connections_url(clazz))
+      JSON.parse(response.body).compact
+    end
+
+
     def self.newest_containers
       response = send_request(:get, newest_containers_url)
       JSON.parse(response.body).compact
