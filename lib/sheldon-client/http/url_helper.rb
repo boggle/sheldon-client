@@ -102,6 +102,10 @@ module SheldonClient
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/nodes/#{id}/repair" )
     end
 
+    def repair_connection_url(id)
+      Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/connections/#{id}/repair" )
+    end
+
     def initialize_connections_rules_url
       Addressable::URI.parse( "#{SheldonClient.host}/specials/graphs/connections/all/rules/initialize" )
     end

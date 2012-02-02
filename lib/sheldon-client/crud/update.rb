@@ -19,6 +19,10 @@ module SheldonClient
       send_request( :put, repair_node_url(node_id), {} ) and  true
     end
 
+    def self.repair_connection(connection_id)
+      send_request( :put, repair_connection_url(connection_id), {} ) and  true
+    end
+
     def self.initialize_connections_rules
       send_request( :put, initialize_connections_rules_url, {} ) and true
     end

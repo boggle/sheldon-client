@@ -411,6 +411,10 @@ module SheldonClient
     SheldonClient::Update.repair_node(id)
   end
 
+  def repair_connection(id)
+    SheldonClient::Update.repair_connection(id)
+  end
+
   def initialize_connections_rules
     SheldonClient::Update.initialize_connections_rules
   end
